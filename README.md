@@ -10,7 +10,7 @@ Folders:
 
 Quick start (development):
 1. Start MySQL: docker-compose up -d mysql
-2. Start crm-service: cd services/crm-service && ./mvnw spring-boot:run
+2. Start crm-service: cd backend/services/crm-service && ./mvnw spring-boot:run
 3. Start frontend: cd frontend && npm install && npm run dev
 
 For full production-ready builds, follow each service README inside their folders.
