@@ -5,9 +5,9 @@ Deployment & Run Guide
 
 2. Build and run services individually:
    - Frontend: cd frontend && npm install && npm run dev
-   - CRM: cd services/crm-service && mvn spring-boot:run
-   - Case mgmt: cd services/case-management-service && mvn spring-boot:run
-   - Sales: cd services/sales-payment-service && mvn spring-boot:run
+   - CRM: cd backend/services/crm-service && mvn spring-boot:run
+  - Case mgmt: cd backend/services/case-management-service && mvn spring-boot:run
+  - Sales: cd backend/services/sales-payment-service && mvn spring-boot:run
 
 3. API endpoints:
    - Leads: http://localhost:8081/api/leads
