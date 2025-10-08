@@ -4,7 +4,7 @@ This repository contains a React frontend and Java/Spring Boot microservices sca
 
 Folders:
 - frontend/ — React + Vite + Tailwind frontend
-- services/ — Java Spring Boot microservices (crm-service, onboarding-service)
+- backend/ — Java Spring Boot microservices (crm-service, onboarding-service, case-management-service, sales-payment-service, execution-company-reg)
 - libraries/ — shared model artifacts
 - deployments/ — docker-compose & deployment configs
 
