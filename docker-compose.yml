@@ -13,7 +13,7 @@ services:
       - db_data:/var/lib/mysql
       - ./deployments/mysql-init:/docker-entrypoint-initdb.d
   crm-service:
-    build: ./services/crm-service
+    build: ./backend/services/crm-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
       SPRING_DATASOURCE_USERNAME: vakil
@@ -23,7 +23,7 @@ services:
     ports:
       - '8081:8081'
   onboarding-service:
-    build: ./services/onboarding-service
+    build: ./backend/services/onboarding-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
       SPRING_DATASOURCE_USERNAME: vakil
@@ -33,7 +33,7 @@ services:
     ports:
       - '8082:8082'
   case-management-service:
-    build: ./services/case-management-service
+    build: ./backend/services/case-management-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
       SPRING_DATASOURCE_USERNAME: vakil
@@ -43,7 +43,7 @@ services:
     ports:
       - '8083:8083'
   sales-payment-service:
-    build: ./services/sales-payment-service
+    build: ./backend/services/sales-payment-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
       SPRING_DATASOURCE_USERNAME: vakil
@@ -53,7 +53,7 @@ services:
     ports:
       - '8084:8084'
   execution-company-reg:
-    build: ./services/execution-company-reg
+    build: ./backend/services/execution-company-reg
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
       SPRING_DATASOURCE_USERNAME: vakil
