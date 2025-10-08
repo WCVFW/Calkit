@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Placeholder from './pages/Placeholder'
+import ServiceLoader from './pages/ServiceLoader'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
@@ -14,7 +15,7 @@ export default function App(){
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/dashboard" element={<Dashboard/>} />
-          <Route path="*" element={<Placeholder/>} />
+          <Route path="*" element={<ServiceLoader/>} />
         </Routes>
       </main>
       <Footer />
