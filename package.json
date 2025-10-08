@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "cd frontend && npm run dev",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build": "cd frontend && npm run build",
+    "watch": "cd frontend && npm run dev",
+    "test": "cd frontend && npm test"
   },
   "prettier": {
     "overrides": [
