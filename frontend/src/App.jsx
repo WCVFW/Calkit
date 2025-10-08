@@ -11,7 +11,7 @@ export default function App(){
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-12">
+      <main className="flex-1 container mx-auto px-6 pt-16 md:pt-20 pb-12">
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/dashboard" element={<Dashboard/>} />
