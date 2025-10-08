@@ -22,5 +22,45 @@ services:
       - mysql
     ports:
       - '8081:8081'
+  onboarding-service:
+    build: ./services/onboarding-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
+      SPRING_DATASOURCE_USERNAME: vakil
+      SPRING_DATASOURCE_PASSWORD: vakilpass
+    depends_on:
+      - mysql
+    ports:
+      - '8082:8082'
+  case-management-service:
+    build: ./services/case-management-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
+      SPRING_DATASOURCE_USERNAME: vakil
+      SPRING_DATASOURCE_PASSWORD: vakilpass
+    depends_on:
+      - mysql
+    ports:
+      - '8083:8083'
+  sales-payment-service:
+    build: ./services/sales-payment-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
+      SPRING_DATASOURCE_USERNAME: vakil
+      SPRING_DATASOURCE_PASSWORD: vakilpass
+    depends_on:
+      - mysql
+    ports:
+      - '8084:8084'
+  execution-company-reg:
+    build: ./services/execution-company-reg
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
+      SPRING_DATASOURCE_USERNAME: vakil
+      SPRING_DATASOURCE_PASSWORD: vakilpass
+    depends_on:
+      - mysql
+    ports:
+      - '8085:8085'
 volumes:
   db_data:
