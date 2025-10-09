@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Hero from "../assets/Hero.png";
-import C1 from "../assets/c1.png";
-import C2 from "../assets/c2.png";
-import C3 from "../assets/c3.png";
+
+const HERO_IMG = "https://api.builder.io/api/v1/image/assets/TEMP/33fb20c5031bf9926dace3f416c36ea8bf5fe94f?width=2882";
+const CTA1 = "https://api.builder.io/api/v1/image/assets/04f62713d501467583d89faf46821070/046c1810cb594890a5c6fd84b2adb30e?width=240";
+const CTA2 = "https://api.builder.io/api/v1/image/assets/TEMP/521f01928cb520f2d8fe2f3daf234db7540c2181?width=240";
+const CTA3 = "https://api.builder.io/api/v1/image/assets/TEMP/3d32e547220713bb25d24504a9b2385dabdc0361?width=240";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[420px] sm:h-[520px] md:h-[650px] lg:h-[750px]">
         <img
-          src={Hero}
+          src={HERO_IMG}
           alt="Hero"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -52,9 +53,9 @@ export default function Home() {
           {/* CTA Cards */}
           <div className="mt-10 flex flex-wrap justify-center gap-6">
             {[
-              { to: "/BusinessSetup/plc", label: "Start Your Business", imgSrc: C1 },
-              { to: "/dashboard", label: "Manage Your Business", imgSrc: C2 },
-              { to: "/ConsultanExpert/talkToLawyer", label: "Protect Your Business", imgSrc: C3 },
+              { to: "/BusinessSetup/plc", label: "Start Your Business", imgSrc: CTA1 },
+              { to: "/dashboard", label: "Manage Your Business", imgSrc: CTA2 },
+              { to: "/ConsultanExpert/talkToLawyer", label: "Protect Your Business", imgSrc: CTA3 },
             ].map((item, i) => (
               <Link
                 key={i}
