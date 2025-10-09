@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: authdb
+      MYSQL_USER: authuser
+      MYSQL_PASSWORD: authpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+    driver: local
+
+# Note: This compose starts only MySQL. To run the Spring Boot app, build the jar and run it with env vars:
+# SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true SPRING_DATASOURCE_USERNAME=authuser SPRING_DATASOURCE_PASSWORD=authpass java -jar target/auth-service-0.0.1-SNAPSHOT.jar
