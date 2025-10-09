@@ -1,22 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 
-const TOKEN_KEY = 'auth_token';
+const TOKEN_KEY = "auth_token";
 
-export function setToken(token){
+export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
-export function getToken(){
+export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
 
-export function clearToken(){
+export function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
-  delete axios.defaults.headers.common['Authorization'];
+  delete axios.defaults.headers.common["Authorization"];
 }
 
-export function initAuth(){
+export function initAuth() {
   const t = getToken();
-  if(t) axios.defaults.headers.common['Authorization'] = `Bearer ${t}`;
+  if (t) axios.defaults.headers.common["Authorization"] = `Bearer ${t}`;
 }
