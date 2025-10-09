@@ -3,10 +3,10 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:authdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.h2.Driver}
-    username: ${SPRING_DATASOURCE_USERNAME:sa}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:com.mysql.cj.jdbc.Driver}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:rootpass1234}
   jpa:
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
@@ -14,8 +14,13 @@ spring:
 
 app:
   jwt:
-    secret: very_secret_change_me
-    expiration-ms: 86400000
+    secret: ${APP_JWT_SECRET:very_secret_change_me}
+    expiration-ms: ${APP_JWT_EXP_MS:86400000}
+
+# Twilio (set these env vars to enable real SMS)
+TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:}
+TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:}
+TWILIO_FROM: ${TWILIO_FROM:}
 
 management:
   endpoints:
