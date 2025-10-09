@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import Hero from "../assets/Hero.png";
 import C1 from "../assets/c1.png";
 import C2 from "../assets/c2.png";
@@ -187,23 +186,19 @@ export default function Home() {
                 animate: { y: [0, 25, 0], x: [0, -25, 0] },
               },
             ].map((bubble, i) => (
-              <motion.div
+              <div
                 key={i}
-                animate={bubble.animate}
-                transition={{ repeat: Infinity, duration: 6 + i, ease: "easeInOut" }}
                 className={`${bubble.size} rounded-full overflow-hidden shadow-lg relative`}
               >
-                <motion.div
+                <div
                   className="absolute inset-0 bg-blue-400/30 blur-2xl rounded-full"
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ repeat: Infinity, duration: 4 }}
                 />
                 <img
                   src={bubble.src}
                   alt="Bubble"
                   className="object-cover w-full h-full rounded-full"
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
