@@ -1,263 +1,381 @@
-import React, { useState } from 'react'
-import { cn } from '@/lib/utils'
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+// Assuming cn is a utility function for Tailwind CSS class merging
+import { cn } from "@/lib/utils";
 import {
+  // Assuming these custom components are imported from the local project file structure
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu'
-import { Link, useLocation } from 'react-router-dom'
+} from "@/components/ui/navigation-menu";
 import {
-  UserCheck,
-  Briefcase,
-  DollarSign,
-  Heart,
-  FileText,
-  Clipboard,
-  Globe,
-  Award,
-  Shield,
-  BarChart,
-  BookOpen,
-  ShoppingCart,
-  User,
   Menu,
   X,
-} from 'lucide-react'
+  FileText,
+  Clipboard,
+  Briefcase,
+  Shield,
+  BarChart,
+  Globe,
+  Award,
+  Heart,
+  BookOpen,
+  DollarSign,
+} from "lucide-react";
 
+
+/* --------------------------------------------------------------------------
+   I. Main Header Component
+---------------------------------------------------------------------------*/
 export default function Header({ user, logout }) {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const location = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <>
+      {/* ====== Top Header ====== */}
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8">
-          {/* Logo */}
-          <div className="flex items-center flex-shrink-0">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-lg md:text-xl font-bold text-gray-900 transition-colors hover:text-[#DB3269]"
-              onClick={() => setMenuOpen(false)}
-            >
-              <span className="tracking-tight">
-                <span className="text-[#DB3269]">C</span>alzone{' '}
-                <span className="text-[#DB3269]">F</span>inancial{' '}
-                <span className="text-[#DB3269]">S</span>ervice
-              </span>
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 md:px-8">
+          <Link
+            to="/"
+            className="text-xl md:text-2xl font-bold text-gray-900 hover:text-[#003366] transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="text-[#003366]">C</span>alzone{" "}
+            <span className="text-[#003366]">F</span>inancial{" "}
+            <span className="text-[#003366]">S</span>ervices
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center space-x-8">
             <HeaderNav currentPath={location.pathname} />
           </div>
 
-          {/* Mobile toggle */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setMenuOpen((s) => !s)}
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              className="p-2 rounded-md border"
-            >
-              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+          {/* Right Auth Buttons (Desktop) */}
+          <div className="hidden lg:flex items-center space-x-4">
+            {user ? (
+              <button onClick={logout} className="text-[#003366] font-medium hover:text-[#001f3e] transition-colors">
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link to="/login" className="text-[#003366] font-medium hover:text-[#001f3e] transition-colors">
+                  Login
+                </Link>
+                <Link to="/signup" className="bg-[#003366] text-white px-4 py-2 rounded-md hover:bg-[#001f3e] transition-colors">
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="lg:hidden text-gray-700 p-2"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </header>
 
       {/* Mobile Menu Overlay */}
       <div
         className={cn(
-          'fixed inset-0 z-40 flex flex-col bg-white p-4 sm:p-6 transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto',
-          menuOpen ? 'translate-x-0' : '-translate-x-full'
+          "fixed inset-0 z-40 flex flex-col bg-white p-6 transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto",
+          menuOpen ? "translate-x-0" : "-translate-x-full"
         )}
-        style={{ pointerEvents: menuOpen ? 'auto' : 'none' }}
+        style={{ pointerEvents: menuOpen ? "auto" : "none" }}
         aria-hidden={!menuOpen}
       >
-        <div className="flex-grow" onClick={() => setMenuOpen(false)}>
-          <HeaderNav currentPath={useLocation().pathname} />
+        <HeaderNav currentPath={location.pathname} setMenuOpen={setMenuOpen} />
+
+        <div className="mt-6 border-t pt-6">
+          {user ? (
+            <button
+              onClick={() => { logout(); setMenuOpen(false); }}
+              className="w-full bg-[#003366] text-white py-2 rounded-md hover:bg-[#001f3e] transition-colors"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login" onClick={() => setMenuOpen(false)} className="block w-full text-center bg-[#003366] text-white py-2 rounded-md hover:bg-[#001f3e] transition-colors">
+                Login
+              </Link>
+              <Link to="/signup" onClick={() => setMenuOpen(false)} className="block w-full text-center mt-3 bg-gray-100 text-[#003366] py-2 rounded-md hover:bg-gray-200 transition-colors">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
-        <div className="mt-6 border-t pt-6"></div>
       </div>
     </>
-  )
+  );
 }
 
-// ---------------- HeaderNav (Full Navigation Menu) ----------------
-function HeaderNav({ currentPath }) {
+/* --------------------------------------------------------------------------
+   II. Navigation Section
+---------------------------------------------------------------------------*/
+function HeaderNav({ currentPath, setMenuOpen }) {
+  const handleLinkClick = () => setMenuOpen && setMenuOpen(false);
+
+  // Define icons object
+  const icons = {
+    FileText: <FileText className="w-4 h-4 mr-2" />,
+    Clipboard: <Clipboard className="w-4 h-4 mr-2" />,
+    Briefcase: <Briefcase className="w-4 h-4 mr-2" />,
+    Shield: <Shield className="w-4 h-4 mr-2" />,
+    BarChart: <BarChart className="w-4 h-4 mr-2" />,
+    Globe: <Globe className="w-4 h-4 mr-2" />,
+    Award: <Award className="w-4 h-4 mr-2" />,
+    Heart: <Heart className="w-4 h-4 mr-2" />,
+    BookOpen: <BookOpen className="w-4 h-4 mr-2" />,
+    DollarSign: <DollarSign className="w-4 h-4 mr-2" />,
+  };
+
   return (
-    <NavigationMenu orientation="vertical" className="w-full">
-      <NavigationMenuList className="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4">
-        {/* Consult an Expert */}
+    <NavigationMenu orientation="vertical" className="w-full lg:orientation-horizontal">
+      <NavigationMenuList className="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-6">
+
+        {/* ===================== Consult an Expert ===================== */}
         <NavItem
           title="Consult an Expert"
-          menuWidth="md:w-[280px]"
+          menuWidth="lg:w-[280px]"
           links={[
-            ['Talk to a Lawyer', '/ConsultanExpert/talkToLawyer', <FileText className="w-4 h-4 mr-2" />],
-            ['Talk to a Chartered Accountant', '/ConsultanExpert/talkToCA', <Clipboard className="w-4 h-4 mr-2" />],
-            ['Talk to a Company Secretary', '/ConsultanExpert/talkToCS', <Briefcase className="w-4 h-4 mr-2" />],
-            ['Talk to an IP/Trademark Lawyer', '/ConsultanExpert/talkToIP', <Shield className="w-4 h-4 mr-2" />],
+            ["Talk to a Lawyer", "/ConsultanExpert/talkToLawyer", "FileText"],
+            ["Talk to a Chartered Accountant", "/ConsultanExpert/talkToCA", "Clipboard"],
+            ["Talk to a Company Secretary", "/ConsultanExpert/talkToCS", "Briefcase"],
+            ["Talk to an IP/Trademark Lawyer", "/ConsultanExpert/talkToIP", "Shield"],
           ]}
           currentPath={currentPath}
+          icons={icons}
+          handleLinkClick={handleLinkClick}
         />
 
-        {/* Business Setup */}
+        {/* ===================== Business Setup (Wide Menu, force-centered) ===================== */}
         <NavItem
           title="Business Setup"
-          menuWidth="md:w-[900px]"
-          gridCols="md:grid-cols-3"
+          menuWidth="lg:w-[900px]"
+          gridCols="lg:grid-cols-3"
           linksGroups={[
             {
-              title: 'Company Registration',
+              title: "Company Registration",
               links: [
-                ['Private Limited Company', '/BusinessSetup/plc', <Briefcase className="w-4 h-4 mr-2" />],
-                ['Limited Liability Partnership', '/BusinessSetup/llp', <Briefcase className="w-4 h-4 mr-2" />],
-                ['One Person Company', '/BusinessSetup/opc', <Briefcase className="w-4 h-4 mr-2" />],
-                ['Sole Proprietorship', '/BusinessSetup/sp', <Briefcase className="w-4 h-4 mr-2" />],
-                ['Nidhi Company', '/BusinessSetup/nidhi', <Briefcase className="w-4 h-4 mr-2" />],
-                ['Producer Company', '/BusinessSetup/producer', <Briefcase className="w-4 h-4 mr-2" />],
-                ['Partnership Firm', '/BusinessSetup/partnership', <Briefcase className="w-4 h-4 mr-2" />],
-                ['Startup India Registration', '/BusinessSetup/startup', <BarChart className="w-4 h-4 mr-2" />],
+                ["Private Limited Company", "/BusinessSetup/plc", "Briefcase"], ["Limited Liability Partnership", "/BusinessSetup/llp", "Briefcase"],
+                ["One Person Company", "/BusinessSetup/opc", "Briefcase"], ["Sole Proprietorship", "/BusinessSetup/sp", "Briefcase"],
+                ["Nidhi Company", "/BusinessSetup/nidhi", "Briefcase"], ["Producer Company", "/BusinessSetup/producer", "Briefcase"],
+                ["Partnership Firm", "/BusinessSetup/partnership", "Briefcase"], ["Startup India Registration", "/BusinessSetup/startup", "BarChart"],
               ],
             },
             {
-              title: 'International Business Setup',
+              title: "International Business Setup",
               links: [
-                ['US Incorporation', '/International/us', <Globe className="w-4 h-4 mr-2" />],
-                ['Singapore Incorporation', '/International/singapore', <Globe className="w-4 h-4 mr-2" />],
-                ['UK Incorporation', '/International/uk', <Globe className="w-4 h-4 mr-2" />],
-                ['Netherlands Incorporation', '/International/netherlands', <Globe className="w-4 h-4 mr-2" />],
-                ['Hong Kong Company', '/International/hong-kong', <Globe className="w-4 h-4 mr-2" />],
-                ['Dubai Company', '/International/dubai', <Globe className="w-4 h-4 mr-2" />],
-                ['International TM Registration', '/International/international-trademark', <Shield className="w-4 h-4 mr-2" />],
+                ["US Incorporation", "/International/us", "Globe"], ["Singapore Incorporation", "/International/singapore", "Globe"],
+                ["UK Incorporation", "/International/uk", "Globe"], ["Netherlands Incorporation", "/International/netherlands", "Globe"],
+                ["Hong Kong Company", "/International/hong-kong", "Globe"], ["Dubai Company", "/International/dubai", "Globe"],
+                ["International TM Registration", "/International/international-trademark", "Shield"],
               ],
             },
             {
-              title: 'Licenses & Registrations',
+              title: "Licenses & Registrations",
               links: [
-                ['Digital Signature Award', '/Licenses/dsc', <Award className="w-4 h-4 mr-2" />],
-                ['Udyam Registration', '/Licenses/udyam', <Award className="w-4 h-4 mr-2" />],
-                ['MSME Registration', '/Licenses/msme', <Award className="w-4 h-4 mr-2" />],
-                ['ISO Certification', '/Licenses/iso', <Award className="w-4 h-4 mr-2" />],
-                ['FSSAI (Food License)', '/Licenses/fssai', <Heart className="w-4 h-4 mr-2" />],
-                ['Import/Export Code (IEC)', '/Licenses/iec', <Globe className="w-4 h-4 mr-2" />],
-                ['Spice Board Registration', '/Licenses/spice-board', <BookOpen className="w-4 h-4 mr-2" />],
-                ['FIEO Registration', '/Licenses/fieo', <BookOpen className="w-4 h-4 mr-2" />],
-                ['Legal Metrology', '/Licenses/legal-metrology', <Clipboard className="w-4 h-4 mr-2" />],
-                ['Hallmark Registration', '/Licenses/hallmark', <Shield className="w-4 h-4 mr-2" />],
-                ['BIS Registration', '/Licenses/bis', <Shield className="w-4 h-4 mr-2" />],
-                ['Liquor License', '/Licenses/liquor-license', <Heart className="w-4 h-4 mr-2" />],
-                ['CLRA Registration & Licensing', '/Licenses/clra', <FileText className="w-4 h-4 mr-2" />],
-                ['AD Code Registration', '/Licenses/ad-code', <FileText className="w-4 h-4 mr-2" />],
-                ['IRDAI Registration', '/Licenses/irdai', <Shield className="w-4 h-4 mr-2" />],
-                ['Drug & Cosmetic License', '/Licenses/drug-cosmetic', <Heart className="w-4 h-4 mr-2" />],
+                ["Digital Signature Award", "/Licenses/dsc", "Award"], ["Udyam Registration", "/Licenses/udyam", "Award"],
+                ["MSME Registration", "/Licenses/msme", "Award"], ["ISO Certification", "/Licenses/iso", "Award"],
+                ["FSSAI (Food License)", "/Licenses/fssai", "Heart"], ["Import/Export Code (IEC)", "/Licenses/iec", "Globe"],
+                ["Spice Board Registration", "/Licenses/spice-board", "BookOpen"], ["Legal Metrology", "/Licenses/legal-metrology", "Clipboard"],
+                ["BIS Registration", "/Licenses/bis", "Shield"],
               ],
             },
           ]}
           currentPath={currentPath}
+          icons={icons}
+          handleLinkClick={handleLinkClick}
+          // The fixed center positioning for wide menus is now handled inside NavItem
+          fixedWidth={900}
         />
 
-        {/* Fundraising */}
+        {/* ===================== Fundraising ===================== */}
         <NavItem
           title="Fundraising"
-          menuWidth="md:w-[260px]"
+          menuWidth="lg:w-[260px]"
           links={[
-            ['Fundraising', '/Fundraising', <DollarSign className="w-4 h-4 mr-2" />],
-            ['Pitch Deck', '/Fundraising/pitch-deck', <BarChart className="w-4 h-4 mr-2" />],
-            ['Business Loan', '/Fundraising/business-loan', <DollarSign className="w-4 h-4 mr-2" />],
-            ['DPR Service', '/Fundraising/dpr', <FileText className="w-4 h-4 mr-2" />],
+            ["Fundraising", "/Fundraising", "DollarSign"], ["Pitch Deck", "/Fundraising/pitch-deck", "BarChart"],
+            ["Business Loan", "/Fundraising/business-loan", "DollarSign"], ["DPR Service", "/Fundraising/dpr", "FileText"],
           ]}
           currentPath={currentPath}
+          icons={icons}
+          handleLinkClick={handleLinkClick}
         />
 
-        {/* NGO */}
+        {/* ===================== NGO (Menu on the far right) ===================== */}
         <NavItem
           title="NGO"
-          menuWidth="md:w-[700px]"
-          gridCols="md:grid-cols-2"
+          menuWidth="lg:w-[700px]"
+          gridCols="lg:grid-cols-2"
           linksGroups={[
             {
-              title: 'NGO Registration',
+              title: "NGO Registration",
               links: [
-                ['NGO', '/NGO', <Heart className="w-4 h-4 mr-2" />],
-                ['Section 8 Company', '/NGO/section-8', <Heart className="w-4 h-4 mr-2" />],
-                ['Trust Registration', '/NGO/trust', <Clipboard className="w-4 h-4 mr-2" />],
-                ['Society Registration', '/NGO/society', <Clipboard className="w-4 h-4 mr-2" />],
+                ["NGO", "/NGO", "Heart"], ["Section 8 Company", "/NGO/section-8", "Heart"],
+                ["Trust Registration", "/NGO/trust", "Clipboard"], ["Society Registration", "/NGO/society", "Clipboard"],
               ],
             },
             {
-              title: 'NGO Compliance',
+              title: "NGO Compliance",
               links: [
-                ['NGO Compliance', '/NGO/compliance', <FileText className="w-4 h-4 mr-2" />],
-                ['Section 8 Compliance', '/NGO/compliance-section-8', <FileText className="w-4 h-4 mr-2" />],
-                ['CSR-1 Filing', '/NGO/csr1', <FileText className="w-4 h-4 mr-2" />],
-                ['Sec.80G & Sec.12A', '/NGO/80g-12a', <Award className="w-4 h-4 mr-2" />],
-                ['Darpan Registration', '/NGO/darpan', <Award className="w-4 h-4 mr-2" />],
-                ['FCRA Registration', '/NGO/fcra', <Award className="w-4 h-4 mr-2" />],
+                ["NGO Compliance", "/NGO/compliance", "FileText"], ["CSR-1 Filing", "/NGO/csr1", "FileText"],
+                ["FCRA Registration", "/NGO/fcra", "Award"],
               ],
             },
           ]}
           currentPath={currentPath}
+          icons={icons}
+          handleLinkClick={handleLinkClick}
+          fixedWidth={700} // Pass the expected desktop width
         />
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
-// ---------------- NavItem ----------------
+/* --------------------------------------------------------------------------
+   III. Dropdown Item Components (with Responsive Positioning)
+---------------------------------------------------------------------------*/
 function NavItem({
   title,
   icon,
   links,
   linksGroups,
-  menuWidth = 'md:w-[300px]',
-  gridCols = 'md:grid-cols-1',
+  menuWidth = "lg:w-[300px]",
+  gridCols = "lg:grid-cols-1",
   currentPath,
+  icons,
+  handleLinkClick,
+  fixedWidth = 300, // Default expected desktop width in pixels
 }) {
+  const itemRef = useRef(null);
+  // State to hold the dynamic positioning classes (lg:left-0 or lg:right-0)
+  const [positionClass, setPositionClass] = useState("lg:left-0 lg:translate-x-0");
+
+  // Hook to calculate position when the component mounts or the window resizes
+  useEffect(() => {
+    const handleResize = () => {
+      // Only apply this logic on screens larger than 'lg' (1024px)
+      if (window.innerWidth < 1024) {
+        setPositionClass(""); // Reset positioning for mobile
+        return;
+      }
+
+      if (itemRef.current) {
+        const rect = itemRef.current.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const DROPDOWN_WIDTH = fixedWidth;
+        const PADDING = 20; // Extra padding margin
+
+        // Check if the dropdown overflows the right edge
+        if (rect.left + DROPDOWN_WIDTH + PADDING > viewportWidth) {
+          // It overflows, so pin it to the right edge of the *trigger*
+          setPositionClass("lg:right-0 lg:left-auto");
+        } else {
+          // Fits normally, so pin it to the left edge of the *trigger*
+          setPositionClass("lg:left-0 lg:right-auto");
+        }
+      }
+    };
+
+    // Run once on mount
+    handleResize();
+
+    // Listen for resize events
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [fixedWidth]);
+
+  // Special handling for the centered "Business Setup" menu
+  const isCentered = title === "Business Setup";
+  const finalPositionClass = isCentered
+    ? "lg:left-1/2 lg:-translate-x-1/2" // Fixed center positioning
+    : positionClass; // Dynamic left/right positioning
+
   return (
-    <NavigationMenuItem className="w-full">
-      <NavigationMenuTrigger className="w-full flex items-center text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md px-3 py-2 transition-colors">
-        {icon} {title}
+    // Attach the ref to the list item
+    <NavigationMenuItem ref={itemRef} className="w-full lg:w-auto lg:relative">
+      <NavigationMenuTrigger className="w-full flex items-center justify-between text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md px-3 py-2 transition-colors">
+        <div className="flex items-center">
+          {icon && <span className="mr-2">{icon}</span>}
+          {title}
+        </div>
       </NavigationMenuTrigger>
 
-      <NavigationMenuContent>
+      <NavigationMenuContent className={cn(
+        "p-4 bg-white border border-gray-100 shadow-lg rounded-md", // Base styles
+        "lg:absolute lg:top-full lg:mt-2 lg:block", // Desktop absolute positioning
+        "w-full h-auto mt-2", // Mobile/small screen styles
+        menuWidth,
+        gridCols,
+        finalPositionClass // Dynamic (or fixed-center) positioning
+      )}>
+        {/* Single Links */}
         {links && (
-          <div className={cn('w-full p-4 bg-white shadow-lg rounded-md', menuWidth)}>
-            <MenuGroup title={title} links={links} currentPath={currentPath} />
-          </div>
+          <MenuGroup title={title} links={links} currentPath={currentPath} icons={icons} handleLinkClick={handleLinkClick} />
         )}
+
+        {/* Grouped Menus */}
         {linksGroups && (
-          <div className={cn('grid w-full gap-6 p-4 bg-white shadow-lg rounded-md', menuWidth, gridCols)}>
+          <div className={cn("grid w-full gap-6", gridCols)}>
             {linksGroups.map((group) => (
-              <MenuGroup key={group.title} title={group.title} links={group.links} currentPath={currentPath} />
+              <MenuGroup
+                key={group.title}
+                title={group.title}
+                links={group.links}
+                currentPath={currentPath}
+                icons={icons}
+                handleLinkClick={handleLinkClick}
+              />
             ))}
           </div>
         )}
       </NavigationMenuContent>
     </NavigationMenuItem>
-  )
+  );
 }
 
-// ---------------- MenuGroup ----------------
-function MenuGroup({ title, links, currentPath }) {
+/* --------------------------------------------------------------------------
+   IV. Menu Group (Sub-List) Component
+---------------------------------------------------------------------------*/
+function MenuGroup({
+  title,
+  links,
+  currentPath,
+  icons,
+  handleLinkClick,
+}) {
   return (
     <div>
       <p className="mb-2 text-sm font-semibold text-gray-900">{title}</p>
-      <ul className="space-y-1 overflow-y-auto" style={{ maxHeight: '60vh' }}>
-        {links.map(([label, href, icon]) => (
+      <ul
+        className="space-y-1 overflow-y-auto"
+        // Limits height and enables vertical scrolling (as requested)
+        style={{ maxHeight: "60vh" }}
+      >
+        {links.map(([label, href, iconName]) => (
           <li key={label}>
             <NavigationMenuLink asChild>
               <Link
                 to={href}
+                onClick={handleLinkClick} // Closes mobile menu
                 className={cn(
-                  'flex items-center rounded-md px-2 py-1 text-gray-600 text-sm transition-colors hover:bg-gray-100 hover:text-gray-900',
-                  currentPath === href && 'bg-gray-100 font-medium text-gray-900'
+                  "flex items-center rounded-md px-2 py-1 text-gray-600 text-sm transition-colors hover:bg-gray-100 hover:text-gray-900",
+                  currentPath === href && "bg-gray-100 font-medium text-gray-900"
                 )}
               >
-                {icon && <span className="mr-2">{icon}</span>}
+                {/* Look up icon JSX using the string name */}
+                {iconName && icons[iconName] && <span className="mr-2">{icons[iconName]}</span>}
                 {label}
               </Link>
             </NavigationMenuLink>
@@ -265,5 +383,5 @@ function MenuGroup({ title, links, currentPath }) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
