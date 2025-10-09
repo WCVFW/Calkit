@@ -18,8 +18,8 @@ Run (with MySQL)
 
 2. Set environment variables and run:
    SPRING_DATASOURCE_URL="jdbc:mysql://localhost:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true" \
-   SPRING_DATASOURCE_USERNAME="authuser" \
-   SPRING_DATASOURCE_PASSWORD="authpass" \
+   SPRING_DATASOURCE_USERNAME="root" \
+   SPRING_DATASOURCE_PASSWORD="rootpass1234" \
    APP_JWT_SECRET="your_jwt_secret" \
    TWILIO_ACCOUNT_SID="your_twilio_sid" \
    TWILIO_AUTH_TOKEN="your_twilio_token" \
