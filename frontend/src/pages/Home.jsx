@@ -1,12 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-
-// --- Import Images ---
-import Hero from "../assets/Hero.png";
-import C1 from "../assets/c1.png";
-import C2 from "../assets/c2.png";
-import C3 from "../assets/c3.png";
+// Remote images (assets folder not present in this environment)
+const HERO_IMG = "https://api.builder.io/api/v1/image/assets/TEMP/33fb20c5031bf9926dace3f416c36ea8bf5fe94f?width=2882";
+const CTA1 = "https://api.builder.io/api/v1/image/assets/04f62713d501467583d89faf46821070/046c1810cb594890a5c6fd84b2adb30e?width=240";
+const CTA2 = "https://api.builder.io/api/v1/image/assets/TEMP/521f01928cb520f2d8fe2f3daf234db7540c2181?width=240";
+const CTA3 = "https://api.builder.io/api/v1/image/assets/TEMP/3d32e547220713bb25d24504a9b2385dabdc0361?width=240";
 
 export default function Home() {
   return (
@@ -15,7 +13,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[450px] sm:h-[550px] md:h-[650px] lg:h-[750px]">
         <img
-          src={Hero}
+          src={HERO_IMG}
           alt="Hero"
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
@@ -58,9 +56,9 @@ export default function Home() {
           {/* CTA Cards */}
           <div className="mt-10 flex flex-wrap justify-center gap-6">
             {[
-              { to: "/BusinessSetup/plc", label: "Start Your Business", imgSrc: C1 },
-              { to: "/dashboard", label: "Manage Your Business", imgSrc: C2 },
-              { to: "/ConsultanExpert/talkToLawyer", label: "Protect Your Business", imgSrc: C3 },
+              { to: "/BusinessSetup/plc", label: "Start Your Business", imgSrc: CTA1 },
+              { to: "/dashboard", label: "Manage Your Business", imgSrc: CTA2 },
+              { to: "/ConsultanExpert/talkToLawyer", label: "Protect Your Business", imgSrc: CTA3 },
             ].map((item, i) => (
               <Link
                 key={i}
@@ -138,19 +136,15 @@ export default function Home() {
               { src: "https://api.builder.io/api/v1/image/assets/TEMP/314a4d1385f20e4a17ab42702fa37a8eef2105e7?width=560", size: "w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56", animate: { y: [0, -25, 0], x: [0, 25, 0] } },
               { src: "https://api.builder.io/api/v1/image/assets/TEMP/3e17ffc7453e78bd07189440ee21eec510a3f490?width=489", size: "w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52", animate: { y: [0, 25, 0], x: [0, -25, 0] } },
             ].map((bubble, i) => (
-              <motion.div
+              <div
                 key={i}
-                animate={bubble.animate}
-                transition={{ repeat: Infinity, duration: 6 + i, ease: "easeInOut" }}
                 className={`${bubble.size} rounded-full overflow-hidden shadow-lg relative`}
               >
-                <motion.div
+                <div
                   className="absolute inset-0 bg-blue-400/30 blur-2xl rounded-full"
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ repeat: Infinity, duration: 4 }}
                 />
                 <img src={bubble.src} alt="Bubble" className="object-cover w-full h-full rounded-full" />
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
