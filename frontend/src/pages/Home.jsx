@@ -162,7 +162,7 @@ export default function Home() {
           Zolvit 360 – Your Command Center for Compliance
         </h2>
         <div className="relative max-w-7xl mx-auto flex flex-col items-center bg-[url('https://storage.googleapis.com/tagjs-prod.appspot.com/v1/wubvUxErdY/s3genjtx_expires_30_days.png')] bg-cover bg-center pt-28 sm:pt-32 pb-24 sm:pb-28 px-6 sm:px-12 gap-12">
-          
+
           <div className="flex flex-col items-center bg-white/70 backdrop-blur-md rounded-2xl px-6 py-3 shadow-md">
             <span className="text-gray-900 font-bold text-base sm:text-lg">Unified Dashboard</span>
           </div>
