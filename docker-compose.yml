@@ -2,65 +2,55 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
+    restart: unless-stopped
     environment:
-      MYSQL_DATABASE: vakilsearch
-      MYSQL_USER: vakil
-      MYSQL_PASSWORD: vakilpass
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_ROOT_PASSWORD: rootpass1234
+      MYSQL_DATABASE: authdb
     ports:
-      - '3306:3306'
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
-      - ./deployments/mysql-init:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+
+  auth-service:
+    build:
+      context: ./backend/services/auth-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpass1234
+      APP_JWT_SECRET: change_this_secret
+      TWILIO_ACCOUNT_SID: ""
+      TWILIO_AUTH_TOKEN: ""
+      TWILIO_FROM: ""
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+
   crm-service:
-    build: ./backend/services/crm-service
+    build:
+      context: ./backend/services/crm-service
+      dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
-      SPRING_DATASOURCE_USERNAME: vakil
-      SPRING_DATASOURCE_PASSWORD: vakilpass
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/crmdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpass1234
+      APP_JWT_SECRET: change_this_secret
+    ports:
+      - "8082:8082"
     depends_on:
       - mysql
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - '8081:8081'
-  onboarding-service:
-    build: ./backend/services/onboarding-service
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
-      SPRING_DATASOURCE_USERNAME: vakil
-      SPRING_DATASOURCE_PASSWORD: vakilpass
+      - "5173:80"
     depends_on:
-      - mysql
-    ports:
-      - '8082:8082'
-  case-management-service:
-    build: ./backend/services/case-management-service
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
-      SPRING_DATASOURCE_USERNAME: vakil
-      SPRING_DATASOURCE_PASSWORD: vakilpass
-    depends_on:
-      - mysql
-    ports:
-      - '8083:8083'
-  sales-payment-service:
-    build: ./backend/services/sales-payment-service
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
-      SPRING_DATASOURCE_USERNAME: vakil
-      SPRING_DATASOURCE_PASSWORD: vakilpass
-    depends_on:
-      - mysql
-    ports:
-      - '8084:8084'
-  execution-company-reg:
-    build: ./backend/services/execution-company-reg
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vakilsearch
-      SPRING_DATASOURCE_USERNAME: vakil
-      SPRING_DATASOURCE_PASSWORD: vakilpass
-    depends_on:
-      - mysql
-    ports:
-      - '8085:8085'
+      - auth-service
+      - crm-service
+
 volumes:
-  db_data:
+  mysql-data:
