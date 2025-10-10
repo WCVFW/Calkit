@@ -10,13 +10,32 @@ import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyOtp from "./pages/VerifyOtp";
-import { initAuth } from "./lib/auth";
+import { initAuth, getUser, clearToken, clearUser } from "./lib/auth";
+import React, { useEffect, useState } from "react";
 
 export default function App() {
-  initAuth();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const u = initAuth();
+    setUser(u);
+
+    const handler = () => setUser(getUser());
+    window.addEventListener("auth:update", handler);
+
+    return () => window.removeEventListener("auth:update", handler);
+  }, []);
+
+  function logout() {
+    clearToken();
+    clearUser();
+    setUser(null);
+    window.dispatchEvent(new Event("auth:update"));
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
-      <Header />
+      <Header user={user} logout={logout} />
       <main className="flex-1 container mx-auto px-6 pt-16 md:pt-20 pb-12">
         <Routes>
           <Route path="/" element={<Home />} />
