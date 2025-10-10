@@ -91,200 +91,83 @@ export default function Dashboard() {
   ];
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">
-            Hello
-            {loadingUser ? "" : user && user.mobile ? `, ${user.mobile}` : ""}!
-          </h1>
-          <p className="text-sm text-slate-500">
-            Welcome back to your workspace
-          </p>
-        </div>
-        <div className="text-sm text-slate-600">
-          <div>0/4</div>
-          <div className="mt-2">
-            <button className="bg-white border px-3 py-2 rounded">
-              Take product tour
-            </button>
+    <div className="min-h-screen bg-[#DDE0E3]">
+      {/* Top custom bar (dashboard-specific, not global header) */}
+      <div className="relative w-full h-[123px]">
+        <div className="absolute top-0 left-0 w-full h-[75px] bg-[#2E96FF]" />
+        <div className="absolute left-0 right-0 mx-auto w-full max-w-[1440px] h-[84.49px] top-[67.51px] bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
+            <div className="flex items-center gap-6">
+              <div className="w-[58px] h-[27px] text-white font-bold text-[19.9px]">C<span className="text-white">FS</span></div>
+              <nav className="hidden lg:flex items-center gap-6">
+                <a className="text-[18px] text-[#0080FF]">Home</a>
+                <a className="text-[18px] text-black">Compliances</a>
+                <a className="text-[18px] text-black">Service hub</a>
+                <a className="text-[18px] text-black">Calendar</a>
+                <a className="text-[18px] text-black">Documents</a>
+                <a className="text-[18px] text-black">Reports</a>
+                <a className="text-[18px] text-black">Consult</a>
+                <a className="text-[18px] text-black">Users & Roles</a>
+              </nav>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="w-[55px] h-[54.56px] bg-[#F8FBFF] rounded flex items-center justify-center">
+                <div className="w-[19px] h-[19px] bg-[#2E96FF] rounded-sm" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Empty state / hero inside dashboard */}
-      <div className="mt-6 grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 p-6 bg-white rounded shadow">
-          <div className="flex items-start justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">
-                One Stop for Managing Your Compliances
-              </h2>
-              <p className="text-sm text-slate-600 mt-2">
-                Stay on top of every compliance requirement for your business,
-                whether it's monthly, annual, or event-based. Receive automatic
-                reminders, upload documents, and store them securely.
-              </p>
-
-              <div className="mt-4 flex gap-3">
-                <Link
-                  to="/BusinessSetup/plc"
-                  className="bg-[#003366] text-white px-4 py-2 rounded"
-                >
-                  Start Your Business
-                </Link>
-                <button className="bg-gray-100 px-4 py-2 rounded">
-                  Add Business
-                </button>
-                <button className="bg-gray-100 px-4 py-2 rounded">
-                  Watch Demo
-                </button>
-              </div>
-            </div>
-            <div className="hidden md:block w-48 h-48 bg-blue-50 rounded flex items-center justify-center text-blue-700">
-              empty-state
-            </div>
-          </div>
-
-          {/* Quick stats */}
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="p-4 bg-[#f8fafc] rounded">
-              {" "}
-              <div className="text-sm text-slate-500">
-                Open Compliances
-              </div>{" "}
-              <div className="text-xl font-semibold">3</div>
-            </div>
-            <div className="p-4 bg-[#f8fafc] rounded">
-              {" "}
-              <div className="text-sm text-slate-500">Documents</div>{" "}
-              <div className="text-xl font-semibold">12</div>
-            </div>
-            <div className="p-4 bg-[#f8fafc] rounded">
-              {" "}
-              <div className="text-sm text-slate-500">Upcoming Tasks</div>{" "}
-              <div className="text-xl font-semibold">5</div>
-            </div>
-            <div className="p-4 bg-[#f8fafc] rounded">
-              {" "}
-              <div className="text-sm text-slate-500">Expert Connects</div>{" "}
-              <div className="text-xl font-semibold">2</div>
-            </div>
-          </div>
-        </div>
-
-        <aside className="p-6 bg-white rounded shadow">
-          <h3 className="text-sm font-semibold">Recommended for you</h3>
-          <ul className="mt-4 space-y-3">
-            <li className="flex items-start justify-between">
-              <div>
-                <div className="font-medium">Talk to CA</div>
-                <div className="text-xs text-slate-500">
-                  Backed by 1000+ verified experts
+      {/* Main white panel */}
+      <div className="max-w-[1260px] mx-auto mt-12 bg-white rounded p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <div className="p-6 rounded-md bg-[#F5FAFF] flex items-start gap-6">
+              <div className="w-[590px] h-[65px] bg-[#5299F4] rounded flex items-center px-4">
+                <div>
+                  <div className="text-white font-medium">Trademark registration</div>
+                  <div className="text-[11px] text-[#E2EFFA]">legal protection for your brand indemnity</div>
                 </div>
               </div>
-              <Link
-                to="/ConsultanExpert/talkToCA"
-                className="text-sm text-blue-600"
-              >
-                Talk
-              </Link>
-            </li>
 
-            <li className="flex items-start justify-between">
-              <div>
-                <div className="font-medium">Register Trademark</div>
-                <div className="text-xs text-slate-500">Secure your brand</div>
+              <div className="w-[590px] h-[65px] bg-[#5299F4] rounded flex items-center px-4 justify-between">
+                <div>
+                  <div className="text-white font-medium">Another Service</div>
+                  <div className="text-[11px] text-[#E2EFFA]">short description here</div>
+                </div>
+                <div className="w-[40px] h-[40px] bg-[#E5F7F7] rounded flex items-center justify-center" />
               </div>
-              <Link to="/Licenses/trademark" className="text-sm text-blue-600">
-                Start
-              </Link>
-            </li>
-
-            <li className="flex items-start justify-between">
-              <div>
-                <div className="font-medium">Create Pitch Deck</div>
-                <div className="text-xs text-slate-500">Attract investors</div>
-              </div>
-              <Link
-                to="/Fundraising/pitch-deck"
-                className="text-sm text-blue-600"
-              >
-                Create
-              </Link>
-            </li>
-          </ul>
-
-          <div className="mt-6 border-t pt-4">
-            <h4 className="text-sm font-semibold">Consultation</h4>
-            <div className="mt-3 space-y-2">
-              <Link
-                to="/ConsultanExpert/talkToLawyer"
-                className="block bg-gray-50 px-3 py-2 rounded"
-              >
-                Talk to a Lawyer
-              </Link>
-              <Link
-                to="/ConsultanExpert/talkToIP"
-                className="block bg-gray-50 px-3 py-2 rounded"
-              >
-                Talk to IP/Trademark Lawyer
-              </Link>
             </div>
+
+            <div className="mt-6 grid grid-cols-4 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-[#F0F3F3] border border-[#94C8FA] rounded p-4">
+                  <div className="w-[40px] h-[40px] bg-[#E5F7F7] rounded mb-4" />
+                  <div className="font-medium">GST registration</div>
+                  <div className="text-[11px] text-[#515554]">starts from rs749 rs499</div>
+                  <div className="mt-3 text-[11px] text-[#5FA1F9] font-semibold">View details</div>
+                </div>
+              ))}
+            </div>
+
           </div>
-        </aside>
+
+          <aside className="p-6 bg-white rounded shadow">
+            <h3 className="text-sm font-semibold">Overview</h3>
+            <div className="mt-4 space-y-4">
+              <div className="text-[19px] text-[#529AF4] font-semibold">Overview</div>
+              <div className="text-sm">Process & Documents</div>
+              <div className="text-sm">Benefits</div>
+            </div>
+
+            <div className="mt-6 border-t pt-4">
+              <button className="w-full border border-[#88A5BC] py-2 rounded">Request a callback</button>
+            </div>
+          </aside>
+        </div>
       </div>
-
-      {/* Service Hub */}
-      <section className="mt-8">
-        <h2 className="text-lg font-semibold">Service Hub</h2>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {services.map((s) => (
-            <div
-              key={s.title}
-              className="p-4 bg-white rounded shadow flex flex-col"
-            >
-              <div className="font-semibold">{s.title}</div>
-              <div className="text-sm text-slate-500 mt-2 flex-1">{s.desc}</div>
-              <div className="mt-4 flex items-center justify-between">
-                <Link to={s.to} className="text-sm text-blue-600">
-                  View
-                </Link>
-                <button className="bg-[#003366] text-white text-sm px-3 py-1 rounded">
-                  Get
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Recent leads area (existing) */}
-      <section className="mt-8">
-        <h2 className="text-lg font-semibold">Recent leads</h2>
-        <div className="mt-4 grid gap-3">
-          {loadingLeads && (
-            <div className="text-sm text-slate-500">Loading leads...</div>
-          )}
-          {errorLeads && (
-            <div className="text-sm text-red-600">Error: {errorLeads}</div>
-          )}
-          {!loadingLeads &&
-            !errorLeads &&
-            (leads.length === 0 ? (
-              <div className="text-sm text-slate-500">No leads yet</div>
-            ) : (
-              leads.map((l) => (
-                <div
-                  key={l.id ?? l.email ?? Math.random()}
-                  className="p-4 bg-white rounded border"
-                >
-                  {l.name} — {l.email}
-                </div>
-              ))
-            ))}
-        </div>
-      </section>
     </div>
   );
 }
