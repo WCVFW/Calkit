@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const TOKEN_KEY = "auth_token";
+const USER_KEY = "auth_user";
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
@@ -16,7 +17,25 @@ export function clearToken() {
   delete axios.defaults.headers.common["Authorization"];
 }
 
+export function setUser(user) {
+  if (user) {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  } else {
+    localStorage.removeItem(USER_KEY);
+  }
+}
+
+export function getUser() {
+  const v = localStorage.getItem(USER_KEY);
+  return v ? JSON.parse(v) : null;
+}
+
+export function clearUser() {
+  localStorage.removeItem(USER_KEY);
+}
+
 export function initAuth() {
   const t = getToken();
   if (t) axios.defaults.headers.common["Authorization"] = `Bearer ${t}`;
+  return getUser();
 }
