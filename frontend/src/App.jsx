@@ -35,7 +35,9 @@ export default function App() {
   const location = useLocation();
 
   const hideLayout =
-    location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/dashboard";
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/dashboard";
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">

@@ -97,7 +97,9 @@ export default function Dashboard() {
         <div className="absolute left-0 right-0 mx-auto w-full max-w-[1440px] h-[84.49px] top-[67.51px] bg-white shadow-sm">
           <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
             <div className="flex items-center gap-6">
-              <div className="w-[58px] h-[27px] text-white font-bold text-[19.9px]">C<span className="text-white">FS</span></div>
+              <div className="w-[58px] h-[27px] text-white font-bold text-[19.9px]">
+                C<span className="text-white">FS</span>
+              </div>
               <nav className="hidden lg:flex items-center gap-6">
                 <a className="text-[18px] text-[#0080FF]">Home</a>
                 <a className="text-[18px] text-black">Compliances</a>
@@ -126,15 +128,21 @@ export default function Dashboard() {
             <div className="p-6 rounded-md bg-[#F5FAFF] flex items-start gap-6">
               <div className="w-[590px] h-[65px] bg-[#5299F4] rounded flex items-center px-4">
                 <div>
-                  <div className="text-white font-medium">Trademark registration</div>
-                  <div className="text-[11px] text-[#E2EFFA]">legal protection for your brand indemnity</div>
+                  <div className="text-white font-medium">
+                    Trademark registration
+                  </div>
+                  <div className="text-[11px] text-[#E2EFFA]">
+                    legal protection for your brand indemnity
+                  </div>
                 </div>
               </div>
 
               <div className="w-[590px] h-[65px] bg-[#5299F4] rounded flex items-center px-4 justify-between">
                 <div>
                   <div className="text-white font-medium">Another Service</div>
-                  <div className="text-[11px] text-[#E2EFFA]">short description here</div>
+                  <div className="text-[11px] text-[#E2EFFA]">
+                    short description here
+                  </div>
                 </div>
                 <div className="w-[40px] h-[40px] bg-[#E5F7F7] rounded flex items-center justify-center" />
               </div>
@@ -142,27 +150,37 @@ export default function Dashboard() {
 
             <div className="mt-6 grid grid-cols-4 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-[#F0F3F3] border border-[#94C8FA] rounded p-4">
+                <div
+                  key={i}
+                  className="bg-[#F0F3F3] border border-[#94C8FA] rounded p-4"
+                >
                   <div className="w-[40px] h-[40px] bg-[#E5F7F7] rounded mb-4" />
                   <div className="font-medium">GST registration</div>
-                  <div className="text-[11px] text-[#515554]">starts from rs749 rs499</div>
-                  <div className="mt-3 text-[11px] text-[#5FA1F9] font-semibold">View details</div>
+                  <div className="text-[11px] text-[#515554]">
+                    starts from rs749 rs499
+                  </div>
+                  <div className="mt-3 text-[11px] text-[#5FA1F9] font-semibold">
+                    View details
+                  </div>
                 </div>
               ))}
             </div>
-
           </div>
 
           <aside className="p-6 bg-white rounded shadow">
             <h3 className="text-sm font-semibold">Overview</h3>
             <div className="mt-4 space-y-4">
-              <div className="text-[19px] text-[#529AF4] font-semibold">Overview</div>
+              <div className="text-[19px] text-[#529AF4] font-semibold">
+                Overview
+              </div>
               <div className="text-sm">Process & Documents</div>
               <div className="text-sm">Benefits</div>
             </div>
 
             <div className="mt-6 border-t pt-4">
-              <button className="w-full border border-[#88A5BC] py-2 rounded">Request a callback</button>
+              <button className="w-full border border-[#88A5BC] py-2 rounded">
+                Request a callback
+              </button>
             </div>
           </aside>
         </div>
