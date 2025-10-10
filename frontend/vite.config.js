@@ -13,10 +13,10 @@ export default defineConfig({
     host: true,
     port: 5173,
     hmr: {
-      overlay: false
+      overlay: false,
     },
     proxy: {
-      "/api": "http://localhost:8081"
-    }
-  }
+      "/api": "http://localhost:8081",
+    },
+  },
 });
