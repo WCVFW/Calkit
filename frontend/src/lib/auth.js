@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import axios from "axios";
+
 const TOKEN_KEY = "auth_token";
 
 export function setToken(token) {
