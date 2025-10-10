@@ -29,8 +29,15 @@ public class AuthController {
         if(req == null || req.getMobile() == null || req.getMobile().trim().isEmpty()){
             return ResponseEntity.badRequest().body(Map.of("error","mobile_required"));
         }
-        String code = otpService.generateAndSave(req.getMobile().trim());
-        return ResponseEntity.ok(Map.of("sent", true));
+        try{
+            String code = otpService.generateAndSave(req.getMobile().trim());
+            return ResponseEntity.ok(Map.of("sent", true));
+        }catch(IllegalStateException e){
+            return ResponseEntity.status(429).body(Map.of("error","rate_limited"));
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error","send_failed"));
+        }
     }
 
     @PostMapping("/verify-otp")
