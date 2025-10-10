@@ -32,9 +32,13 @@ export default function App() {
     window.dispatchEvent(new Event("auth:update"));
   }
 
+  const location = useLocation();
+
+  const hideLayout = location.pathname === "/login" || location.pathname === "/signup";
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
-      <Header user={user} logout={logout} />
+      {!hideLayout && <Header user={user} logout={logout} />}
       <main className="flex-1 container mx-auto px-6 pt-16 md:pt-20 pb-12">
         <Routes>
           <Route path="/" element={<Home />} />
