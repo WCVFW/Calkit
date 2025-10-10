@@ -56,7 +56,7 @@ export default function App() {
           <Route path="*" element={<ServiceLoader />} />
         </Routes>
       </main>
-      <Footer />
+      {!hideLayout && <Footer />}
     </div>
   );
 }
