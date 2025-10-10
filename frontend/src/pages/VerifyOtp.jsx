@@ -26,6 +26,8 @@ export default function VerifyOtp() {
       const user = { mobile: r.data.mobile, name: r.data.name };
       setToken(token);
       setUser(user);
+      // notify the app about auth change
+      window.dispatchEvent(new Event("auth:update"));
       nav("/dashboard");
     } catch (err) {
       setMessage(err?.response?.data?.error || "Invalid code");
