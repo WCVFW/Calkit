@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { setToken } from "../lib/auth";
+import { setToken, setUser } from "../lib/auth";
 
 export default function VerifyOtp() {
   const [code, setCode] = useState("");
