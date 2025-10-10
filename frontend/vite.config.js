@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
@@ -14,10 +13,10 @@ export default defineConfig({
     host: true,
     port: 5173,
     hmr: {
-      overlay: false, // disable vite error overlay to avoid runtime overlay exceptions
+      overlay: false
     },
     proxy: {
-      "/api": "http://localhost:8081",
-    },
-  },
+      "/api": "http://localhost:8081"
+    }
+  }
 });
