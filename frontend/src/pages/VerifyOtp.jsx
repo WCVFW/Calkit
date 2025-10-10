@@ -23,7 +23,9 @@ export default function VerifyOtp() {
     try {
       const r = await axios.post("/api/auth/verify-otp", { mobile, code });
       const token = r.data.token;
+      const user = { mobile: r.data.mobile, name: r.data.name };
       setToken(token);
+      setUser(user);
       nav("/dashboard");
     } catch (err) {
       setMessage(err?.response?.data?.error || "Invalid code");
