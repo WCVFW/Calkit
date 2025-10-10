@@ -11,7 +11,6 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyOtp from "./pages/VerifyOtp";
 import { initAuth, getUser, clearToken, clearUser } from "./lib/auth";
-import React, { useEffect, useState } from "react";
 
 export default function App() {
   const [user, setUser] = useState(null);
