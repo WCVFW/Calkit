@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Placeholder from "./pages/Placeholder";
 import ServiceLoader from "./pages/ServiceLoader";
 import Header from "./components/Header";
