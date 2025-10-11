@@ -1,36 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { setToken, setUser } from "../lib/auth";
 
-export default function VerifyOtp() {
-  const [code, setCode] = useState("");
-  const [mobile, setMobile] = useState("");
+export default function VerifyEmail() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const nav = useNavigate();
   const [searchParams] = useSearchParams();
+  const nav = useNavigate();
 
   useEffect(() => {
-    const m = searchParams.get("mobile") || "";
-    setMobile(m);
-  }, [searchParams]);
+    const token = searchParams.get('token');
+    if (token) {
+      verify(token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const verify = async (e) => {
-    e && e.preventDefault();
-    if (!mobile || !code) return setMessage("Enter code");
+  const verify = async (token) => {
     setLoading(true);
     try {
-      const r = await axios.post("/api/auth/verify-otp", { mobile, code });
-      const token = r.data.token;
-      const user = { mobile: r.data.mobile, name: r.data.name };
-      setToken(token);
-      setUser(user);
-      // notify the app about auth change
-      window.dispatchEvent(new Event("auth:update"));
-      nav("/dashboard");
+      await axios.post('/api/auth/verify-email', { token });
+      setMessage('Email verified. You can now login.');
+      setTimeout(() => nav('/login'), 1500);
     } catch (err) {
-      setMessage(err?.response?.data?.error || "Invalid code");
+      setMessage(err?.response?.data?.error || 'Verification failed');
     } finally {
       setLoading(false);
     }
@@ -38,26 +31,9 @@ export default function VerifyOtp() {
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Verify OTP</h2>
-      <p className="text-sm text-slate-600">Mobile: {mobile}</p>
-      <form onSubmit={verify} className="mt-4">
-        <label className="block text-sm font-medium text-slate-700">
-          Enter OTP
-        </label>
-        <input
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          className="mt-2 w-full border px-3 py-2 rounded"
-          placeholder="123456"
-        />
-        <button
-          disabled={loading}
-          className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
-        >
-          {loading ? "Verifying..." : "Verify & Login"}
-        </button>
-      </form>
-      {message && <div className="mt-3 text-sm text-red-600">{message}</div>}
+      <h2 className="text-xl font-semibold mb-4">Verify Email</h2>
+      <p className="text-sm text-slate-600 mb-4">{message || 'Verifying your email...'}</p>
+      {loading && <div className="h-8 w-8 rounded-full border-4 border-[#003366]/20 border-t-[#003366] animate-spin mx-auto" />}
     </div>
   );
 }
