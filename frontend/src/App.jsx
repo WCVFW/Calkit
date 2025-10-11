@@ -13,9 +13,11 @@ import VerifyOtp from "./pages/VerifyOtp";
 import TalkToCA from "./pages/ConsultanExpert/talkToCA";
 import TalkToIP from "./pages/ConsultanExpert/talkToIP";
 import { initAuth, getUser, clearToken, clearUser } from "./lib/auth";
+import PageLoader from "./components/PageLoader";
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
     const u = initAuth();
@@ -36,6 +38,12 @@ export default function App() {
 
   const location = useLocation();
 
+  useEffect(() => {
+    setPageLoading(true);
+    const t = setTimeout(() => setPageLoading(false), 350);
+    return () => clearTimeout(t);
+  }, [location]);
+
   const hideLayout =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
@@ -45,6 +53,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+      <PageLoader show={pageLoading} />
       {!hideLayout && <Header user={user} logout={logout} />}
       <main className="flex-1 container mx-auto px-6 pt-16 md:pt-20 pb-12">
         <Routes>
