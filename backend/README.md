@@ -33,10 +33,10 @@ The server listens on port **4000** by default.
 
 ## API Endpoints
 
-| Method | Endpoint           | Description             |
-|--------|--------------------|-------------------------|
-| POST   | `/api/auth/signup` | Register a new account  |
-| POST   | `/api/auth/login`  | Authenticate and get JWT|
+| Method | Endpoint           | Description              |
+| ------ | ------------------ | ------------------------ |
+| POST   | `/api/auth/signup` | Register a new account   |
+| POST   | `/api/auth/login`  | Authenticate and get JWT |
 
 ### Request & Response Examples
 
