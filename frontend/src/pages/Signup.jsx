@@ -15,10 +15,12 @@ export default function Signup() {
   const isValidPhone = (v) => /^[0-9]{10,15}$/.test(v);
   const submit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !phone || !password) return setMessage("All fields required");
+    if (!name || !email || !phone || !password)
+      return setMessage("All fields required");
     if (!isValidEmail(email)) return setMessage("Enter a valid email");
     if (!isValidPhone(phone)) return setMessage("Enter a valid phone number");
-    if (password.length < 6) return setMessage("Password must be at least 6 characters");
+    if (password.length < 6)
+      return setMessage("Password must be at least 6 characters");
     setLoading(true);
     try {
       await axios.post("/api/auth/signup", { name, email, phone, password });
@@ -26,7 +28,8 @@ export default function Signup() {
         "Signup successful. Verification email sent. Check your inbox.",
       );
       setName("");
-      setEmail(""); setPhone("");
+      setEmail("");
+      setPhone("");
       setPassword("");
       nav(`/verify-otp?email=${encodeURIComponent(email)}`);
     } catch (err) {
@@ -48,7 +51,9 @@ export default function Signup() {
           placeholder="Full name (optional)"
         />
 
-        <label className="block text-sm font-medium text-slate-700 mt-4">Email</label>
+        <label className="block text-sm font-medium text-slate-700 mt-4">
+          Email
+        </label>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -56,7 +61,9 @@ export default function Signup() {
           placeholder="you@domain.com"
         />
 
-        <label className="block text-sm font-medium text-slate-700 mt-4">Phone</label>
+        <label className="block text-sm font-medium text-slate-700 mt-4">
+          Phone
+        </label>
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}

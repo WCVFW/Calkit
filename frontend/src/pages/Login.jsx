@@ -33,7 +33,8 @@ export default function Login() {
 
   const sendPhoneOtp = async (e) => {
     e.preventDefault();
-    if (!/^[0-9]{10,15}$/.test(phone)) return setMessage("Enter a valid phone number");
+    if (!/^[0-9]{10,15}$/.test(phone))
+      return setMessage("Enter a valid phone number");
     setLoading(true);
     try {
       await axios.post("/api/auth/login-phone", { phone });
@@ -51,7 +52,10 @@ export default function Login() {
     if (!otp) return setMessage("Enter OTP");
     setLoading(true);
     try {
-      const r = await axios.post("/api/auth/verify-phone", { phone, code: otp });
+      const r = await axios.post("/api/auth/verify-phone", {
+        phone,
+        code: otp,
+      });
       setToken(r.data.token);
       setUser(r.data.user);
       window.dispatchEvent(new Event("auth:update"));
@@ -67,29 +71,84 @@ export default function Login() {
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Login</h2>
       <div className="flex gap-2 mb-4">
-        <button className={`px-3 py-2 rounded ${mode==='password'?'bg-[#003366] text-white':'bg-slate-100'}`} onClick={()=>setMode('password')}>Email & Password</button>
-        <button className={`px-3 py-2 rounded ${mode==='phone'?'bg-[#003366] text-white':'bg-slate-100'}`} onClick={()=>setMode('phone')}>Phone OTP</button>
+        <button
+          className={`px-3 py-2 rounded ${mode === "password" ? "bg-[#003366] text-white" : "bg-slate-100"}`}
+          onClick={() => setMode("password")}
+        >
+          Email & Password
+        </button>
+        <button
+          className={`px-3 py-2 rounded ${mode === "phone" ? "bg-[#003366] text-white" : "bg-slate-100"}`}
+          onClick={() => setMode("phone")}
+        >
+          Phone OTP
+        </button>
       </div>
 
-      {mode === 'password' ? (
+      {mode === "password" ? (
         <form onSubmit={loginPassword}>
-          <label className="block text-sm font-medium text-slate-700">Email</label>
-          <input value={email} onChange={(e)=>setEmail(e.target.value)} className="mt-2 w-full border px-3 py-2 rounded" placeholder="you@domain.com" />
-          <label className="block text-sm font-medium text-slate-700 mt-4">Password</label>
-          <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} className="mt-2 w-full border px-3 py-2 rounded" placeholder="Your password" />
-          <button disabled={loading} className="mt-4 w-full bg-[#003366] text-white py-2 rounded">{loading? 'Signing in...' : 'Sign in'}</button>
+          <label className="block text-sm font-medium text-slate-700">
+            Email
+          </label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-2 w-full border px-3 py-2 rounded"
+            placeholder="you@domain.com"
+          />
+          <label className="block text-sm font-medium text-slate-700 mt-4">
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-2 w-full border px-3 py-2 rounded"
+            placeholder="Your password"
+          />
+          <button
+            disabled={loading}
+            className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+          >
+            {loading ? "Signing in..." : "Sign in"}
+          </button>
         </form>
       ) : (
         <form onSubmit={otpSent ? verifyPhoneOtp : sendPhoneOtp}>
-          <label className="block text-sm font-medium text-slate-700">Phone</label>
-          <input value={phone} onChange={(e)=>setPhone(e.target.value)} className="mt-2 w-full border px-3 py-2 rounded" placeholder="e.g. 9876543210" />
+          <label className="block text-sm font-medium text-slate-700">
+            Phone
+          </label>
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="mt-2 w-full border px-3 py-2 rounded"
+            placeholder="e.g. 9876543210"
+          />
           {otpSent && (
             <>
-              <label className="block text-sm font-medium text-slate-700 mt-4">OTP</label>
-              <input value={otp} onChange={(e)=>setOtp(e.target.value)} className="mt-2 w-full border px-3 py-2 rounded" placeholder="Enter OTP" />
+              <label className="block text-sm font-medium text-slate-700 mt-4">
+                OTP
+              </label>
+              <input
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="mt-2 w-full border px-3 py-2 rounded"
+                placeholder="Enter OTP"
+              />
             </>
           )}
-          <button disabled={loading} className="mt-4 w-full bg-[#003366] text-white py-2 rounded">{loading? (otpSent? 'Verifying...' : 'Sending...') : (otpSent? 'Verify' : 'Send OTP')}</button>
+          <button
+            disabled={loading}
+            className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+          >
+            {loading
+              ? otpSent
+                ? "Verifying..."
+                : "Sending..."
+              : otpSent
+                ? "Verify"
+                : "Send OTP"}
+          </button>
         </form>
       )}
       {message && <div className="mt-3 text-sm text-red-600">{message}</div>}

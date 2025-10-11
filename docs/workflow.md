@@ -37,9 +37,9 @@ This repository contains a React + Vite frontend (active) and various backend/se
   - GET /api/user/me → returns the stored user (requires Authorization header)
   - GET /api/leads → returns sample leads array
 - To disable mocks and use a real API:
-  1) Remove the import "./lib/mock-api" from frontend/src/main.jsx
-  2) Add a Vite proxy in frontend/vite.config.js (server.proxy) to your backend
-  3) Ensure your backend implements the same routes or update the frontend code
+  1. Remove the import "./lib/mock-api" from frontend/src/main.jsx
+  2. Add a Vite proxy in frontend/vite.config.js (server.proxy) to your backend
+  3. Ensure your backend implements the same routes or update the frontend code
 
 ## Authentication
 
@@ -69,11 +69,12 @@ This repository contains a React + Vite frontend (active) and various backend/se
 Preferred approach: Supabase (DB + Auth + APIs)
 
 - Steps:
-  1) Open MCP popover → Connect to Supabase
-  2) Implement auth (email/password, OTP, or magic link) and tables
-  3) Replace mocks: remove mock import and call Supabase client or your serverless functions
+  1. Open MCP popover → Connect to Supabase
+  2. Implement auth (email/password, OTP, or magic link) and tables
+  3. Replace mocks: remove mock import and call Supabase client or your serverless functions
 
 Alternatives:
+
 - Neon (Postgres) + your API service → Connect to Neon via MCP
 - Prisma (ORM) with a Node service (not currently present) �� Connect to Prisma Postgres via MCP
 - Java Spring services under backend/services can be developed independently and exposed behind an API gateway; update Vite proxy accordingly

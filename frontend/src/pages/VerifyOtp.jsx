@@ -35,21 +35,28 @@ export default function VerifyEmail() {
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Verify Email</h2>
       <form onSubmit={verify}>
-        <label className="block text-sm font-medium text-slate-700">Email</label>
+        <label className="block text-sm font-medium text-slate-700">
+          Email
+        </label>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="mt-2 w-full border px-3 py-2 rounded"
           placeholder="you@domain.com"
         />
-        <label className="block text-sm font-medium text-slate-700 mt-4">OTP Code</label>
+        <label className="block text-sm font-medium text-slate-700 mt-4">
+          OTP Code
+        </label>
         <input
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className="mt-2 w-full border px-3 py-2 rounded"
           placeholder="6-digit code"
         />
-        <button disabled={loading} className="mt-4 w-full bg-[#003366] text-white py-2 rounded">
+        <button
+          disabled={loading}
+          className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+        >
           {loading ? "Verifying..." : "Verify"}
         </button>
       </form>

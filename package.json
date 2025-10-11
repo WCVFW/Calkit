@@ -32,7 +32,8 @@
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
-  "devDependencies": {"concurrently": "^8.2.2",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
     "@angular/build": "^20.1.2",
     "@angular/cli": "^20.1.2",
     "@angular/compiler-cli": "^20.1.0",

@@ -56,15 +56,29 @@ axios.defaults.adapter = async function mockAdapter(config) {
   if (url === "/api/auth/login" && method === "post") {
     const { email, password } = config.data ? JSON.parse(config.data) : {};
     if (!email || !password) return err(400, "Email and password required");
-    const user = getStoredUser() || { id: "1", email, name: "Demo User", isVerified: true, createdAt: new Date().toISOString() };
+    const user = getStoredUser() || {
+      id: "1",
+      email,
+      name: "Demo User",
+      isVerified: true,
+      createdAt: new Date().toISOString(),
+    };
     setStoredUser(user);
     return ok({ token: "mock-token", user });
   }
 
   if (url === "/api/auth/signup" && method === "post") {
-    const { name, email, password } = config.data ? JSON.parse(config.data) : {};
+    const { name, email, password } = config.data
+      ? JSON.parse(config.data)
+      : {};
     if (!email || !password) return err(400, "Email and password required");
-    const user = { id: "1", email, name: name || "", isVerified: true, createdAt: new Date().toISOString() };
+    const user = {
+      id: "1",
+      email,
+      name: name || "",
+      isVerified: true,
+      createdAt: new Date().toISOString(),
+    };
     setStoredUser(user);
     return ok({ message: "Signup successful (mock)." });
   }
@@ -75,7 +89,9 @@ axios.defaults.adapter = async function mockAdapter(config) {
 
   // User
   if (url === "/api/user/me" && method === "get") {
-    const auth = config.headers && (config.headers.Authorization || config.headers.authorization);
+    const auth =
+      config.headers &&
+      (config.headers.Authorization || config.headers.authorization);
     if (!auth) return err(401, "Missing token");
     const user = getStoredUser();
     if (!user) return err(404, "User not found");
