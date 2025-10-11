@@ -3,9 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const { PrismaClient } = require("@prisma/client");
-
-const prisma = new PrismaClient();
+const { createUser, findUserByEmail, updateUser } = require("../store");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const EMAIL_TOKEN_SECRET = process.env.EMAIL_TOKEN_SECRET;
@@ -31,20 +29,19 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ error: "Email and password required" });
 
   try {
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const existing = findUserByEmail(email);
     if (existing)
       return res.status(400).json({ error: "Email already registered" });
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: { email, password: hashed, name },
-    });
+    const user = createUser({ email, password: hashed, name });
 
-    // generate email verification token
     const token = jwt.sign({ userId: user.id }, EMAIL_TOKEN_SECRET, {
       expiresIn: "1d",
     });
-    const verifyUrl = `${FRONTEND_URL}/verify-otp?token=${encodeURIComponent(token)}`;
+    const verifyUrl = `${FRONTEND_URL}/verify-otp?token=${encodeURIComponent(
+      token
+    )}`;
 
     const mailOptions = {
       from: process.env.GMAIL_USER,
@@ -56,7 +53,11 @@ router.post("/signup", async (req, res) => {
              <p>This link expires in 24 hours.</p>`,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (e) {
+      console.warn("Email sending failed (development mode)", e?.message);
+    }
 
     res.json({ message: "Signup successful. Verification email sent." });
   } catch (err) {
@@ -72,10 +73,8 @@ router.post("/verify-email", async (req, res) => {
   try {
     const payload = jwt.verify(token, EMAIL_TOKEN_SECRET);
     const userId = payload.userId;
-    await prisma.user.update({
-      where: { id: userId },
-      data: { isVerified: true },
-    });
+    const updated = updateUser(userId, { isVerified: true });
+    if (!updated) return res.status(404).json({ error: "User not found" });
     res.json({ message: "Email verified" });
   } catch (err) {
     console.error(err);
@@ -89,7 +88,7 @@ router.post("/login", async (req, res) => {
   if (!email || !password)
     return res.status(400).json({ error: "Email and password required" });
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = findUserByEmail(email);
     if (!user) return res.status(400).json({ error: "Invalid credentials" });
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(400).json({ error: "Invalid credentials" });

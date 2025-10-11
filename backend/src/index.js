@@ -1,11 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { PrismaClient } = require("@prisma/client");
 const authRoutes = require("./routes/auth");
 const { authMiddleware } = require("./middleware/auth");
+const { findUserById } = require("./store");
 
-const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -16,18 +15,10 @@ app.use("/api/auth", authRoutes);
 
 app.get("/api/user/me", authMiddleware, async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        isVerified: true,
-        createdAt: true,
-      },
-    });
+    const user = findUserById(req.userId);
     if (!user) return res.status(404).json({ error: "User not found" });
-    res.json(user);
+    const { id, email, name, isVerified, createdAt } = user;
+    res.json({ id, email, name, isVerified, createdAt });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
