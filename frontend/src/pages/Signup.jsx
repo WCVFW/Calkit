@@ -28,8 +28,7 @@ export default function Signup() {
       setName("");
       setEmail(""); setPhone("");
       setPassword("");
-      // optionally navigate to login
-      // nav('/login');
+      nav(`/verify-otp?email=${encodeURIComponent(email)}`);
     } catch (err) {
       setMessage(err?.response?.data?.error || "Signup failed");
     } finally {
