@@ -1,12 +1,18 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}','./public/index.html'],
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    './public/index.html'
+  ],
   theme: {
     extend: {
       colors: {
         primary: 'hsl(var(--brand-1))',
-        cyan: 'hsl(var(--brand-2))'
-      }
-    }
+        cyan: 'hsl(var(--brand-2))',
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'], // ✅ Added Poppins font
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 }

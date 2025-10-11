@@ -1,190 +1,248 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
+// Static data for the small service cards, organized by tab
+const tabData = {
+  "Licenses/Registrations": [
+    { title: "GST Registration", desc: "Starts From Rs749 Rs499", to: "/compliances/gst" },
+    { title: "ITR Filing", desc: "File your Income Tax Return", to: "/compliances/itr" },
+    { title: "MSME Registration", desc: "Get Udyam recognition", to: "/licenses/msme" },
+    { title: "Company Formation", desc: "Private Ltd. Company", to: "/startup/company" },
+    { title: "ROC Filings", desc: "Annual Return Compliance", to: "/compliances/roc" },
+    { title: "FSSAI License", desc: "Food business license", to: "/licenses/fssai" },
+    { title: "Import/Export Code", desc: "IE Code Registration", to: "/licenses/iec" },
+    { title: "Startup India", desc: "DPIIT Recognition", to: "/startup/india" },
+    { title: "PF/ESI Registration", desc: "Employee benefits compliance", to: "/compliances/pf-esi" },
+    { title: "Shops & Est.", desc: "Local business license", to: "/licenses/shop" },
+  ],
+  "Trademark/IP": [
+    { title: "Trademark Registration", desc: "Protect your brand name", to: "/ip/trademark" },
+    { title: "Copyright Filing", desc: "Protect creative work", to: "/ip/copyright" },
+    { title: "Patent Filing", desc: "Secure your invention", to: "/ip/patent" },
+    { title: "IP Search", desc: "Check availability", to: "/ip/search" },
+    { title: "IP Renewal", desc: "Maintain protection", to: "/ip/renewal" },
+    { title: "IP Consulting", desc: "Expert advice", to: "/ip/consult" },
+    { title: "Domain Protection", desc: "Digital assets security", to: "/ip/domain" },
+    { title: "Design Registration", desc: "Aesthetic protection", to: "/ip/design" },
+    { title: "Logo Design", desc: "Professional identity", to: "/servicehub/logo" },
+    { title: "Brand Audit", desc: "Review services", to: "/ip/audit" },
+  ],
+  "Company Change": [
+    { title: "Change Registered Office", desc: "Update address", to: "/company/address" },
+    { title: "Change Directors", desc: "Add/Remove Directors", to: "/company/directors" },
+    { title: "Change Name", desc: "Company name change", to: "/company/name" },
+    { title: "Increase Capital", desc: "Authorized share capital", to: "/company/capital" },
+    { title: "Convert Company", desc: "Pvt to LLP conversion", to: "/company/convert" },
+  ],
+  "Taxation & Compliance": [
+    { title: "GST Filing (Monthly)", desc: "GSTR-3B/1 compliance", to: "/compliance/gst-filing" },
+    { title: "TDS Filing", desc: "Tax deducted at source", to: "/compliance/tds" },
+    { title: "Annual Compliance", desc: "ROC and ITR", to: "/compliance/annual" },
+    { title: "Tax Audit", desc: "Audit services", to: "/compliance/audit" },
+  ],
+  "New Business/Closure": [
+    { title: "Sole Proprietorship", desc: "Easiest business type", to: "/newbiz/sole" },
+    { title: "One Person Company", desc: "For solo entrepreneurs", to: "/newbiz/opc" },
+    { title: "Company Dissolution", desc: "Close your business", to: "/closure/company" },
+    { title: "LLP Closure", desc: "Winding up services", to: "/closure/llp" },
+  ],
+};
+
+const defaultTab = "Licenses/Registrations";
+const tabKeys = Object.keys(tabData);
 
 export default function Dashboard() {
-  const [leads, setLeads] = useState([]);
+  const [leads, setLeads] = useState([]); // Kept for data fetching structure
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [errorLeads, setErrorLeads] = useState(null);
-
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Kept for data fetching structure
   const [loadingUser, setLoadingUser] = useState(true);
+
+  const [activeTab, setActiveTab] = useState(defaultTab); // State for the new tab system
+
+  // Static service hub items matching the image (Trademark Registration)
+  const largeServiceCards = [
+    {
+      title: "Trademark Registration",
+      desc: "Legal Protection For Your Brand Indemnity",
+      to: "/Licenses/trademark",
+      bgColor: "bg-[#5299F4]",
+    },
+    {
+      title: "Trademark Registration",
+      desc: "Legal Protection For Your Brand Indemnity",
+      to: "/Licenses/trademark",
+      bgColor: "bg-[#5299F4]",
+    },
+  ];
 
   useEffect(() => {
     let mounted = true;
 
-    // fetch leads (existing behavior)
-    setLoadingLeads(true);
-    axios
-      .get("/api/leads")
-      .then((r) => {
+    // Helper function for API calls (kept for structure)
+    const fetchData = async (url, setter, errorSetter, isUser = false) => {
+      try {
+        const response = await axios.get(url);
         if (!mounted) return;
-        const data = r && r.data;
-        if (Array.isArray(data)) setLeads(data);
-        else if (data && Array.isArray(data.data)) setLeads(data.data);
-        else if (data && Array.isArray(data.leads)) setLeads(data.leads);
-        else setLeads([]);
-      })
-      .catch((err) => {
-        if (!mounted) return;
-        setErrorLeads(err.message || "Failed to load");
-        setLeads([]);
-      })
-      .finally(() => {
-        if (mounted) setLoadingLeads(false);
-      });
+        const data = response.data;
 
-    // fetch current user
+        if (isUser) {
+          setter(data);
+        } else {
+          if (Array.isArray(data)) setter(data);
+          else if (data && Array.isArray(data.data)) setter(data.data);
+          else if (data && Array.isArray(data.leads)) setter(data.leads);
+          else setter([]);
+        }
+      } catch (err) {
+        if (!mounted) return;
+        errorSetter(err.message || "Failed to load");
+        if (!isUser) setter([]);
+      }
+    };
+
+    setLoadingLeads(true);
+    fetchData("/api/leads", setLeads, setErrorLeads, false).finally(() => {
+      if (mounted) setLoadingLeads(false);
+    });
+
     setLoadingUser(true);
-    axios
-      .get("/api/user/me")
-      .then((r) => {
-        if (!mounted) return;
-        setUser(r.data);
-      })
-      .catch(() => {
-        if (!mounted) return;
-        setUser(null);
-      })
-      .finally(() => {
-        if (mounted) setLoadingUser(false);
-      });
+    fetchData("/api/user/me", setUser, () => setUser(null), true).finally(() => {
+      if (mounted) setLoadingUser(false);
+    });
 
     return () => {
       mounted = false;
     };
   }, []);
 
-  // Static service hub items (links point to existing routes when available)
-  const services = [
-    {
-      title: "Build My Website",
-      desc: "Go Digital, Get More Customers",
-      to: "/ServiceHub/website",
-    },
-    {
-      title: "Create Pitch Deck",
-      desc: "Attract Investors, Raise Funds",
-      to: "/Fundraising/pitch-deck",
-    },
-    {
-      title: "Get Expert Help",
-      desc: "Respond to Tax Notices",
-      to: "/ServiceHub/tax-help",
-    },
-    {
-      title: "Register Trademark",
-      desc: "Trademark your brand name/logo",
-      to: "/Licenses/trademark",
-    },
-    {
-      title: "Get DPR for Loan",
-      desc: "Boost Loan Approval",
-      to: "/Fundraising/dpr",
-    },
-    {
-      title: "Design My Logo",
-      desc: "Custom Logo Design",
-      to: "/ServiceHub/logo",
-    },
-  ];
+  // --- Utility Components for cleaner JSX ---
 
-  return (
-    <div className="min-h-screen bg-[#DDE0E3]">
-      {/* Top custom bar (dashboard-specific, not global header) */}
-      <div className="relative w-full h-[123px]">
-        <div className="absolute top-0 left-0 w-full h-[75px] bg-[#2E96FF]" />
-        <div className="absolute left-0 right-0 mx-auto w-full max-w-[1440px] h-[84.49px] top-[67.51px] bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
-            <div className="flex items-center gap-6">
-              <div className="w-[58px] h-[27px] text-white font-bold text-[19.9px]">
-                C<span className="text-white">FS</span>
-              </div>
-              <nav className="hidden lg:flex items-center gap-6">
-                <a className="text-[18px] text-[#0080FF]">Home</a>
-                <a className="text-[18px] text-black">Compliances</a>
-                <a className="text-[18px] text-black">Service hub</a>
-                <a className="text-[18px] text-black">Calendar</a>
-                <a className="text-[18px] text-black">Documents</a>
-                <a className="text-[18px] text-black">Reports</a>
-                <a className="text-[18px] text-black">Consult</a>
-                <a className="text-[18px] text-black">Users & Roles</a>
-              </nav>
-            </div>
+  const NavLink = ({ children, href, active = false }) => (
+    <a
+      href={href}
+      className={`text-[18px] transition-colors duration-200 py-2 px-3 rounded-t-lg ${
+        active ? "text-[#0080FF] font-semibold bg-white shadow-inner relative z-10" : "text-gray-700 hover:text-[#2E96FF]"
+      }`}
+    >
+      {children}
+    </a>
+  );
 
-            <div className="flex items-center gap-4">
-              <div className="w-[55px] h-[54.56px] bg-[#F8FBFF] rounded flex items-center justify-center">
-                <div className="w-[19px] h-[19px] bg-[#2E96FF] rounded-sm" />
-              </div>
-            </div>
-          </div>
+  const ServiceCardLarge = ({ title, desc, to, bgColor }) => (
+    <a
+      href={to}
+      className={`flex-1 min-h-[65px] ${bgColor} rounded-xl transition-transform transform hover:scale-[1.01] shadow-lg`}
+    >
+      <div className="flex items-center p-4">
+        <div>
+          <div className="text-white font-semibold text-lg">{title}</div>
+          <div className="text-xs text-opacity-90 text-white mt-1">{desc}</div>
+        </div>
+        {/* Arrow Icon matching the image */}
+        <div className="ml-auto flex items-center justify-center">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
+    </a>
+  );
 
-      {/* Main white panel */}
-      <div className="max-w-[1260px] mx-auto mt-12 bg-white rounded p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <div className="p-6 rounded-md bg-[#F5FAFF] flex items-start gap-6">
-              <div className="w-[590px] h-[65px] bg-[#5299F4] rounded flex items-center px-4">
-                <div>
-                  <div className="text-white font-medium">
-                    Trademark registration
-                  </div>
-                  <div className="text-[11px] text-[#E2EFFA]">
-                    legal protection for your brand indemnity
-                  </div>
-                </div>
-              </div>
+  const ComplianceCardSmall = ({ title, desc, to }) => (
+    <a href={to} className="block bg-white border border-[#94C8FA] rounded-xl p-4 transition-transform transform hover:scale-[1.03] hover:shadow-lg shadow-md">
+      <div className="w-10 h-10 bg-[#E5F7F7] rounded-lg mb-3 flex items-center justify-center">
+        {/* Placeholder Icon */}
+        <svg className="w-5 h-5 text-[#5FA1F9]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      </div>
+      <div className="font-semibold text-gray-800 text-sm">{title}</div>
+      <div className="text-xs text-[#515554] mt-1 line-clamp-2">{desc}</div>
+      <div className="mt-3 text-xs text-[#5FA1F9] font-bold hover:text-[#2E96FF] transition-colors">View Details</div>
+    </a>
+  );
 
-              <div className="w-[590px] h-[65px] bg-[#5299F4] rounded flex items-center px-4 justify-between">
-                <div>
-                  <div className="text-white font-medium">Another Service</div>
-                  <div className="text-[11px] text-[#E2EFFA]">
-                    short description here
-                  </div>
-                </div>
-                <div className="w-[40px] h-[40px] bg-[#E5F7F7] rounded flex items-center justify-center" />
-              </div>
-            </div>
+  const placeholdersCount = Math.max(0, 10 - (tabData[activeTab] ? tabData[activeTab].length : 0));
 
-            <div className="mt-6 grid grid-cols-4 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-[#F0F3F3] border border-[#94C8FA] rounded p-4"
-                >
-                  <div className="w-[40px] h-[40px] bg-[#E5F7F7] rounded mb-4" />
-                  <div className="font-medium">GST registration</div>
-                  <div className="text-[11px] text-[#515554]">
-                    starts from rs749 rs499
-                  </div>
-                  <div className="mt-3 text-[11px] text-[#5FA1F9] font-semibold">
-                    View details
-                  </div>
-                </div>
+  return (
+    <div className="min-h-screen bg-[#F8F9FA] font-[Inter] p-4 md:p-0">
+      {/* Top Navigation Bar */}
+      <header className="bg-white shadow-md">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between px-6 py-4">
+          <div className="w-auto text-[#0080FF] font-extrabold text-2xl">L<span className="text-gray-700">OGO</span></div>
+          <nav className="flex items-center gap-4 lg:gap-6 text-sm">
+            <NavLink href="/dashboard">Home</NavLink>
+            <NavLink href="/compliances">Compliances</NavLink>
+            <NavLink href="/servicehub" active>Service Hub</NavLink>
+            <NavLink href="/calendar">Calender</NavLink>
+            <NavLink href="/documents">Documents</NavLink>
+            <NavLink href="/reports">Reports</NavLink>
+            <NavLink href="/consult">Consult</NavLink>
+            <NavLink href="/users">Users & Roles</NavLink>
+            <div className="text-gray-500 font-bold">...</div>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Content Container */}
+      <div className="max-w-[1200px] mx-auto mt-8">
+        <div className="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+
+          {/* Large Service Cards Section */}
+          <div className="flex flex-col md:flex-row gap-6 mb-8">
+            {largeServiceCards.map((card, index) => (
+              <ServiceCardLarge key={index} {...card} />
+            ))}
+          </div>
+
+          {/* Tab Navigation (To simulate different pages) */}
+          <nav className="flex flex-wrap border-b border-gray-200 mb-6 -mx-6 px-6 pt-4">
+            {tabKeys.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-3 px-4 md:px-6 text-sm md:text-base font-medium transition-colors border-b-2
+                  ${
+                    activeTab === tab
+                      ? "text-[#2E96FF] border-[#2E96FF] font-semibold"
+                      : "text-gray-500 border-transparent hover:text-gray-800 hover:border-gray-300"
+                  }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </nav>
+
+          {/* Small Card Grid (Content based on activeTab) */}
+          <div className="mt-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+              {(tabData[activeTab] || []).map((service, i) => (
+                <ComplianceCardSmall key={i} {...service} />
+              ))}
+
+              {/* Fill remaining slots with empty cards for consistent layout if needed */}
+              {Array.from({ length: placeholdersCount }).map((_, i) => (
+                <div key={`placeholder-${i}`} className="hidden lg:block" />
               ))}
             </div>
           </div>
 
-          <aside className="p-6 bg-white rounded shadow">
-            <h3 className="text-sm font-semibold">Overview</h3>
-            <div className="mt-4 space-y-4">
-              <div className="text-[19px] text-[#529AF4] font-semibold">
-                Overview
-              </div>
-              <div className="text-sm">Process & Documents</div>
-              <div className="text-sm">Benefits</div>
-            </div>
+          {/* Bottom Call to Action Buttons */}
+          <div className="mt-8 flex justify-end gap-4 border-t pt-6">
+            <a href="/callback/general" className="inline-flex justify-center items-center border border-gray-400 text-gray-700 font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors">
+              Request A Callback
+            </a>
+            <a href="/callback/expert" className="inline-flex justify-center items-center border border-gray-400 text-gray-700 font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors">
+              Request A Callback
+            </a>
+          </div>
 
-            <div className="mt-6 border-t pt-4">
-              <button className="w-full border border-[#88A5BC] py-2 rounded">
-                Request a callback
-              </button>
-            </div>
-          </aside>
         </div>
       </div>
+
+      {/* Footer / Spacer */}
+      <div className="h-16" />
     </div>
   );
 }

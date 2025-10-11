@@ -10,6 +10,8 @@ import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyOtp from "./pages/VerifyOtp";
+import TalkToCA from "./pages/ConsultanExpert/talkToCA";
+import TalkToIP from "./pages/ConsultanExpert/talkToIP";
 import { initAuth, getUser, clearToken, clearUser } from "./lib/auth";
 
 export default function App() {
@@ -37,7 +39,9 @@ export default function App() {
   const hideLayout =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
-    location.pathname === "/dashboard";
+    location.pathname === "/dashboard" ||
+    // location.pathname === "/ConsultanExpert/talkToCA" ||
+    location.pathname === "/ConsultanExpert/talkToIP";
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
@@ -48,6 +52,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
+          <Route path="/ConsultanExpert/talkToCA" element={<TalkToCA />} />
+          <Route path="/ConsultanExpert/talkToIP" element={<TalkToIP />} />
           <Route
             path="/dashboard"
             element={

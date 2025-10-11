@@ -184,13 +184,27 @@ function HeaderNav({ currentPath, setMenuOpen }) {
             {
               title: "Licenses & Registrations",
               links: [
-                ["Digital Signature Award", "/Licenses/dsc", "Award"], ["Udyam Registration", "/Licenses/udyam", "Award"],
-                ["MSME Registration", "/Licenses/msme", "Award"], ["ISO Certification", "/Licenses/iso", "Award"],
-                ["FSSAI (Food License)", "/Licenses/fssai", "Heart"], ["Import/Export Code (IEC)", "/Licenses/iec", "Globe"],
-                ["Spice Board Registration", "/Licenses/spice-board", "BookOpen"], ["Legal Metrology", "/Licenses/legal-metrology", "Clipboard"],
+                ["Digital Signature Certificate", "/Licenses/dsc", "Award"],
+                ["Udyam Registration", "/Licenses/udyam", "Award"],
+                ["MSME Registration", "/Licenses/msme", "Award"],
+                ["ISO Certification", "/Licenses/iso", "Award"],
+                ["FSSAI [Food License]", "/Licenses/fssai", "Heart"],
+                ["IEC [Import/Export Code]", "/Licenses/iec", "Globe"],
+                ["Apeda RCMC", "/Licenses/apeda-rcmc", "BookOpen"],
+                ["Spice Board Registration", "/Licenses/spice-board", "BookOpen"],
+                ["FIEO Registration", "/Licenses/fieo", "BookOpen"],
+                ["Legal Metrology", "/Licenses/legal-metrology", "Clipboard"],
+                ["Hallmark Registration", "/Licenses/hallmark", "Shield"],
                 ["BIS Registration", "/Licenses/bis", "Shield"],
+                ["Liquor License", "/Licenses/liquor", "Award"],
+                ["CLRA Registration & Licensing", "/Licenses/clra", "Award"],
+                ["AD Code Registration", "/Licenses/adcode", "Award"],
+                ["IRDAI Registration", "/Licenses/irdai", "Award"],
+                ["Drug & Cosmetic License", "/Licenses/drug-cosmetic", "Award"],
+                ["Customs Clearance", "/Licenses/customs-clearance", "Award"],
               ],
-            },
+            }
+
           ]}
           currentPath={currentPath}
           icons={icons}
@@ -228,7 +242,11 @@ function HeaderNav({ currentPath, setMenuOpen }) {
             {
               title: "NGO Compliance",
               links: [
-                ["NGO Compliance", "/NGO/compliance", "FileText"], ["CSR-1 Filing", "/NGO/csr1", "FileText"],
+                ["NGO Compliance", "/NGO/compliance", "FileText"],
+                ["Section 8 Compliance", "/NGO/section8", "FileText"],
+                ["CSR-1 Filing", "/NGO/csr1", "FileText"],
+                ["Sec.80G & Sec.12A", "/NGO/80g-12a", "FileText"],
+                ["Darpan Registration", "/NGO/darpan", "Award"],
                 ["FCRA Registration", "/NGO/fcra", "Award"],
               ],
             },
