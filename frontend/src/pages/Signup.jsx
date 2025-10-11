@@ -16,7 +16,9 @@ export default function Signup() {
     setLoading(true);
     try {
       await axios.post("/api/auth/signup", { name, email, password });
-      setMessage("Signup successful. Verification email sent. Check your inbox.");
+      setMessage(
+        "Signup successful. Verification email sent. Check your inbox.",
+      );
       setName("");
       setEmail("");
       setPassword("");
@@ -41,7 +43,9 @@ export default function Signup() {
           placeholder="Full name (optional)"
         />
 
-        <label className="block text-sm font-medium text-slate-700 mt-4">Email</label>
+        <label className="block text-sm font-medium text-slate-700 mt-4">
+          Email
+        </label>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -49,7 +53,9 @@ export default function Signup() {
           placeholder="you@domain.com"
         />
 
-        <label className="block text-sm font-medium text-slate-700 mt-4">Password</label>
+        <label className="block text-sm font-medium text-slate-700 mt-4">
+          Password
+        </label>
         <input
           type="password"
           value={password}
@@ -58,7 +64,10 @@ export default function Signup() {
           placeholder="Choose a password"
         />
 
-        <button disabled={loading} className="mt-4 w-full bg-[#003366] text-white py-2 rounded">
+        <button
+          disabled={loading}
+          className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+        >
           {loading ? "Signing up..." : "Sign up"}
         </button>
       </form>

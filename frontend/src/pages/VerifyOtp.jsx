@@ -9,7 +9,7 @@ export default function VerifyEmail() {
   const nav = useNavigate();
 
   useEffect(() => {
-    const token = searchParams.get('token');
+    const token = searchParams.get("token");
     if (token) {
       verify(token);
     }
@@ -19,11 +19,11 @@ export default function VerifyEmail() {
   const verify = async (token) => {
     setLoading(true);
     try {
-      await axios.post('/api/auth/verify-email', { token });
-      setMessage('Email verified. You can now login.');
-      setTimeout(() => nav('/login'), 1500);
+      await axios.post("/api/auth/verify-email", { token });
+      setMessage("Email verified. You can now login.");
+      setTimeout(() => nav("/login"), 1500);
     } catch (err) {
-      setMessage(err?.response?.data?.error || 'Verification failed');
+      setMessage(err?.response?.data?.error || "Verification failed");
     } finally {
       setLoading(false);
     }
@@ -32,8 +32,12 @@ export default function VerifyEmail() {
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Verify Email</h2>
-      <p className="text-sm text-slate-600 mb-4">{message || 'Verifying your email...'}</p>
-      {loading && <div className="h-8 w-8 rounded-full border-4 border-[#003366]/20 border-t-[#003366] animate-spin mx-auto" />}
+      <p className="text-sm text-slate-600 mb-4">
+        {message || "Verifying your email..."}
+      </p>
+      {loading && (
+        <div className="h-8 w-8 rounded-full border-4 border-[#003366]/20 border-t-[#003366] animate-spin mx-auto" />
+      )}
     </div>
   );
 }

@@ -8,8 +8,8 @@ Backend (Express + Prisma + MySQL)
 4. Start server: npm run dev
 
 API endpoints:
+
 - POST /api/auth/signup { name, email, password }
 - POST /api/auth/login { email, password }
 - POST /api/auth/verify-email { token }
 - GET /api/user/me (Authorization: Bearer <token>)
-

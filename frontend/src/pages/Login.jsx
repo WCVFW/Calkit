@@ -31,7 +31,9 @@ export default function Login() {
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Login</h2>
       <form onSubmit={submit}>
-        <label className="block text-sm font-medium text-slate-700">Email</label>
+        <label className="block text-sm font-medium text-slate-700">
+          Email
+        </label>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -39,7 +41,9 @@ export default function Login() {
           placeholder="you@domain.com"
         />
 
-        <label className="block text-sm font-medium text-slate-700 mt-4">Password</label>
+        <label className="block text-sm font-medium text-slate-700 mt-4">
+          Password
+        </label>
         <input
           type="password"
           value={password}
@@ -48,7 +52,10 @@ export default function Login() {
           placeholder="Your password"
         />
 
-        <button disabled={loading} className="mt-4 w-full bg-[#003366] text-white py-2 rounded">
+        <button
+          disabled={loading}
+          className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+        >
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
