@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 // Static data for the small service cards, organized by tab
