@@ -1,0 +1,3 @@
+#!/bin/sh
+# minimal placeholder wrapper for mvnw in this scaffold
+echo "Please install Maven or add a proper mvnw wrapper"
