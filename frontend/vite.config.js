@@ -15,6 +15,8 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
-    proxy: {},
+    proxy: {
+      "/api": "http://localhost:4000",
+    },
   },
 });

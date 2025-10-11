@@ -2,7 +2,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import "./lib/mock-api";
 import "./styles/globals.css";
 
 // Suppress noisy third-party fetch failures during dev (e.g. FullStory) to avoid breaking HMR
