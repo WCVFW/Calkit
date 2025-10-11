@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 // Static data for the small service cards, organized by tab
@@ -228,14 +229,50 @@ export default function Dashboard() {
             </div>
           </div>
 
+          {/* CRM Section */}
+          <div className="mt-10 border-t pt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">CRM — Leads</h3>
+              <div className="text-sm text-slate-600">{loadingUser ? "Loading user..." : user ? `Welcome, ${user.name || user.email}` : "Not signed in"}</div>
+            </div>
+
+            {/* Create Lead */}
+            <LeadCreate onCreated={(lead)=> setLeads((prev)=> [{...lead, created_at: new Date().toISOString()}, ...prev])} />
+
+            {/* Lead List */}
+            <div className="mt-6 overflow-x-auto">
+              {loadingLeads ? (
+                <div className="text-sm text-slate-600">Loading leads...</div>
+              ) : errorLeads ? (
+                <div className="text-sm text-red-600">{errorLeads}</div>
+              ) : (
+                <table className="min-w-full text-sm">
+                  <thead>
+                    <tr className="text-left border-b">
+                      <th className="py-2 pr-4">Name</th>
+                      <th className="py-2 pr-4">Service</th>
+                      <th className="py-2 pr-4">Status</th>
+                      <th className="py-2 pr-4">Created</th>
+                      <th className="py-2 pr-4"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {leads.map((l)=> (
+                      <LeadRow key={l.id} lead={l}
+                        onUpdated={(patch)=> setLeads((prev)=> prev.map((x)=> x.id===l.id ? { ...x, ...patch } : x))}
+                        onDeleted={()=> setLeads((prev)=> prev.filter((x)=> x.id!==l.id))}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+
           {/* Bottom Call to Action Buttons */}
           <div className="mt-8 flex justify-end gap-4 border-t pt-6">
-            <a href="/callback/general" className="inline-flex justify-center items-center border border-gray-400 text-gray-700 font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors">
-              Request A Callback
-            </a>
-            <a href="/callback/expert" className="inline-flex justify-center items-center border border-gray-400 text-gray-700 font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors">
-              Request A Callback
-            </a>
+            <a href="/callback/general" className="inline-flex justify-center items-center border border-gray-400 text-gray-700 font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors">Request A Callback</a>
+            <a href="/callback/expert" className="inline-flex justify-center items-center border border-gray-400 text-gray-700 font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors">Request A Callback</a>
           </div>
 
         </div>
@@ -244,5 +281,93 @@ export default function Dashboard() {
       {/* Footer / Spacer */}
       <div className="h-16" />
     </div>
+  );
+}
+
+function LeadCreate({ onCreated }) {
+  const [name, setName] = useState("");
+  const [service, setService] = useState("");
+  const [status, setStatus] = useState("New");
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!name) { setMsg("Enter lead name"); return; }
+    setLoading(true);
+    setMsg("");
+    try {
+      const r = await axios.post("/api/leads", { name, service, status });
+      onCreated?.(r.data);
+      setName(""); setService(""); setStatus("New");
+    } catch (e) {
+      setMsg(e?.response?.data?.error || "Failed to create");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={submit} className="bg-slate-50 rounded-lg p-4 border">
+      <div className="flex flex-col md:flex-row gap-3">
+        <input value={name} onChange={(e)=>setName(e.target.value)} className="flex-1 border rounded px-3 py-2" placeholder="Lead name" />
+        <input value={service} onChange={(e)=>setService(e.target.value)} className="flex-1 border rounded px-3 py-2" placeholder="Service (optional)" />
+        <select value={status} onChange={(e)=>setStatus(e.target.value)} className="border rounded px-3 py-2">
+          <option>New</option>
+          <option>In Progress</option>
+          <option>Closed</option>
+        </select>
+        <button disabled={loading} className="bg-[#003366] text-white px-4 py-2 rounded min-w-[110px]">{loading? 'Adding...' : 'Add Lead'}</button>
+      </div>
+      {msg && <div className="text-sm text-red-600 mt-2">{msg}</div>}
+    </form>
+  );
+}
+
+function LeadRow({ lead, onUpdated, onDeleted }) {
+  const [status, setStatus] = useState(lead.status || "New");
+  const [loading, setLoading] = useState(false);
+
+  const update = async (patch) => {
+    setLoading(true);
+    try {
+      await axios.put(`/api/leads/${lead.id}`, patch);
+      onUpdated?.(patch);
+    } catch (e) {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const remove = async () => {
+    if (!confirm("Delete lead?")) return;
+    setLoading(true);
+    try {
+      await axios.delete(`/api/leads/${lead.id}`);
+      onDeleted?.();
+    } catch (e) {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <tr className="border-b">
+      <td className="py-2 pr-4">{lead.name}</td>
+      <td className="py-2 pr-4">{lead.service || '-'}</td>
+      <td className="py-2 pr-4">
+        <select value={status} onChange={(e)=> { setStatus(e.target.value); update({ status: e.target.value }); }} className="border rounded px-2 py-1 text-xs">
+          <option>New</option>
+          <option>In Progress</option>
+          <option>Closed</option>
+        </select>
+      </td>
+      <td className="py-2 pr-4">{lead.created_at ? new Date(lead.created_at).toLocaleString() : '-'}</td>
+      <td className="py-2 pr-4 text-right">
+        <button onClick={remove} disabled={loading} className="text-red-600 text-xs">Delete</button>
+      </td>
+    </tr>
   );
 }
