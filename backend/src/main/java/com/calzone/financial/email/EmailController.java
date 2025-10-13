@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/email")
+@RequestMapping("/api/verify-email")
 public class EmailController {
 
     private final JavaMailSender mailSender;

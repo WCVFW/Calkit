@@ -1,5 +1,6 @@
 package com.calzone.financial.common;
 
+import org.springframework.lang.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,30 +19,48 @@ import java.util.List;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatusCode status,
-                                                                  WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            @NonNull MethodArgumentNotValidException ex,
+            @NonNull HttpHeaders headers,
+            @NonNull HttpStatusCode status,
+            @NonNull WebRequest request) {
+
         List<String> details = ex.getBindingResult().getFieldErrors().stream()
                 .map(this::formatFieldError)
                 .toList();
-        ErrorResponse body = ErrorResponse.of(status.value(), HttpStatus.valueOf(status.value()).getReasonPhrase(),
-                "Validation failed", details);
+
+        ErrorResponse body = ErrorResponse.of(
+                status.value(),
+                HttpStatus.valueOf(status.value()).getReasonPhrase(),
+                "Validation failed",
+                details);
+
         return ResponseEntity.status(status).body(body);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) {
-        ErrorResponse body = ErrorResponse.of(ex.getStatusCode().value(), ex.getStatusCode().toString(),
-                ex.getReason(), List.of());
-        return ResponseEntity.status(ex.getStatusCode()).body(body);
+    public ResponseEntity<ErrorResponse> handleResponseStatusException(@NonNull ResponseStatusException ex) {
+        // Convert HttpStatusCode to HttpStatus
+        HttpStatus httpStatus = HttpStatus.resolve(ex.getStatusCode().value());
+        String reason = httpStatus != null ? httpStatus.getReasonPhrase() : "Unknown";
+
+        ErrorResponse body = ErrorResponse.of(
+                ex.getStatusCode().value(),
+                reason,
+                ex.getReason(),
+                List.of());
+
+        return ResponseEntity.status(ex.getStatusCode().value()).body(body);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAll(Exception ex) {
-        ErrorResponse body = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+    public ResponseEntity<ErrorResponse> handleAll(@NonNull Exception ex) {
+        ErrorResponse body = ErrorResponse.of(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "Unexpected error occurred", List.of(ex.getMessage()));
+                "Unexpected error occurred",
+                List.of(ex.getMessage()));
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 

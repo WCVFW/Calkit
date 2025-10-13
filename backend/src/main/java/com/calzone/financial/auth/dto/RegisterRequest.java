@@ -15,7 +15,7 @@ public record RegisterRequest(
         String email,
 
         @NotBlank(message = "Phone is required")
-        @Pattern(regexp = "^[0-9+\-() ]{7,20}$", message = "Phone must be valid")
+        @Pattern(regexp = "^[0-9+\\-() ]{7,20}$", message = "Phone must be valid")
         String phone,
 
         @NotBlank(message = "Password is required")
