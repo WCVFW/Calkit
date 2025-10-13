@@ -374,16 +374,35 @@ export default function Dashboard() {
               <button
                 disabled={payLoading}
                 onClick={async () => {
-                  setPayLoading(true); setPayMsg("");
+                  setPayLoading(true);
+                  setPayMsg("");
                   try {
-                    const { data } = await axios.post("/api/payments/order", { amount: 10000, currency: "INR", description: "Test Payment" });
-                    const resp = await openRazorpayCheckout({ orderId: data.orderId, keyId: data.keyId, amount: data.amount, currency: data.currency, name: "Calzone Financial", description: data.description });
-                    await axios.post("/api/payments/confirm", { orderId: data.orderId, paymentId: resp.razorpay_payment_id });
+                    const { data } = await axios.post("/api/payments/order", {
+                      amount: 10000,
+                      currency: "INR",
+                      description: "Test Payment",
+                    });
+                    const resp = await openRazorpayCheckout({
+                      orderId: data.orderId,
+                      keyId: data.keyId,
+                      amount: data.amount,
+                      currency: data.currency,
+                      name: "Calzone Financial",
+                      description: data.description,
+                    });
+                    await axios.post("/api/payments/confirm", {
+                      orderId: data.orderId,
+                      paymentId: resp.razorpay_payment_id,
+                    });
                     setPayMsg("Payment successful");
                     const list = await axios.get("/api/payments/mine");
                     setPayments(list.data || []);
                   } catch (e) {
-                    setPayMsg(e?.description || e?.message || "Payment failed or cancelled");
+                    setPayMsg(
+                      e?.description ||
+                        e?.message ||
+                        "Payment failed or cancelled",
+                    );
                   } finally {
                     setPayLoading(false);
                   }
@@ -393,7 +412,9 @@ export default function Dashboard() {
                 {payLoading ? "Processing..." : "Pay ₹100"}
               </button>
             </div>
-            {payMsg && <div className="text-sm mb-3 text-slate-600">{payMsg}</div>}
+            {payMsg && (
+              <div className="text-sm mb-3 text-slate-600">{payMsg}</div>
+            )}
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
@@ -406,17 +427,25 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {payments.map(p => (
+                  {payments.map((p) => (
                     <tr key={p.id} className="border-b">
                       <td className="py-2 pr-4">{p.orderId}</td>
-                      <td className="py-2 pr-4">{p.paymentId || '-'}</td>
-                      <td className="py-2 pr-4">₹{(p.amount || 0)/100}</td>
+                      <td className="py-2 pr-4">{p.paymentId || "-"}</td>
+                      <td className="py-2 pr-4">₹{(p.amount || 0) / 100}</td>
                       <td className="py-2 pr-4">{p.status}</td>
-                      <td className="py-2 pr-4">{p.createdAt ? new Date(p.createdAt).toLocaleString() : '-'}</td>
+                      <td className="py-2 pr-4">
+                        {p.createdAt
+                          ? new Date(p.createdAt).toLocaleString()
+                          : "-"}
+                      </td>
                     </tr>
                   ))}
                   {payments.length === 0 && (
-                    <tr><td className="py-2 pr-4" colSpan="5">No payments yet</td></tr>
+                    <tr>
+                      <td className="py-2 pr-4" colSpan="5">
+                        No payments yet
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>
