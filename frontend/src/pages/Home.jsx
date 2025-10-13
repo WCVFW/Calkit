@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import NAV from "@/data/navigation";
 
 // --- Import Images ---
 import Hero from "../assets/Hero.png";
@@ -9,6 +10,29 @@ import C2 from "../assets/c2.png";
 import C3 from "../assets/c3.png";
 
 export default function Home() {
+  const [q, setQ] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(-1);
+  const inputRef = React.useRef(null);
+  const containerRef = React.useRef(null);
+  const navigate = useNavigate();
+  const items = React.useMemo(() => Object.entries(NAV).map(([path, meta]) => ({ path, ...meta })), []);
+  const results = React.useMemo(() => {
+    const t = q.trim().toLowerCase();
+    if (t.length < 2) return [];
+    return items.filter(i => i.title.toLowerCase().includes(t) || i.category.toLowerCase().includes(t)).slice(0, 10);
+  }, [q, items]);
+  React.useEffect(() => {
+    function onClick(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+  function select(path) {
+    setOpen(false); setQ(""); setActiveIndex(-1);
+    navigate(path);
+  }
   return (
     <div className="bg-[#E6F2FF] overflow-x-hidden font-[Poppins,sans-serif]">
 
@@ -28,31 +52,68 @@ export default function Home() {
           </h1>
 
           {/* Search Bar */}
-          <div className="mt-8 w-full max-w-3xl flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <div className="flex-1 bg-white rounded-lg flex items-center px-4 py-3 shadow-md">
-              <svg
-                className="w-6 h-6 text-gray-400 mr-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 26 26"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.87}
-                  d="M18.953 18.961l4.875 4.875M21.672 11.914a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0z"
+          <div ref={containerRef} className="mt-8 w-full max-w-3xl relative">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="flex-1 bg-white rounded-lg flex items-center px-4 py-3 shadow-md">
+                <svg
+                  className="w-6 h-6 text-gray-400 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 26 26"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.87}
+                    d="M18.953 18.961l4.875 4.875M21.672 11.914a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0z"
+                  />
+                </svg>
+                <input
+                  ref={inputRef}
+                  value={q}
+                  onChange={(e) => { setQ(e.target.value); setOpen(true); setActiveIndex(-1); }}
+                  onFocus={() => setOpen(true)}
+                  onKeyDown={(e) => {
+                    if (!open && e.key !== 'Escape') setOpen(true);
+                    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, results.length - 1)); }
+                    if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIndex(i => Math.max(i - 1, 0)); }
+                    if (e.key === 'Enter') {
+                      if (results[activeIndex]) return select(results[activeIndex].path);
+                      if (results[0]) return select(results[0].path);
+                    }
+                    if (e.key === 'Escape') setOpen(false);
+                  }}
+                  type="text"
+                  placeholder="Search for legal, business, or services"
+                  className="flex-1 outline-none text-gray-600 text-sm sm:text-base md:text-lg"
                 />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search for legal, business, or services"
-                className="flex-1 outline-none text-gray-600 text-sm sm:text-base md:text-lg"
-              />
+              </div>
+              <button
+                onClick={() => { if (results[0]) select(results[0].path); }}
+                className="bg-[#036] text-white px-5 sm:px-7 md:px-8 py-3 rounded-lg font-medium text-sm sm:text-base md:text-lg transition hover:bg-[#024]"
+              >
+                Find Your Service
+              </button>
             </div>
-            <button className="bg-[#036] text-white px-5 sm:px-7 md:px-8 py-3 rounded-lg font-medium text-sm sm:text-base md:text-lg transition hover:bg-[#024]">
-              Find Your Service
-            </button>
+            {open && results.length > 0 && (
+              <ul className="absolute left-0 right-0 mt-2 bg-white border border-gray-100 shadow-lg rounded-md max-h-72 overflow-auto z-10">
+                {results.map((r, idx) => (
+                  <li key={r.path}>
+                    <button
+                      onMouseEnter={() => setActiveIndex(idx)}
+                      onClick={() => select(r.path)}
+                      className={
+                        `w-full text-left px-4 py-2 flex flex-col ${idx === activeIndex ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100`
+                      }
+                    >
+                      <span className="text-sm font-medium text-gray-800">{r.title}</span>
+                      <span className="text-xs text-gray-500">{r.category}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* CTA Cards */}
