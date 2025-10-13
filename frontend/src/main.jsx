@@ -16,14 +16,30 @@ if (import.meta.env.DEV) {
         stack.includes("edge.fullstory.com") ||
         stack.includes("fs.js")
       ) {
-        // swallow this specific third-party fetch error in dev
         e.preventDefault();
         console.warn("Suppressed third-party fetch error in dev:", reason);
       }
-    } catch (err) {
-      // ignore
-    }
+    } catch (err) {}
   });
+
+  // Hard-disable FullStory network calls in dev to avoid noisy errors
+  const nativeFetch = window.fetch.bind(window);
+  window.fetch = async (...args) => {
+    try {
+      const url = String(args[0] || "");
+      if (url.includes("edge.fullstory.com") || url.includes("/s/fs.js")) {
+        return new Response("", { status: 204 });
+      }
+      return await nativeFetch(...args);
+    } catch (err) {
+      const msg = (err && err.message) || "";
+      const stack = (err && err.stack) || "";
+      if (msg.includes("Failed to fetch") && (stack.includes("edge.fullstory.com") || stack.includes("fs.js"))) {
+        return new Response("", { status: 204 });
+      }
+      throw err;
+    }
+  };
 }
 
 createRoot(document.getElementById("root")).render(
