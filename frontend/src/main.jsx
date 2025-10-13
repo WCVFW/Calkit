@@ -34,7 +34,10 @@ if (import.meta.env.DEV) {
     } catch (err) {
       const msg = (err && err.message) || "";
       const stack = (err && err.stack) || "";
-      if (msg.includes("Failed to fetch") && (stack.includes("edge.fullstory.com") || stack.includes("fs.js"))) {
+      if (
+        msg.includes("Failed to fetch") &&
+        (stack.includes("edge.fullstory.com") || stack.includes("fs.js"))
+      ) {
         return new Response("", { status: 204 });
       }
       throw err;
