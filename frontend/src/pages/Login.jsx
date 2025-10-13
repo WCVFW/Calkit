@@ -68,90 +68,139 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Login</h2>
-      <div className="flex gap-2 mb-4">
-        <button
-          className={`px-3 py-2 rounded ${mode === "password" ? "bg-[#003366] text-white" : "bg-slate-100"}`}
-          onClick={() => setMode("password")}
-        >
-          Email & Password
-        </button>
-        <button
-          className={`px-3 py-2 rounded ${mode === "phone" ? "bg-[#003366] text-white" : "bg-slate-100"}`}
-          onClick={() => setMode("phone")}
-        >
-          Phone OTP
-        </button>
-      </div>
-
-      {mode === "password" ? (
-        <form onSubmit={loginPassword}>
-          <label className="block text-sm font-medium text-slate-700">
-            Email
-          </label>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-2 w-full border px-3 py-2 rounded"
-            placeholder="you@domain.com"
-          />
-          <label className="block text-sm font-medium text-slate-700 mt-4">
-            Password
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-2 w-full border px-3 py-2 rounded"
-            placeholder="Your password"
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100"> 
+      <div className="max-w-md w-full bg-white p-6 rounded shadow-lg">
+        <h2 className="text-xl font-semibold mb-4 text-center">Login</h2>
+        <div className="flex gap-2 mb-4">
           <button
-            disabled={loading}
-            className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+            className={`flex-1 px-3 py-2 rounded transition-colors ${
+              mode === "password"
+                ? "bg-[#003366] text-white hover:bg-[#002244]"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+            }`}
+            onClick={() => {
+              setMode("password");
+              setOtpSent(false);
+              setMessage(null);
+            }}
           >
-            {loading ? "Signing in..." : "Sign in"}
+            Email & Password
           </button>
-        </form>
-      ) : (
-        <form onSubmit={otpSent ? verifyPhoneOtp : sendPhoneOtp}>
-          <label className="block text-sm font-medium text-slate-700">
-            Phone
-          </label>
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="mt-2 w-full border px-3 py-2 rounded"
-            placeholder="e.g. 9876543210"
-          />
-          {otpSent && (
-            <>
-              <label className="block text-sm font-medium text-slate-700 mt-4">
-                OTP
-              </label>
-              <input
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="mt-2 w-full border px-3 py-2 rounded"
-                placeholder="Enter OTP"
-              />
-            </>
-          )}
           <button
-            disabled={loading}
-            className="mt-4 w-full bg-[#003366] text-white py-2 rounded"
+            className={`flex-1 px-3 py-2 rounded transition-colors ${
+              mode === "phone"
+                ? "bg-[#003366] text-white hover:bg-[#002244]"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+            }`}
+            onClick={() => {
+              setMode("phone");
+              setMessage(null);
+            }}
           >
-            {loading
-              ? otpSent
-                ? "Verifying..."
-                : "Sending..."
-              : otpSent
+            Phone OTP
+          </button>
+        </div>
+
+        {mode === "password" ? (
+          <form onSubmit={loginPassword}>
+            <label className="block text-sm font-medium text-slate-700">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-2 w-full border border-slate-300 px-3 py-2 rounded focus:ring-[#003366] focus:border-[#003366] outline-none"
+              placeholder="you@domain.com"
+            />
+            <label className="block text-sm font-medium text-slate-700 mt-4">
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-2 w-full border border-slate-300 px-3 py-2 rounded focus:ring-[#003366] focus:border-[#003366] outline-none"
+              placeholder="Your password"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-6 w-full bg-[#003366] text-white py-2 rounded transition-colors hover:bg-[#002244] disabled:bg-slate-400"
+            >
+              {loading ? "Signing in..." : "Sign in"}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={otpSent ? verifyPhoneOtp : sendPhoneOtp}>
+            <label className="block text-sm font-medium text-slate-700">
+              Phone
+            </label>
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              disabled={otpSent} // Disable phone input once OTP is sent
+              className={`mt-2 w-full border border-slate-300 px-3 py-2 rounded focus:ring-[#003366] focus:border-[#003366] outline-none ${
+                otpSent ? "bg-slate-50" : ""
+              }`}
+              placeholder="e.g. 9876543210"
+            />
+            {otpSent && (
+              <>
+                <label className="block text-sm font-medium text-slate-700 mt-4">
+                  OTP
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  className="mt-2 w-full border border-slate-300 px-3 py-2 rounded focus:ring-[#003366] focus:border-[#003366] outline-none"
+                  placeholder="Enter OTP"
+                  maxLength="6" // Common OTP length
+                />
+              </>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-6 w-full bg-[#003366] text-white py-2 rounded transition-colors hover:bg-[#002244] disabled:bg-slate-400"
+            >
+              {loading
+                ? otpSent
+                  ? "Verifying..."
+                  : "Sending..."
+                : otpSent
                 ? "Verify"
                 : "Send OTP"}
-          </button>
-        </form>
-      )}
-      {message && <div className="mt-3 text-sm text-red-600">{message}</div>}
+            </button>
+            {otpSent && (
+              <button
+                type="button"
+                onClick={() => {
+                  setOtpSent(false); // Go back to phone input
+                  setOtp(""); // Clear OTP
+                  setMessage(null);
+                }}
+                className="mt-3 w-full text-sm text-slate-600 hover:text-[#003366]"
+              >
+                Change Phone Number
+              </button>
+            )}
+          </form>
+        )}
+        {message && (
+          <div
+            className={`mt-4 p-3 rounded text-sm ${
+              message.includes("success") || message.includes("sent")
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {message}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

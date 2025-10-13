@@ -55,7 +55,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <PageLoader show={pageLoading} />
       {!hideLayout && <Header user={user} logout={logout} />}
-      <main className="flex-1 container mx-auto px-6 pt-16 md:pt-20 pb-12">
+      <main className="flex-1 container mx-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
