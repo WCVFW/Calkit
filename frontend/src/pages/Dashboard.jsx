@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { openRazorpayCheckout } from "@/lib/utils";
 
 // Static data for the small service cards, organized by tab
 const tabData = {
@@ -155,6 +156,9 @@ export default function Dashboard() {
   const [loadingUser, setLoadingUser] = useState(true);
 
   const [activeTab, setActiveTab] = useState(defaultTab); // State for the new tab system
+  const [payments, setPayments] = useState([]);
+  const [payLoading, setPayLoading] = useState(false);
+  const [payMsg, setPayMsg] = useState("");
 
   // Static service hub items matching the image (Trademark Registration)
   const largeServiceCards = [
@@ -208,6 +212,8 @@ export default function Dashboard() {
         if (mounted) setLoadingUser(false);
       },
     );
+
+    fetchData("/api/payments/mine", setPayments, () => setPayments([]), false);
 
     return () => {
       mounted = false;
@@ -358,6 +364,62 @@ export default function Dashboard() {
               {Array.from({ length: placeholdersCount }).map((_, i) => (
                 <div key={`placeholder-${i}`} className="hidden lg:block" />
               ))}
+            </div>
+          </div>
+
+          {/* Payments Quick Action */}
+          <div className="mt-10 border-t pt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Payments</h3>
+              <button
+                disabled={payLoading}
+                onClick={async () => {
+                  setPayLoading(true); setPayMsg("");
+                  try {
+                    const { data } = await axios.post("/api/payments/order", { amount: 10000, currency: "INR", description: "Test Payment" });
+                    const resp = await openRazorpayCheckout({ orderId: data.orderId, keyId: data.keyId, amount: data.amount, currency: data.currency, name: "Calzone Financial", description: data.description });
+                    await axios.post("/api/payments/confirm", { orderId: data.orderId, paymentId: resp.razorpay_payment_id });
+                    setPayMsg("Payment successful");
+                    const list = await axios.get("/api/payments/mine");
+                    setPayments(list.data || []);
+                  } catch (e) {
+                    setPayMsg(e?.description || e?.message || "Payment failed or cancelled");
+                  } finally {
+                    setPayLoading(false);
+                  }
+                }}
+                className="bg-[#003366] text-white px-4 py-2 rounded"
+              >
+                {payLoading ? "Processing..." : "Pay ₹100"}
+              </button>
+            </div>
+            {payMsg && <div className="text-sm mb-3 text-slate-600">{payMsg}</div>}
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="text-left border-b">
+                    <th className="py-2 pr-4">Order</th>
+                    <th className="py-2 pr-4">Payment</th>
+                    <th className="py-2 pr-4">Amount</th>
+                    <th className="py-2 pr-4">Status</th>
+                    <th className="py-2 pr-4">Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {payments.map(p => (
+                    <tr key={p.id} className="border-b">
+                      <td className="py-2 pr-4">{p.orderId}</td>
+                      <td className="py-2 pr-4">{p.paymentId || '-'}</td>
+                      <td className="py-2 pr-4">₹{(p.amount || 0)/100}</td>
+                      <td className="py-2 pr-4">{p.status}</td>
+                      <td className="py-2 pr-4">{p.createdAt ? new Date(p.createdAt).toLocaleString() : '-'}</td>
+                    </tr>
+                  ))}
+                  {payments.length === 0 && (
+                    <tr><td className="py-2 pr-4" colSpan="5">No payments yet</td></tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
 
