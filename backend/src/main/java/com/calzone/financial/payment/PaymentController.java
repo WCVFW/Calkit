@@ -49,6 +49,16 @@ public class PaymentController {
         return Base64.getEncoder().encodeToString(digest);
     }
 
+    @PostMapping("/confirm")
+    public ResponseEntity<Void> confirm(@RequestBody ConfirmPayload payload,
+                                        @AuthenticationPrincipal User user) {
+        if (payload == null || payload.orderId == null || payload.paymentId == null) return ResponseEntity.badRequest().build();
+        service.markPaid(payload.orderId, payload.paymentId);
+        return ResponseEntity.ok().build();
+    }
+
+    public static class ConfirmPayload { public String orderId; public String paymentId; }
+
     @PostMapping("/webhook")
     public ResponseEntity<Void> webhook(@RequestHeader("X-Razorpay-Signature") String signature,
                                         @RequestBody String body) {
