@@ -4,6 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./styles/globals.css";
 
+// Enable mocked API endpoints in development (OTP, auth, etc.)
+if (import.meta.env.DEV) {
+  import("./lib/mock-api");
+}
+
 // Suppress noisy third-party fetch failures during dev (e.g. FullStory) to avoid breaking HMR
 if (import.meta.env.DEV) {
   window.addEventListener("unhandledrejection", (e) => {

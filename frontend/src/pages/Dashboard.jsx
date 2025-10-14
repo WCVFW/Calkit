@@ -3,150 +3,8 @@ import axios from "axios";
 import { openRazorpayCheckout } from "@/lib/utils";
 
 // Static data for the small service cards, organized by tab
-const tabData = {
-  "Licenses/Registrations": [
-    {
-      title: "GST Registration",
-      desc: "Starts From Rs749 Rs499",
-      to: "/compliances/gst",
-    },
-    {
-      title: "ITR Filing",
-      desc: "File your Income Tax Return",
-      to: "/compliances/itr",
-    },
-    {
-      title: "MSME Registration",
-      desc: "Get Udyam recognition",
-      to: "/licenses/msme",
-    },
-    {
-      title: "Company Formation",
-      desc: "Private Ltd. Company",
-      to: "/startup/company",
-    },
-    {
-      title: "ROC Filings",
-      desc: "Annual Return Compliance",
-      to: "/compliances/roc",
-    },
-    {
-      title: "FSSAI License",
-      desc: "Food business license",
-      to: "/licenses/fssai",
-    },
-    {
-      title: "Import/Export Code",
-      desc: "IE Code Registration",
-      to: "/licenses/iec",
-    },
-    { title: "Startup India", desc: "DPIIT Recognition", to: "/startup/india" },
-    {
-      title: "PF/ESI Registration",
-      desc: "Employee benefits compliance",
-      to: "/compliances/pf-esi",
-    },
-    {
-      title: "Shops & Est.",
-      desc: "Local business license",
-      to: "/licenses/shop",
-    },
-  ],
-  "Trademark/IP": [
-    {
-      title: "Trademark Registration",
-      desc: "Protect your brand name",
-      to: "/ip/trademark",
-    },
-    {
-      title: "Copyright Filing",
-      desc: "Protect creative work",
-      to: "/ip/copyright",
-    },
-    { title: "Patent Filing", desc: "Secure your invention", to: "/ip/patent" },
-    { title: "IP Search", desc: "Check availability", to: "/ip/search" },
-    { title: "IP Renewal", desc: "Maintain protection", to: "/ip/renewal" },
-    { title: "IP Consulting", desc: "Expert advice", to: "/ip/consult" },
-    {
-      title: "Domain Protection",
-      desc: "Digital assets security",
-      to: "/ip/domain",
-    },
-    {
-      title: "Design Registration",
-      desc: "Aesthetic protection",
-      to: "/ip/design",
-    },
-    {
-      title: "Logo Design",
-      desc: "Professional identity",
-      to: "/servicehub/logo",
-    },
-    { title: "Brand Audit", desc: "Review services", to: "/ip/audit" },
-  ],
-  "Company Change": [
-    {
-      title: "Change Registered Office",
-      desc: "Update address",
-      to: "/company/address",
-    },
-    {
-      title: "Change Directors",
-      desc: "Add/Remove Directors",
-      to: "/company/directors",
-    },
-    { title: "Change Name", desc: "Company name change", to: "/company/name" },
-    {
-      title: "Increase Capital",
-      desc: "Authorized share capital",
-      to: "/company/capital",
-    },
-    {
-      title: "Convert Company",
-      desc: "Pvt to LLP conversion",
-      to: "/company/convert",
-    },
-  ],
-  "Taxation & Compliance": [
-    {
-      title: "GST Filing (Monthly)",
-      desc: "GSTR-3B/1 compliance",
-      to: "/compliance/gst-filing",
-    },
-    {
-      title: "TDS Filing",
-      desc: "Tax deducted at source",
-      to: "/compliance/tds",
-    },
-    {
-      title: "Annual Compliance",
-      desc: "ROC and ITR",
-      to: "/compliance/annual",
-    },
-    { title: "Tax Audit", desc: "Audit services", to: "/compliance/audit" },
-  ],
-  "New Business/Closure": [
-    {
-      title: "Sole Proprietorship",
-      desc: "Easiest business type",
-      to: "/newbiz/sole",
-    },
-    {
-      title: "One Person Company",
-      desc: "For solo entrepreneurs",
-      to: "/newbiz/opc",
-    },
-    {
-      title: "Company Dissolution",
-      desc: "Close your business",
-      to: "/closure/company",
-    },
-    { title: "LLP Closure", desc: "Winding up services", to: "/closure/llp" },
-  ],
-};
 
 const defaultTab = "Licenses/Registrations";
-const tabKeys = Object.keys(tabData);
 
 export default function Dashboard() {
   const [leads, setLeads] = useState([]); // Kept for data fetching structure
@@ -296,11 +154,6 @@ export default function Dashboard() {
     </a>
   );
 
-  const placeholdersCount = Math.max(
-    0,
-    10 - (tabData[activeTab] ? tabData[activeTab].length : 0),
-  );
-
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-[Inter] p-4 md:p-0">
       {/* Top Navigation Bar */}
@@ -352,20 +205,6 @@ export default function Dashboard() {
               </button>
             ))}
           </nav>
-
-          {/* Small Card Grid (Content based on activeTab) */}
-          <div className="mt-6">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-              {(tabData[activeTab] || []).map((service, i) => (
-                <ComplianceCardSmall key={i} {...service} />
-              ))}
-
-              {/* Fill remaining slots with empty cards for consistent layout if needed */}
-              {Array.from({ length: placeholdersCount }).map((_, i) => (
-                <div key={`placeholder-${i}`} className="hidden lg:block" />
-              ))}
-            </div>
-          </div>
 
           {/* Payments Quick Action */}
           <div className="mt-10 border-t pt-8">
