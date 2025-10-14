@@ -34,10 +34,12 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
+        // Check if email already exists
         if (userRepository.existsByEmail(request.email())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
         }
 
+        // Build new user
         User user = User.builder()
                 .fullName(request.fullName().trim())
                 .email(request.email().trim().toLowerCase())
@@ -45,25 +47,41 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.password()))
                 .build();
 
+        // Save user
         User saved = userRepository.save(user);
+
+        // Generate JWT token
         String token = jwtService.generateToken(saved);
+
+        // Return auth response
         return new AuthResponse(token, toProfile(saved));
     }
 
     public AuthResponse login(LoginRequest request) {
+        // Authenticate user
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
+        // Get authenticated principal
         Object principal = authentication.getPrincipal();
         if (!(principal instanceof User user)) {
             throw new UsernameNotFoundException("Invalid credentials");
         }
+
+        // Generate JWT token
         String token = jwtService.generateToken(user);
+
+        // Return auth response
         return new AuthResponse(token, toProfile(user));
     }
 
     private UserProfile toProfile(User user) {
-        return new UserProfile(user.getId(), user.getFullName(), user.getEmail(), user.getPhone());
+        return new UserProfile(
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getPhone()
+        );
     }
 }

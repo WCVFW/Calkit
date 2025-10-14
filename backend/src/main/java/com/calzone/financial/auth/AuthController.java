@@ -15,18 +15,39 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final com.calzone.financial.email.EmailVerificationService emailVerificationService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, com.calzone.financial.email.EmailVerificationService emailVerificationService) {
         this.authService = authService;
+        this.emailVerificationService = emailVerificationService;
     }
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+        AuthResponse res = authService.register(request);
+        try {
+            emailVerificationService.sendCode(request.email());
+        } catch (Exception ignored) {}
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    public record EmailReq(@jakarta.validation.constraints.Email String email) {}
+    public record VerifyReq(@jakarta.validation.constraints.Email String email, @jakarta.validation.constraints.NotBlank String code) {}
+
+    @PostMapping("/request-email-otp")
+    public ResponseEntity<?> requestEmailOtp(@Valid @RequestBody EmailReq req) {
+        emailVerificationService.sendCode(req.email());
+        return ResponseEntity.ok(java.util.Map.of("message", "OTP sent"));
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<?> verifyEmail(@Valid @RequestBody VerifyReq req) {
+        emailVerificationService.verifyCode(req.email(), req.code());
+        return ResponseEntity.ok(java.util.Map.of("message", "Email verified"));
     }
 }
