@@ -29,6 +29,14 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    private Boolean phoneVerified = false;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private java.util.Set<Role> roles = new java.util.HashSet<>();
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -59,7 +67,10 @@ public class User implements UserDetails {
     // ===================
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (roles == null || roles.isEmpty()) {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return roles.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.getName())).toList();
     }
 
     @Override
@@ -105,6 +116,12 @@ public class User implements UserDetails {
 
     public Boolean getEmailVerified() { return emailVerified; }
     public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
+
+    public Boolean getPhoneVerified() { return phoneVerified; }
+    public void setPhoneVerified(Boolean phoneVerified) { this.phoneVerified = phoneVerified; }
+
+    public java.util.Set<Role> getRoles() { return roles; }
+    public void setRoles(java.util.Set<Role> roles) { this.roles = roles; }
 
     // ===================
     // Builder pattern
