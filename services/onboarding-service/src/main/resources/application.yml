@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/vakilsearch}
+    username: ${SPRING_DATASOURCE_USERNAME:vakil}
+    password: ${SPRING_DATASOURCE_PASSWORD:vakilpass}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+server:
+  port: 8083
