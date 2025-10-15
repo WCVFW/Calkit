@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 import java.net.URI;
 import java.time.Duration;
 
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(prefix = "aws.s3", name = "bucket")
 @Service
 public class S3StorageService {
     private final String bucket;
