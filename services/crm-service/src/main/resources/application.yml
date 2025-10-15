@@ -7,5 +7,35 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  mail:
+    host: ${SPRING_MAIL_HOST:}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8081
+
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET:please-change-secret-at-deploy-please-change-secret}
+    expiration-ms: ${APP_JWT_EXPIRATION_MS:86400000}
+
+aws:
+  region: ${AWS_REGION:us-east-1}
+  accessKeyId: ${AWS_ACCESS_KEY_ID:}
+  secretAccessKey: ${AWS_SECRET_ACCESS_KEY:}
+  s3:
+    bucket: ${AWS_S3_BUCKET:}
+    endpoint: ${AWS_S3_ENDPOINT:}
+
+twilio:
+  accountSid: ${TWILIO_ACCOUNT_SID:}
+  authToken: ${TWILIO_AUTH_TOKEN:}
+  fromPhone: ${TWILIO_FROM_PHONE:}
