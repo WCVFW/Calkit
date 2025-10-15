@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "cd frontend && npm run dev",
+    "start:backend": "concurrently \"cd backend && mvn -q -DskipTests spring-boot:run\" \"cd services/crm-service && mvn -q -DskipTests spring-boot:run\" \"cd services/case-management-service && mvn -q -DskipTests spring-boot:run\" \"cd services/onboarding-service && mvn -q -DskipTests spring-boot:run\" \"cd services/sales-payment-service && mvn -q -DskipTests spring-boot:run\" \"cd services/execution-company-reg && mvn -q -DskipTests spring-boot:run\"",
+    "start:all": "concurrently \"npm run start:backend\" \"cd frontend && npm run dev\"",
     "build": "cd frontend && npm run build",
     "watch": "cd frontend && npm run dev",
     "test": "cd frontend && npm test"
