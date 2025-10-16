@@ -19,44 +19,54 @@ import java.time.Duration;
 
 /**
  * AWS S3 Service for generating pre-signed URLs for upload and download.
- * Uses AWS SDK v2 (S3Presigner).
+ * Supports real AWS S3 or dummy URLs for local testing.
  */
-@ConditionalOnProperty(prefix = "aws.s3", name = "bucket")
 @Service
 public class S3StorageService {
 
     private final String bucket;
     private final S3Presigner presigner;
+    private final boolean useDummy;
 
     public S3StorageService(
-            @Value("${aws.region}") String region,
-            @Value("${aws.s3.bucket}") String bucket,
-            @Value("${aws.accessKeyId}") String accessKey,
-            @Value("${aws.secretAccessKey}") String secretKey,
+            @Value("${aws.region:us-east-1}") String region,
+            @Value("${aws.s3.bucket:}") String bucket,
+            @Value("${aws.accessKeyId:}") String accessKey,
+            @Value("${aws.secretAccessKey:}") String secretKey,
             @Value("${aws.s3.endpoint:}") String endpoint
     ) {
         this.bucket = bucket;
 
-        var creds = StaticCredentialsProvider.create(
-                AwsBasicCredentials.create(accessKey, secretKey)
-        );
+        // If no bucket or keys are provided, use dummy mode (local testing)
+        this.useDummy = bucket.isBlank() || accessKey.isBlank() || secretKey.isBlank();
 
-        S3Presigner.Builder builder = S3Presigner.builder()
-                .region(Region.of(region))
-                .credentialsProvider(creds);
+        if (useDummy) {
+            this.presigner = null; // not used in dummy mode
+        } else {
+            var creds = StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create(accessKey, secretKey)
+            );
 
-        // Optional endpoint (for MinIO or custom S3-compatible services)
-        if (endpoint != null && !endpoint.isBlank()) {
-            builder.endpointOverride(URI.create(endpoint));
+            S3Presigner.Builder builder = S3Presigner.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(creds);
+
+            if (endpoint != null && !endpoint.isBlank()) {
+                builder.endpointOverride(URI.create(endpoint));
+            }
+
+            this.presigner = builder.build();
         }
-
-        this.presigner = builder.build();
     }
 
     /**
      * Generate a presigned URL for uploading an object to S3.
      */
     public String presignUpload(String key, String contentType, long contentLength, Duration expires) {
+        if (useDummy) {
+            return "https://dummy-s3-upload-url/" + key;
+        }
+
         PutObjectRequest putRequest = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
@@ -77,6 +87,10 @@ public class S3StorageService {
      * Generate a presigned URL for downloading an object from S3.
      */
     public String presignDownload(String key, Duration expires) {
+        if (useDummy) {
+            return "https://dummy-s3-download-url/" + key;
+        }
+
         GetObjectRequest getRequest = GetObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)

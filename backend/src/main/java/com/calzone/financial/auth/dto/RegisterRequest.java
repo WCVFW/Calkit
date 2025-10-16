@@ -15,6 +15,7 @@ public record RegisterRequest(
         String email,
 
         @NotBlank(message = "Phone is required")
+        // Pattern allows for international numbers including spaces, +, -, and parentheses
         @Pattern(regexp = "^[0-9+\\-() ]{7,20}$", message = "Phone must be valid")
         String phone,
 
