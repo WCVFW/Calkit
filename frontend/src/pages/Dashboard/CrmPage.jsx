@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import {
   UserPlusIcon,
   CheckCircleIcon,
@@ -212,8 +213,6 @@ export default function CrmPage() {
   );
 }
 
-import axios from "axios";
-import React, { useEffect, useState } from "react";
 const PIPELINE_STEPS = [
   { key: "WEB", label: "Web/App" },
   { key: "CRM", label: "CRM" },
