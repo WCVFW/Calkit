@@ -70,29 +70,17 @@ const stats = [
 // --- 3. Main CRM Dashboard Component (Bitrix24 Design) ---
 export default function CrmPage() {
     return (
-        <div className="font-[Poppins] antialiased p-4 sm:p-6 lg:p-8 space-y-8 bg-[#F5F7F9]"> {/* Light gray background for contrast */}
-            
-            {/* Header with main title and action button */}
+        <div className="font-[Poppins] antialiased p-4 sm:p-6 lg:p-8 space-y-8 bg-[#F5F7F9]">
             <header className="flex justify-between items-center bg-white rounded-xl shadow p-6">
-                <h1 className="text-3xl font-bold text-gray-900">
-                    CRM Dashboard
-                </h1>
-                <Link 
-                    to="/crm/leads/add" 
-                    className="flex items-center px-4 py-2 bg-[#0074e0] text-white font-medium rounded-lg shadow-md hover:bg-[#005bb5] transition duration-150 text-sm"
-                >
-                    <UserPlusIcon className="w-5 h-5 mr-2" /> 
-                    Add New Client/Lead
+                <h1 className="text-3xl font-bold text-gray-900">CRM Dashboard</h1>
+                <Link to="/crm/leads/add" className="flex items-center px-4 py-2 bg-[#0074e0] text-white font-medium rounded-lg shadow-md hover:bg-[#005bb5] transition duration-150 text-sm">
+                    <UserPlusIcon className="w-5 h-5 mr-2" /> Add New Client/Lead
                 </Link>
             </header>
 
-            {/* --- 1. Quick Stats Overview (Bitrix-style Cards) --- */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map((stat) => (
-                    <div 
-                        key={stat.name} 
-                        className={`p-5 rounded-xl shadow-lg ${stat.bgColor} border-l-4 ${stat.border} transition duration-150 hover:shadow-xl`}
-                    >
+                    <div key={stat.name} className={`p-5 rounded-xl shadow-lg ${stat.bgColor} border-l-4 ${stat.border} transition duration-150 hover:shadow-xl`}>
                         <div className="flex justify-between items-center">
                             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">{stat.name}</h3>
                             <stat.icon className={`w-6 h-6 ${stat.color} opacity-70`} />
@@ -102,15 +90,82 @@ export default function CrmPage() {
                 ))}
             </div>
 
-            {/* --- 2. Main Content Blocks (Leads, Tasks, Orders) --- */}
+            <ProcessTimeline orderId={1002} />
+
             <div className="space-y-6">
                 <LeadsTable />
                 <TasksTable />
                 <OrdersTable />
             </div>
-            
         </div>
     );
+}
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+const PIPELINE_STEPS = [
+  { key: "WEB", label: "Web/App" },
+  { key: "CRM", label: "CRM" },
+  { key: "SALES", label: "Sales" },
+  { key: "ONBD", label: "Onboarding" },
+  { key: "CASE", label: "Case" },
+  { key: "EXEC", label: "Execution" },
+  { key: "GOVT", label: "Govt" },
+  { key: "QA", label: "QA" },
+  { key: "DEL", label: "Delivery" },
+];
+
+function ProcessTimeline({ orderId }) {
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    let mounted = true;
+    axios
+      .get(`/api/process/orders/${orderId}`)
+      .then((r) => mounted && setEvents(Array.isArray(r.data) ? r.data : []))
+      .catch(() => mounted && setEvents([]));
+    return () => (mounted = false);
+  }, [orderId]);
+
+  const done = new Set(events.filter(e => (e.status || "").toLowerCase() === "completed").map(e => e.stage));
+  const failed = new Set(events.filter(e => (e.status || "").toLowerCase() === "failed").map(e => e.stage));
+
+  return (
+    <div className="bg-white rounded-xl shadow p-6 border-t-4 border-[#0074e0]">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold text-gray-800">End-to-End Process Timeline</h2>
+        <span className="text-sm text-gray-500">Order #{orderId}</span>
+      </div>
+      <div className="relative">
+        <div className="absolute top-1/2 left-2 right-2 h-1 bg-gray-200 -translate-y-1/2" />
+        <div className="flex items-center justify-between">
+          {PIPELINE_STEPS.map((step, idx) => {
+            const isDone = done.has(step.key);
+            const isFail = failed.has(step.key);
+            const color = isFail ? "bg-red-500" : isDone ? "bg-emerald-500" : "bg-gray-300";
+            const ring = isFail ? "ring-2 ring-red-300" : isDone ? "ring-2 ring-emerald-300" : "ring-2 ring-gray-200";
+            return (
+              <div key={step.key} className="flex-1 flex flex-col items-center text-center">
+                <div className={`w-5 h-5 rounded-full ${color} ${ring}`} />
+                <div className="mt-2 text-xs font-medium text-gray-700 whitespace-nowrap">{idx+1}. {step.label}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      {!!events.length && (
+        <div className="mt-4">
+          <h3 className="text-sm font-semibold text-gray-700 mb-2">Recent Events</h3>
+          <ul className="space-y-1 text-sm text-gray-600">
+            {events.map((e) => (
+              <li key={e.id}>
+                <span className="font-semibold">{e.stage}</span> — {e.status}{e.notes ? ` • ${e.notes}` : ""}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // --- Component: Leads Table (Redesigned) ---
