@@ -16,7 +16,7 @@ export default defineConfig({
       overlay: false,
     },
     proxy: {
-      "/api": "http://localhost:4000",
+      "/api": "http://localhost:8081",
     },
   },
 });
