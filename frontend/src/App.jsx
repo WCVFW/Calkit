@@ -10,6 +10,7 @@ import CrmPage from "./pages/Dashboard/CrmPage";
 import CrmDashboard from "./pages/Dashboard/CrmDashboard";
 import OrderDetailPage from "./pages/Dashboard/OrderDetailPage";
 import WorkflowAnalytics from "./pages/Dashboard/WorkflowAnalytics";
+import LeadManagementPage from "./pages/Dashboard/LeadManagementPage";
 import CalendarPage from "./pages/Dashboard/CalendarPage";
 import DocumentsPage from "./pages/Dashboard/DocumentsPage";
 import ReportsPage from "./pages/Dashboard/ReportsPage";
@@ -88,6 +89,7 @@ export default function App() {
             <Route path="servicehub" element={<ServicesHub/>} />
             <Route path="crm" element={<CrmPage />} />
             <Route path="crm-dashboard" element={<CrmDashboard />} />
+            <Route path="leads" element={<LeadManagementPage />} />
             <Route path="orders/:orderId" element={<OrderDetailPage />} />
             <Route path="workflow-analytics" element={<WorkflowAnalytics />} />
             <Route path="calendar" element={<CalendarPage />} />
