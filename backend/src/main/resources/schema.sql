@@ -14,6 +14,23 @@ CREATE TABLE IF NOT EXISTS workflow_events (
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Workflow Alerts Table
+CREATE TABLE IF NOT EXISTS workflow_alerts (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    alert_type VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    action_url VARCHAR(500),
+    resolved BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    resolved_at TIMESTAMP NULL,
+    resolved_by VARCHAR(255),
+    INDEX idx_order_id (order_id),
+    INDEX idx_alert_type (alert_type),
+    INDEX idx_resolved (resolved)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Extended Orders Table with workflow status
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS workflow_status VARCHAR(50) DEFAULT 'WEB';
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS assigned_to BIGINT;
