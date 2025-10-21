@@ -282,11 +282,10 @@ app.get("/api/user/me", authMiddleware, async (req, res) => {
 async function start() {
   try {
     await ensureSchema();
-    app.listen(PORT, () => console.log(`API listening on :${PORT}`));
   } catch (e) {
-    console.error("Failed to start server", e);
-    process.exit(1);
+    console.error("DB not available at startup; running in degraded mode:", e.message || e);
   }
+  app.listen(PORT, () => console.log(`API listening on :${PORT}`));
 }
 
 start();
