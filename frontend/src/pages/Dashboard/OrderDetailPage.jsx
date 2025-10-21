@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   ArrowLeftIcon,
   CheckCircleIcon,
@@ -9,7 +9,7 @@ import {
   ClockIcon,
   UserIcon,
   CurrencyRupeeIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 
 const WorkflowEventTimeline = ({ events }) => {
   return (
@@ -25,26 +25,40 @@ const WorkflowEventTimeline = ({ events }) => {
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="font-semibold text-gray-900">{event.stage}</h3>
-                  <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                    event.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                    event.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' :
-                    event.status === 'FAILED' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {event.status.replace(/_/g, ' ')}
+                  <span
+                    className={`text-xs font-bold px-2 py-1 rounded-full ${
+                      event.status === "COMPLETED"
+                        ? "bg-green-100 text-green-800"
+                        : event.status === "IN_PROGRESS"
+                          ? "bg-blue-100 text-blue-800"
+                          : event.status === "FAILED"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {event.status.replace(/_/g, " ")}
                   </span>
                 </div>
-                <p className="text-sm text-gray-700 mb-2">{event.description}</p>
-                {event.details && <p className="text-xs text-gray-600 italic">{event.details}</p>}
+                <p className="text-sm text-gray-700 mb-2">
+                  {event.description}
+                </p>
+                {event.details && (
+                  <p className="text-xs text-gray-600 italic">
+                    {event.details}
+                  </p>
+                )}
                 <p className="text-xs text-gray-500 mt-2">
-                  {new Date(event.createdAt).toLocaleDateString()} {new Date(event.createdAt).toLocaleTimeString()}
+                  {new Date(event.createdAt).toLocaleDateString()}{" "}
+                  {new Date(event.createdAt).toLocaleTimeString()}
                 </p>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500">No events recorded yet</div>
+        <div className="text-center py-8 text-gray-500">
+          No events recorded yet
+        </div>
       )}
     </div>
   );
@@ -62,8 +76,8 @@ const StageActionButtons = ({ currentStage, orderId, onRefresh }) => {
       });
       onRefresh();
     } catch (error) {
-      console.error('Error advancing stage:', error);
-      alert('Failed to advance stage');
+      console.error("Error advancing stage:", error);
+      alert("Failed to advance stage");
     } finally {
       setLoading(false);
     }
@@ -78,16 +92,29 @@ const StageActionButtons = ({ currentStage, orderId, onRefresh }) => {
       });
       onRefresh();
     } catch (error) {
-      console.error('Error completing stage:', error);
-      alert('Failed to complete stage');
+      console.error("Error completing stage:", error);
+      alert("Failed to complete stage");
     } finally {
       setLoading(false);
     }
   };
 
-  const stageSequence = ['WEB', 'CRM', 'SALES', 'ONBD', 'CASE', 'EXEC', 'GOVT', 'QA', 'DEL'];
+  const stageSequence = [
+    "WEB",
+    "CRM",
+    "SALES",
+    "ONBD",
+    "CASE",
+    "EXEC",
+    "GOVT",
+    "QA",
+    "DEL",
+  ];
   const currentIndex = stageSequence.indexOf(currentStage);
-  const nextStage = currentIndex < stageSequence.length - 1 ? stageSequence[currentIndex + 1] : null;
+  const nextStage =
+    currentIndex < stageSequence.length - 1
+      ? stageSequence[currentIndex + 1]
+      : null;
 
   return (
     <div className="flex gap-3">
@@ -130,7 +157,7 @@ export default function OrderDetailPage() {
       setProgress(progressRes.data);
       setEvents(eventsRes.data);
     } catch (error) {
-      console.error('Error fetching order data:', error);
+      console.error("Error fetching order data:", error);
     } finally {
       setLoading(false);
     }
@@ -159,8 +186,12 @@ export default function OrderDetailPage() {
           <ArrowLeftIcon className="w-5 h-5" />
           Back
         </button>
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Order #{orderId}</h1>
-        <p className="text-gray-600">Track and manage your service delivery workflow</p>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          Order #{orderId}
+        </h1>
+        <p className="text-gray-600">
+          Track and manage your service delivery workflow
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -168,23 +199,39 @@ export default function OrderDetailPage() {
         <div className="lg:col-span-2 space-y-8">
           {/* Order Summary */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Order Summary</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Order Summary
+            </h2>
             <div className="grid grid-cols-2 gap-6 mb-8">
               <div>
-                <p className="text-sm text-gray-600 font-semibold mb-1">Service Type</p>
-                <p className="text-lg font-semibold text-gray-900">GST Registration</p>
+                <p className="text-sm text-gray-600 font-semibold mb-1">
+                  Service Type
+                </p>
+                <p className="text-lg font-semibold text-gray-900">
+                  GST Registration
+                </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600 font-semibold mb-1">Order Value</p>
+                <p className="text-sm text-gray-600 font-semibold mb-1">
+                  Order Value
+                </p>
                 <p className="text-lg font-semibold text-green-600">₹4,999</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600 font-semibold mb-1">Current Stage</p>
-                <p className="text-lg font-semibold text-indigo-600">{progress?.currentStage || 'N/A'}</p>
+                <p className="text-sm text-gray-600 font-semibold mb-1">
+                  Current Stage
+                </p>
+                <p className="text-lg font-semibold text-indigo-600">
+                  {progress?.currentStage || "N/A"}
+                </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600 font-semibold mb-1">Progress</p>
-                <p className="text-lg font-semibold text-blue-600">{progress?.completionPercentage || 0}%</p>
+                <p className="text-sm text-gray-600 font-semibold mb-1">
+                  Progress
+                </p>
+                <p className="text-lg font-semibold text-blue-600">
+                  {progress?.completionPercentage || 0}%
+                </p>
               </div>
             </div>
 
@@ -196,7 +243,9 @@ export default function OrderDetailPage() {
                   style={{ width: `${progress?.completionPercentage || 0}%` }}
                 ></div>
               </div>
-              <p className="text-xs text-gray-600 mt-2">{progress?.completionPercentage || 0}% Complete</p>
+              <p className="text-xs text-gray-600 mt-2">
+                {progress?.completionPercentage || 0}% Complete
+              </p>
             </div>
 
             {/* Stage Actions */}
@@ -211,7 +260,9 @@ export default function OrderDetailPage() {
 
           {/* Timeline of Events */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Workflow Timeline</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Workflow Timeline
+            </h2>
             <WorkflowEventTimeline events={events} />
           </div>
         </div>
@@ -221,28 +272,34 @@ export default function OrderDetailPage() {
           {/* Workflow Progress Card */}
           {progress && progress.stages && (
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Stage Progress</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">
+                Stage Progress
+              </h3>
               <div className="space-y-3">
                 {progress.stages.map((stage) => (
                   <div
                     key={stage.stage}
                     className={`p-3 rounded-lg border-l-4 transition ${
-                      stage.status === 'COMPLETED'
-                        ? 'bg-green-50 border-green-500'
-                        : stage.status === 'IN_PROGRESS'
-                        ? 'bg-blue-50 border-blue-500'
-                        : 'bg-gray-50 border-gray-300'
+                      stage.status === "COMPLETED"
+                        ? "bg-green-50 border-green-500"
+                        : stage.status === "IN_PROGRESS"
+                          ? "bg-blue-50 border-blue-500"
+                          : "bg-gray-50 border-gray-300"
                     }`}
                   >
-                    <p className="font-semibold text-sm text-gray-900">{stage.sequence}. {stage.label}</p>
-                    <p className={`text-xs mt-1 font-medium ${
-                      stage.status === 'COMPLETED'
-                        ? 'text-green-600'
-                        : stage.status === 'IN_PROGRESS'
-                        ? 'text-blue-600'
-                        : 'text-gray-600'
-                    }`}>
-                      {stage.status.replace(/_/g, ' ')}
+                    <p className="font-semibold text-sm text-gray-900">
+                      {stage.sequence}. {stage.label}
+                    </p>
+                    <p
+                      className={`text-xs mt-1 font-medium ${
+                        stage.status === "COMPLETED"
+                          ? "text-green-600"
+                          : stage.status === "IN_PROGRESS"
+                            ? "text-blue-600"
+                            : "text-gray-600"
+                      }`}
+                    >
+                      {stage.status.replace(/_/g, " ")}
                     </p>
                   </div>
                 ))}
@@ -251,22 +308,26 @@ export default function OrderDetailPage() {
           )}
 
           {/* Active Exceptions */}
-          {progress && progress.exceptions && progress.exceptions.length > 0 && (
-            <div className="bg-red-50 rounded-2xl shadow-lg p-6 border-l-4 border-red-500">
-              <div className="flex items-center gap-2 mb-4">
-                <ExclamationTriangleIcon className="w-6 h-6 text-red-600" />
-                <h3 className="text-lg font-bold text-gray-900">Issues</h3>
+          {progress &&
+            progress.exceptions &&
+            progress.exceptions.length > 0 && (
+              <div className="bg-red-50 rounded-2xl shadow-lg p-6 border-l-4 border-red-500">
+                <div className="flex items-center gap-2 mb-4">
+                  <ExclamationTriangleIcon className="w-6 h-6 text-red-600" />
+                  <h3 className="text-lg font-bold text-gray-900">Issues</h3>
+                </div>
+                <div className="space-y-2">
+                  {progress.exceptions.map((exc, idx) => (
+                    <div key={idx} className="text-sm">
+                      <p className="font-semibold text-red-800">{exc.stage}</p>
+                      <p className="text-red-700 text-xs mt-1">
+                        {exc.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="space-y-2">
-                {progress.exceptions.map((exc, idx) => (
-                  <div key={idx} className="text-sm">
-                    <p className="font-semibold text-red-800">{exc.stage}</p>
-                    <p className="text-red-700 text-xs mt-1">{exc.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            )}
 
           {/* Quick Info */}
           <div className="bg-white rounded-2xl shadow-lg p-6">

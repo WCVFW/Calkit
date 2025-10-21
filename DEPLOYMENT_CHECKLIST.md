@@ -19,6 +19,7 @@
   - [ ] Schema imported: `schema.sql`
 
 - [ ] **Backend Build**
+
   ```bash
   cd backend
   mvn clean install
@@ -32,6 +33,7 @@
   - [ ] Server port available (8081)
 
 - [ ] **Backend Runtime**
+
   ```bash
   mvn spring-boot:run
   # Should start without errors
@@ -39,6 +41,7 @@
   ```
 
 - [ ] **Backend API Health Check**
+
   ```bash
   curl http://localhost:8081/actuator/health
   # Should return: {"status":"UP"}
@@ -57,6 +60,7 @@
   - [ ] npm installed: `npm -version`
 
 - [ ] **Frontend Dependencies**
+
   ```bash
   cd frontend
   npm install
@@ -64,12 +68,14 @@
   ```
 
 - [ ] **Frontend Build**
+
   ```bash
   npm run build
   # Should create dist/ folder
   ```
 
 - [ ] **Frontend Dev Server**
+
   ```bash
   npm run dev
   # Should start without errors
@@ -358,6 +364,7 @@ logging.level.com.calzone.financial=DEBUG
 ### Backend Won't Start
 
 **Error**: Port already in use
+
 ```bash
 # Find and kill process
 lsof -i :8081
@@ -368,6 +375,7 @@ server.port=8082
 ```
 
 **Error**: Cannot connect to database
+
 ```bash
 # Verify MySQL is running
 sudo systemctl status mysql
@@ -380,6 +388,7 @@ mysql -u app_user -p user_db -e "SHOW TABLES;"
 ```
 
 **Error**: Java version
+
 ```bash
 # Check Java version
 java -version
@@ -391,6 +400,7 @@ java -version
 ### Frontend Won't Load
 
 **Error**: API not reachable
+
 ```bash
 # Check backend is running
 curl http://localhost:8081/actuator/health
@@ -402,6 +412,7 @@ cat frontend/.env
 ```
 
 **Error**: Port 5173 already in use
+
 ```bash
 # Find process
 lsof -i :5173
@@ -414,6 +425,7 @@ npm run dev -- --port 3001
 ### Database Issues
 
 **Error**: Cannot create database
+
 ```bash
 # Verify MySQL user has privileges
 mysql -u root -p
@@ -422,6 +434,7 @@ FLUSH PRIVILEGES;
 ```
 
 **Error**: Schema import fails
+
 ```bash
 # Check file exists
 ls -la backend/src/main/resources/schema.sql
@@ -437,18 +450,21 @@ mysql -u root -p user_db < backend/src/main/resources/schema.sql
 If deployment fails:
 
 1. **Stop services**
+
    ```bash
    pkill -f "java -jar"
    npm stop
    ```
 
 2. **Restore previous version**
+
    ```bash
    git checkout previous-commit
    # or restore from backup
    ```
 
 3. **Restore database**
+
    ```bash
    mysql user_db < database_backup.sql
    ```
@@ -471,21 +487,20 @@ If deployment fails:
 ✅ Security verified  
 ✅ Monitoring in place  
 ✅ Team trained on system  
-✅ Documentation up to date  
+✅ Documentation up to date
 
 ---
 
 ## Sign-Off
 
-- **Deployed By**: _________________
-- **Date**: _________________
-- **Verified By**: _________________
-- **Date**: _________________
-- **Notes**: _________________
+- **Deployed By**: ********\_********
+- **Date**: ********\_********
+- **Verified By**: ********\_********
+- **Date**: ********\_********
+- **Notes**: ********\_********
 
 ---
 
 **Version**: 1.0.0  
 **Last Updated**: 2024  
 **Next Review**: [3 months from deployment]
-

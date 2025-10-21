@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { workflowAPI } from '../lib/api';
+import { useState, useEffect, useCallback } from "react";
+import { workflowAPI } from "../lib/api";
 
 export const useWorkflowProgress = (orderId, pollInterval = 30000) => {
   const [progress, setProgress] = useState(null);
@@ -22,7 +22,7 @@ export const useWorkflowProgress = (orderId, pollInterval = 30000) => {
       setExceptions(exceptionsRes.data);
     } catch (err) {
       setError(err.message);
-      console.error('Error fetching workflow progress:', err);
+      console.error("Error fetching workflow progress:", err);
     } finally {
       setLoading(false);
     }

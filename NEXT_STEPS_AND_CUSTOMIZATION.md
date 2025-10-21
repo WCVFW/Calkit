@@ -135,8 +135,13 @@ Then update the timeline in frontend:
 
 ```javascript
 const STAGES = [
-  { key: 'STAGE1', label: 'Your Stage 1', sequence: 1, color: 'from-blue-500' },
-  { key: 'STAGE2', label: 'Your Stage 2', sequence: 2, color: 'from-purple-500' },
+  { key: "STAGE1", label: "Your Stage 1", sequence: 1, color: "from-blue-500" },
+  {
+    key: "STAGE2",
+    label: "Your Stage 2",
+    sequence: 2,
+    color: "from-purple-500",
+  },
   // ...
 ];
 ```
@@ -268,15 +273,15 @@ public class WorkflowWebSocketController {
 
 ```javascript
 // frontend/src/hooks/useWebSocketProgress.js
-import { useEffect, useState } from 'react';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import { useEffect, useState } from "react";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 export const useWebSocketProgress = (orderId) => {
   const [progress, setProgress] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8081/ws-workflow');
+    const socket = new SockJS("http://localhost:8081/ws-workflow");
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
@@ -301,7 +306,7 @@ export const useWebSocketProgress = (orderId) => {
 public class PaymentProcessor {
     @Autowired
     private RazorpayConfig razorpayConfig;
-    
+
     @Autowired
     private WorkflowService workflowService;
 
@@ -315,7 +320,7 @@ public class PaymentProcessor {
                 WorkflowStatus.COMPLETED,
                 "Payment of ₹" + amount + " received"
             );
-            
+
             // Advance to next stage
             workflowService.advanceStage(orderId, WorkflowStage.ONBD, "Payment confirmed, starting onboarding");
         } catch (Exception e) {
@@ -338,7 +343,7 @@ public class PaymentProcessor {
 ```java
 @Component
 public class WorkflowAccessControl {
-    
+
     public boolean canViewOrder(User user, Long orderId) {
         // Check if user has permission
         if (user.hasRole("ADMIN")) return true;
@@ -363,13 +368,16 @@ public class WorkflowAccessControl {
 
 ```jsx
 // In OrderDetailPage.jsx
-{user?.role === 'ADMIN' || user?.role === 'AGENT' && (
-  <StageActionButtons
-    currentStage={progress.currentStage}
-    orderId={orderId}
-    onRefresh={fetchData}
-  />
-)}
+{
+  user?.role === "ADMIN" ||
+    (user?.role === "AGENT" && (
+      <StageActionButtons
+        currentStage={progress.currentStage}
+        orderId={orderId}
+        onRefresh={fetchData}
+      />
+    ));
+}
 ```
 
 ### Customization 9: Add Dashboard Widgets
@@ -381,8 +389,12 @@ Create custom dashboard widgets:
 export const RevenueWidget = ({ data }) => {
   return (
     <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white">
-      <p className="text-sm font-semibold opacity-90 mb-1">Revenue This Month</p>
-      <p className="text-4xl font-bold">₹{data.total.toLocaleString('en-IN')}</p>
+      <p className="text-sm font-semibold opacity-90 mb-1">
+        Revenue This Month
+      </p>
+      <p className="text-4xl font-bold">
+        ₹{data.total.toLocaleString("en-IN")}
+      </p>
       <p className="text-xs mt-2 opacity-75">+{data.growth}% from last month</p>
     </div>
   );
@@ -402,33 +414,35 @@ Then add to CRM Dashboard:
 // Export to CSV
 export const exportOrdersToCsv = (orders) => {
   const csv = [
-    ['ID', 'Service', 'Status', 'Value', 'Created Date'],
-    ...orders.map(o => [o.id, o.service, o.status, o.value, o.createdAt])
-  ].map(row => row.join(',')).join('\n');
+    ["ID", "Service", "Status", "Value", "Created Date"],
+    ...orders.map((o) => [o.id, o.service, o.status, o.value, o.createdAt]),
+  ]
+    .map((row) => row.join(","))
+    .join("\n");
 
-  const blob = new Blob([csv], { type: 'text/csv' });
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = 'orders.csv';
+  a.download = "orders.csv";
   a.click();
 };
 
 // Export to PDF
-import jsPDF from 'jspdf';
+import jsPDF from "jspdf";
 
 export const exportOrdersToPdf = (orders) => {
   const pdf = new jsPDF();
   let yPos = 10;
 
-  orders.forEach(order => {
+  orders.forEach((order) => {
     pdf.text(`Order #${order.id} - ${order.service}`, 10, yPos);
     pdf.text(`Status: ${order.status}`, 10, yPos + 5);
     pdf.text(`Value: ₹${order.value}`, 10, yPos + 10);
     yPos += 20;
   });
 
-  pdf.save('orders.pdf');
+  pdf.save("orders.pdf");
 };
 ```
 
@@ -444,13 +458,13 @@ Create integrations for GOVT stage:
 // For GST Portal
 @Component
 public class GstPortalIntegration {
-    
+
     public void submitGstApplication(Long orderId, GstApplicationData data) {
         try {
             // Call GST API
             GstApiClient client = new GstApiClient(apiKey);
             String applicationId = client.submitApplication(data);
-            
+
             // Log in workflow
             workflowService.createEvent(
                 orderId,
@@ -472,7 +486,7 @@ public class GstPortalIntegration {
     public void checkGstStatus(Long orderId, String applicationId) {
         // Poll GST API for status updates
         GstStatusResponse status = client.getApplicationStatus(applicationId);
-        
+
         if (status.isApproved()) {
             workflowService.completeStage(orderId, WorkflowStage.GOVT, "GST approved!");
         } else if (status.hasObjection()) {
@@ -493,14 +507,14 @@ public class GstPortalIntegration {
 // Upload documents
 @Component
 public class DocumentManager {
-    
+
     @Autowired
     private S3StorageService s3Service;
 
     public void uploadDocument(Long orderId, MultipartFile file) {
         try {
             String fileUrl = s3Service.uploadFile(file, "orders/" + orderId);
-            
+
             // Log in workflow
             workflowService.createEvent(
                 orderId,
@@ -530,18 +544,18 @@ public class DocumentManager {
 ```java
 @Component
 public class CustomAnalyticsService {
-    
+
     @Autowired
     private WorkflowEventRepository eventRepository;
 
     public Map<String, Object> getCustomMetrics(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> metrics = new HashMap<>();
-        
+
         // Average order value
         BigDecimal avgValue = eventRepository.findAll().stream()
             .collect(Collectors.averagingDouble(e -> getOrderValue(e.getOrderId())));
         metrics.put("averageOrderValue", avgValue);
-        
+
         // Fastest completed stage
         LocalDateTime fastestCompletion = eventRepository.findAll().stream()
             .filter(e -> e.getStatus() == WorkflowStatus.COMPLETED)
@@ -549,7 +563,7 @@ public class CustomAnalyticsService {
             .map(WorkflowEvent::getCreatedAt)
             .orElse(null);
         metrics.put("fastestStageCompletion", fastestCompletion);
-        
+
         return metrics;
     }
 }
@@ -575,6 +589,7 @@ public class CustomAnalyticsService {
 ### Production Configuration
 
 **Backend** (`application.properties`):
+
 ```properties
 # Use environment variables
 spring.datasource.url=${DB_URL}
@@ -594,6 +609,7 @@ logging.file.name=/var/log/crm/application.log
 ```
 
 **Frontend** (`.env.production`):
+
 ```
 VITE_API_URL=https://api.yourcompany.com
 ```
@@ -674,12 +690,14 @@ VITE_API_URL=https://api.yourcompany.com
 ## 📞 Support & Resources
 
 ### Community & Documentation
+
 - Spring Boot: https://spring.io
 - React: https://react.dev
 - Tailwind: https://tailwindcss.com
 - MySQL: https://dev.mysql.com
 
 ### Professional Services
+
 - Need deployment help? → [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)
 - Need architecture review? → [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)
 - Need customization guidance? → Check this file
@@ -696,7 +714,7 @@ You can now:
 ✅ **Deploy** - Use provided deployment instructions  
 ✅ **Scale** - Architecture supports growth  
 ✅ **Integrate** - Easy to add external services  
-✅ **Extend** - Add features following patterns  
+✅ **Extend** - Add features following patterns
 
 **The system is ready for your use!**
 

@@ -86,7 +86,7 @@ export default function App() {
           >
             <Route index element={<HomePage />} />
             <Route path="compliances" element={<CompliancesPage />} />
-            <Route path="servicehub" element={<ServicesHub/>} />
+            <Route path="servicehub" element={<ServicesHub />} />
             <Route path="crm" element={<CrmPage />} />
             <Route path="crm-dashboard" element={<CrmDashboard />} />
             <Route path="leads" element={<LeadManagementPage />} />

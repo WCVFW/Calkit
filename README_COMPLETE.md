@@ -32,36 +32,42 @@ Each order flows through these stages automatically, with real-time tracking, ex
 ## ✨ Key Features
 
 ### ✅ Core Workflow System
+
 - 9-stage pipeline with status tracking
 - 5 exception types with dedicated handling
 - Real-time progress monitoring
 - Event logging and audit trail
 
 ### ✅ User Interfaces
+
 - **CRM Dashboard** - Overview with 9-stage timeline
 - **Order Detail Page** - Complete order management
 - **Analytics Dashboard** - Performance metrics
 - **Lead Management** - Sales pipeline tracking
 
 ### ✅ API Layer
+
 - 22 REST endpoints
 - Organized by resource (Workflow, Alerts, Analytics)
 - Comprehensive error handling
 - CORS and security enabled
 
 ### ✅ Database
+
 - 3 normalized tables
 - Optimized with indexes
 - Sample data included
 - Automatic initialization
 
 ### ✅ Real-Time Features
+
 - Auto-polling updates (30-second intervals)
 - Live progress tracking
 - Alert notifications
 - Exception dashboard
 
 ### ✅ Analytics
+
 - Dashboard statistics
 - Stage performance metrics
 - Exception trending
@@ -72,6 +78,7 @@ Each order flows through these stages automatically, with real-time tracking, ex
 ## 🚀 5-Minute Start
 
 ### Prerequisites
+
 ```bash
 ✅ Java 17+        # Check: java -version
 ✅ MySQL 8.0+      # Check: mysql --version
@@ -79,6 +86,7 @@ Each order flows through these stages automatically, with real-time tracking, ex
 ```
 
 ### Start Backend
+
 ```bash
 cd backend
 mvn spring-boot:run
@@ -86,6 +94,7 @@ mvn spring-boot:run
 ```
 
 ### Start Frontend (New Terminal)
+
 ```bash
 cd frontend
 npm install && npm run dev
@@ -93,6 +102,7 @@ npm install && npm run dev
 ```
 
 ### Access the App
+
 - **CRM Dashboard**: http://localhost:5173/dashboard/crm-dashboard
 - **Order Details**: http://localhost:5173/dashboard/orders/1002
 - **Analytics**: http://localhost:5173/dashboard/workflow-analytics
@@ -106,6 +116,7 @@ For detailed setup, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
 ## 📁 What Was Built
 
 ### Backend (Spring Boot)
+
 ```
 ✅ 13 Java files
 ✅ 22 REST API endpoints
@@ -116,6 +127,7 @@ For detailed setup, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
 ```
 
 ### Frontend (React + Vite)
+
 ```
 ✅ 4 Dashboard pages
 ✅ 3 Reusable components
@@ -126,6 +138,7 @@ For detailed setup, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
 ```
 
 ### Database (MySQL)
+
 ```
 ✅ 3 tables: workflow_events, workflow_alerts, orders (extended)
 ✅ 8 indexes for performance
@@ -134,6 +147,7 @@ For detailed setup, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
 ```
 
 ### Documentation
+
 ```
 ✅ 6 comprehensive guides
 ✅ 2500+ lines of documentation
@@ -148,6 +162,7 @@ For detailed setup, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
 ## 📊 API Overview
 
 ### Workflow Endpoints (12)
+
 ```
 GET     /api/workflow/orders/{orderId}/timeline
 GET     /api/workflow/orders/{orderId}/progress
@@ -162,6 +177,7 @@ GET     /api/workflow/stages
 ```
 
 ### Alert Management (7)
+
 ```
 GET     /api/workflow/alerts/orders/{orderId}
 GET     /api/workflow/alerts/orders/{orderId}/unresolved
@@ -173,6 +189,7 @@ GET     /api/workflow/alerts/count/{orderId}
 ```
 
 ### Analytics (3)
+
 ```
 GET     /api/workflow/analytics/dashboard-stats
 GET     /api/workflow/analytics/stage-stats
@@ -186,6 +203,7 @@ GET     /api/workflow/analytics/exception-stats
 ## 🏗️ Architecture
 
 ### Three-Tier Architecture
+
 ```
 ┌─────────────────────────────────────┐
 │   Frontend (React + Vite)           │
@@ -221,19 +239,19 @@ GET     /api/workflow/analytics/exception-stats
 ✅ Error handling  
 ✅ No hardcoded secrets  
 ✅ Database access control  
-✅ Audit trail ready  
+✅ Audit trail ready
 
 ---
 
 ## 📈 Performance
 
-| Metric | Value |
-|--------|-------|
-| API Response Time | < 200ms |
-| Page Load Time | < 2 seconds |
-| Database Queries | Indexed & optimized |
-| Concurrent Users | 1000+ supported |
-| Data Polling | 30-second intervals |
+| Metric            | Value               |
+| ----------------- | ------------------- |
+| API Response Time | < 200ms             |
+| Page Load Time    | < 2 seconds         |
+| Database Queries  | Indexed & optimized |
+| Concurrent Users  | 1000+ supported     |
+| Data Polling      | 30-second intervals |
 
 ---
 
@@ -241,11 +259,11 @@ GET     /api/workflow/analytics/exception-stats
 
 ### For Different Audiences
 
-| Role | Start With | Then Read |
-|------|-----------|-----------|
-| **Developer** | [Getting Started](GETTING_STARTED.md) | [Implementation Guide](IMPLEMENTATION_GUIDE.md) |
+| Role                | Start With                                  | Then Read                                       |
+| ------------------- | ------------------------------------------- | ----------------------------------------------- |
+| **Developer**       | [Getting Started](GETTING_STARTED.md)       | [Implementation Guide](IMPLEMENTATION_GUIDE.md) |
 | **DevOps/SysAdmin** | [Setup Instructions](SETUP_INSTRUCTIONS.md) | [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) |
-| **Product Manager** | [Project Summary](PROJECT_SUMMARY.md) | [Final Delivery](FINAL_DELIVERY_SUMMARY.md) |
+| **Product Manager** | [Project Summary](PROJECT_SUMMARY.md)       | [Final Delivery](FINAL_DELIVERY_SUMMARY.md)     |
 | **Project Manager** | [Final Delivery](FINAL_DELIVERY_SUMMARY.md) | [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) |
 
 ---
@@ -253,6 +271,7 @@ GET     /api/workflow/analytics/exception-stats
 ## 🎓 Sample Workflows
 
 ### Happy Path: GST Registration
+
 ```
 1. WEB   → Customer submits GST registration online
 2. CRM   → Lead scored (85/100), routed to sales
@@ -266,6 +285,7 @@ GET     /api/workflow/analytics/exception-stats
 ```
 
 ### Exception: Payment Failure
+
 ```
 3. SALES → Payment attempt fails
    ↓ Exception: PF (Payment Failure)
@@ -277,6 +297,7 @@ GET     /api/workflow/analytics/exception-stats
 ```
 
 ### Exception: Missing Documents
+
 ```
 4. ONBD  → Document verification started
    ↓ Exception: MD (Missing Documents)
@@ -293,6 +314,7 @@ GET     /api/workflow/analytics/exception-stats
 ## 🚢 Deployment Options
 
 ### Development
+
 ```bash
 # Terminal 1
 cd backend && mvn spring-boot:run
@@ -302,12 +324,14 @@ cd frontend && npm run dev
 ```
 
 ### Production (Docker)
+
 ```bash
 docker-compose up -d
 # Runs on configured port with all services
 ```
 
 ### Cloud Platforms
+
 - ✅ AWS (EC2 + RDS + CloudFront)
 - ✅ Google Cloud (Compute Engine + Cloud SQL)
 - ✅ Azure (App Service + Database)
@@ -318,18 +342,21 @@ docker-compose up -d
 ## 🧪 Testing
 
 ### Backend Testing
+
 ```bash
 cd backend
 mvn test
 ```
 
 ### Frontend Testing
+
 ```bash
 cd frontend
 npm test
 ```
 
 ### API Testing
+
 ```bash
 # Using cURL
 curl http://localhost:8081/api/workflow/orders/1002/progress
@@ -344,12 +371,12 @@ curl http://localhost:8081/api/workflow/orders/1002/progress
 
 ### Quick Fixes
 
-| Issue | Solution |
-|-------|----------|
-| Port in use | Change port in application.properties or kill process |
-| DB connection error | Verify MySQL is running and credentials are correct |
-| API not responding | Check backend is running: `curl http://localhost:8081/actuator/health` |
-| Frontend won't load | Check `VITE_API_URL` in .env file |
+| Issue               | Solution                                                               |
+| ------------------- | ---------------------------------------------------------------------- |
+| Port in use         | Change port in application.properties or kill process                  |
+| DB connection error | Verify MySQL is running and credentials are correct                    |
+| API not responding  | Check backend is running: `curl http://localhost:8081/actuator/health` |
+| Frontend won't load | Check `VITE_API_URL` in .env file                                      |
 
 ### Full Documentation
 
@@ -365,6 +392,7 @@ curl http://localhost:8081/api/workflow/orders/1002/progress
 ### Making Changes
 
 1. **Backend Changes**
+
    ```bash
    cd backend
    # Edit Java files
@@ -374,6 +402,7 @@ curl http://localhost:8081/api/workflow/orders/1002/progress
    ```
 
 2. **Frontend Changes**
+
    ```bash
    cd frontend
    # Edit React files
@@ -394,7 +423,7 @@ curl http://localhost:8081/api/workflow/orders/1002/progress
 Backend: Organized by domain (workflow package)
   - Entity, Repository, Service, Controller pattern
   - Clear separation of concerns
-  
+
 Frontend: Component-based organization
   - Pages in /pages
   - Components in /components
@@ -407,26 +436,31 @@ Frontend: Component-based organization
 ## 🌟 Highlights
 
 ✨ **Complete Implementation**
+
 - Not a template or starter kit
 - Fully functional production-ready system
 - All components implemented and tested
 
 ✨ **Professional Quality**
+
 - Enterprise-grade code
 - Best practices throughout
 - Comprehensive error handling
 
 ✨ **Well Documented**
+
 - 2500+ lines of documentation
 - 50+ code examples
 - Architecture diagrams
 
 ✨ **Ready to Deploy**
+
 - No further development needed
 - Can go live immediately
 - Includes monitoring setup
 
 ✨ **Extensible**
+
 - Easy to add new stages
 - Simple to customize
 - Clear patterns to follow
@@ -436,24 +470,28 @@ Frontend: Component-based organization
 ## 🎯 Next Steps
 
 ### For Immediate Use
+
 1. Follow [GETTING_STARTED.md](GETTING_STARTED.md) (5 minutes)
 2. Explore the sample data
 3. Create test orders
 4. View the dashboard
 
 ### For Production Deployment
+
 1. Read [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)
 2. Configure your environment
 3. Run pre-deployment checks
 4. Deploy using provided instructions
 
 ### For Understanding the System
+
 1. Read [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)
 2. Review [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)
 3. Check code comments
 4. Explore API endpoints
 
 ### For Customization
+
 1. Identify changes needed
 2. Review similar code in system
 3. Make changes following patterns
@@ -483,12 +521,14 @@ Frontend: Component-based organization
 ## 🎓 Learning Resources
 
 ### For Developers
+
 - Spring Boot docs: https://spring.io/projects/spring-boot
 - React docs: https://react.dev
 - Tailwind CSS: https://tailwindcss.com
 - MySQL docs: https://dev.mysql.com
 
 ### For DevOps
+
 - Docker: https://www.docker.com
 - Nginx: https://nginx.org
 - AWS: https://aws.amazon.com
@@ -499,6 +539,7 @@ Frontend: Component-based organization
 ## 📞 Contact & Support
 
 For questions or issues:
+
 1. Check the relevant documentation file
 2. Review [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md) troubleshooting
 3. Check code comments
@@ -525,7 +566,7 @@ You have received a **complete, production-ready financial CRM system** with:
 ✅ Complete documentation  
 ✅ Sample data  
 ✅ Security features  
-✅ Ready to deploy  
+✅ Ready to deploy
 
 **The system is ready for immediate deployment to production.**
 
@@ -545,4 +586,3 @@ You have received a **complete, production-ready financial CRM system** with:
 ---
 
 Made with ❤️ for financial services automation.
-

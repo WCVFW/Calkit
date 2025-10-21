@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   UserPlusIcon,
   CheckCircleIcon,
@@ -10,36 +10,46 @@ import {
   ExclamationTriangleIcon,
   ArrowPathIcon,
   EyeIcon,
-} from '@heroicons/react/24/outline';
-import axios from 'axios';
+} from "@heroicons/react/24/outline";
+import axios from "axios";
 
 const WorkflowTimeline = ({ orderId, progress }) => {
   const stages = [
-    { key: 'WEB', label: 'Web/App', sequence: 1, color: 'from-blue-500' },
-    { key: 'CRM', label: 'CRM Routing', sequence: 2, color: 'from-purple-500' },
-    { key: 'SALES', label: 'Sales & Payment', sequence: 3, color: 'from-pink-500' },
-    { key: 'ONBD', label: 'Onboarding', sequence: 4, color: 'from-orange-500' },
-    { key: 'CASE', label: 'Case Mgmt', sequence: 5, color: 'from-yellow-500' },
-    { key: 'EXEC', label: 'Execution', sequence: 6, color: 'from-green-500' },
-    { key: 'GOVT', label: 'Gov\'t Portal', sequence: 7, color: 'from-teal-500' },
-    { key: 'QA', label: 'QA & Compliance', sequence: 8, color: 'from-indigo-500' },
-    { key: 'DEL', label: 'Delivery', sequence: 9, color: 'from-emerald-500' },
+    { key: "WEB", label: "Web/App", sequence: 1, color: "from-blue-500" },
+    { key: "CRM", label: "CRM Routing", sequence: 2, color: "from-purple-500" },
+    {
+      key: "SALES",
+      label: "Sales & Payment",
+      sequence: 3,
+      color: "from-pink-500",
+    },
+    { key: "ONBD", label: "Onboarding", sequence: 4, color: "from-orange-500" },
+    { key: "CASE", label: "Case Mgmt", sequence: 5, color: "from-yellow-500" },
+    { key: "EXEC", label: "Execution", sequence: 6, color: "from-green-500" },
+    { key: "GOVT", label: "Gov't Portal", sequence: 7, color: "from-teal-500" },
+    {
+      key: "QA",
+      label: "QA & Compliance",
+      sequence: 8,
+      color: "from-indigo-500",
+    },
+    { key: "DEL", label: "Delivery", sequence: 9, color: "from-emerald-500" },
   ];
 
   const getStatusColor = (status) => {
     const colors = {
-      COMPLETED: 'bg-green-500 ring-green-300',
-      IN_PROGRESS: 'bg-blue-500 ring-blue-300',
-      PENDING: 'bg-gray-300 ring-gray-200',
-      FAILED: 'bg-red-500 ring-red-300',
-      BLOCKED: 'bg-yellow-500 ring-yellow-300',
+      COMPLETED: "bg-green-500 ring-green-300",
+      IN_PROGRESS: "bg-blue-500 ring-blue-300",
+      PENDING: "bg-gray-300 ring-gray-200",
+      FAILED: "bg-red-500 ring-red-300",
+      BLOCKED: "bg-yellow-500 ring-yellow-300",
     };
     return colors[status] || colors.PENDING;
   };
 
   const stageStatusMap = {};
   if (progress?.stages) {
-    progress.stages.forEach(s => {
+    progress.stages.forEach((s) => {
       stageStatusMap[s.stage] = s.status;
     });
   }
@@ -71,15 +81,19 @@ const WorkflowTimeline = ({ orderId, progress }) => {
         {/* Stage Cards */}
         <div className="grid grid-cols-9 gap-2">
           {stages.map((stage, idx) => {
-            const stageStatus = stageStatusMap[stage.key] || 'PENDING';
-            const isCompleted = stageStatus === 'COMPLETED';
-            const isInProgress = stageStatus === 'IN_PROGRESS';
+            const stageStatus = stageStatusMap[stage.key] || "PENDING";
+            const isCompleted = stageStatus === "COMPLETED";
+            const isInProgress = stageStatus === "IN_PROGRESS";
 
             return (
               <div key={stage.key} className="relative">
                 <div
                   className={`flex flex-col items-center cursor-pointer transition-all hover:scale-110 ${
-                    isCompleted ? 'opacity-100' : isInProgress ? 'opacity-100' : 'opacity-75'
+                    isCompleted
+                      ? "opacity-100"
+                      : isInProgress
+                        ? "opacity-100"
+                        : "opacity-75"
                   }`}
                   title={`${stage.label} - ${stageStatus}`}
                 >
@@ -106,13 +120,13 @@ const WorkflowTimeline = ({ orderId, progress }) => {
                   <div
                     className={`text-xs mt-1 font-medium ${
                       isCompleted
-                        ? 'text-green-600'
+                        ? "text-green-600"
                         : isInProgress
-                        ? 'text-blue-600'
-                        : 'text-gray-500'
+                          ? "text-blue-600"
+                          : "text-gray-500"
                     }`}
                   >
-                    {stageStatus.replace(/_/g, ' ')}
+                    {stageStatus.replace(/_/g, " ")}
                   </div>
                 </div>
               </div>
@@ -126,26 +140,57 @@ const WorkflowTimeline = ({ orderId, progress }) => {
 
 const ExceptionCard = ({ exception }) => {
   const exceptionColors = {
-    PF: { bg: 'bg-red-50', border: 'border-red-200', icon: 'text-red-600', title: 'Payment Failure' },
-    MD: { bg: 'bg-orange-50', border: 'border-orange-200', icon: 'text-orange-600', title: 'Missing Documents' },
-    GO: { bg: 'bg-yellow-50', border: 'border-yellow-200', icon: 'text-yellow-600', title: 'Govt Objection' },
-    SLAB: { bg: 'bg-pink-50', border: 'border-pink-200', icon: 'text-pink-600', title: 'SLA Breach Risk' },
-    CR: { bg: 'bg-purple-50', border: 'border-purple-200', icon: 'text-purple-600', title: 'Cancellation Request' },
+    PF: {
+      bg: "bg-red-50",
+      border: "border-red-200",
+      icon: "text-red-600",
+      title: "Payment Failure",
+    },
+    MD: {
+      bg: "bg-orange-50",
+      border: "border-orange-200",
+      icon: "text-orange-600",
+      title: "Missing Documents",
+    },
+    GO: {
+      bg: "bg-yellow-50",
+      border: "border-yellow-200",
+      icon: "text-yellow-600",
+      title: "Govt Objection",
+    },
+    SLAB: {
+      bg: "bg-pink-50",
+      border: "border-pink-200",
+      icon: "text-pink-600",
+      title: "SLA Breach Risk",
+    },
+    CR: {
+      bg: "bg-purple-50",
+      border: "border-purple-200",
+      icon: "text-purple-600",
+      title: "Cancellation Request",
+    },
   };
 
   const config = exceptionColors[exception.stage] || exceptionColors.PF;
 
   return (
-    <div className={`${config.bg} border-l-4 ${config.border} p-4 rounded-lg mb-3`}>
+    <div
+      className={`${config.bg} border-l-4 ${config.border} p-4 rounded-lg mb-3`}
+    >
       <div className="flex items-start justify-between">
         <div>
           <p className={`font-semibold ${config.icon}`}>{config.title}</p>
           <p className="text-sm text-gray-700 mt-1">{exception.description}</p>
           {exception.details && (
-            <p className="text-xs text-gray-600 mt-2 italic">{exception.details}</p>
+            <p className="text-xs text-gray-600 mt-2 italic">
+              {exception.details}
+            </p>
           )}
         </div>
-        <ExclamationTriangleIcon className={`w-5 h-5 ${config.icon} flex-shrink-0`} />
+        <ExclamationTriangleIcon
+          className={`w-5 h-5 ${config.icon} flex-shrink-0`}
+        />
       </div>
     </div>
   );
@@ -159,28 +204,28 @@ const LeadsTable = () => {
     const mockLeads = [
       {
         id: 1,
-        name: 'Alice Smith',
-        service: 'GST Registration',
-        status: 'In Progress',
-        assigned: 'Employee A',
+        name: "Alice Smith",
+        service: "GST Registration",
+        status: "In Progress",
+        assigned: "Employee A",
         value: 499,
         progress: 50,
       },
       {
         id: 2,
-        name: 'Bob Johnson',
-        service: 'Trademark Filing',
-        status: 'In Progress',
-        assigned: 'Employee B',
+        name: "Bob Johnson",
+        service: "Trademark Filing",
+        status: "In Progress",
+        assigned: "Employee B",
         value: 5999,
         progress: 70,
       },
       {
         id: 3,
-        name: 'Charlie Brown',
-        service: 'Company Closure',
-        status: 'Pending',
-        assigned: 'Employee A',
+        name: "Charlie Brown",
+        service: "Company Closure",
+        status: "Pending",
+        assigned: "Employee A",
         value: 9999,
         progress: 20,
       },
@@ -192,8 +237,13 @@ const LeadsTable = () => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Active Leads Pipeline</h2>
-        <Link to="/crm/leads/add" className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-semibold">
+        <h2 className="text-xl font-bold text-gray-900">
+          Active Leads Pipeline
+        </h2>
+        <Link
+          to="/crm/leads/add"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-semibold"
+        >
           + New Lead
         </Link>
       </div>
@@ -216,8 +266,12 @@ const LeadsTable = () => {
 
             <div className="mb-3">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-semibold text-gray-600">Progress</span>
-                <span className="text-xs font-bold text-gray-900">{lead.progress}%</span>
+                <span className="text-xs font-semibold text-gray-600">
+                  Progress
+                </span>
+                <span className="text-xs font-bold text-gray-900">
+                  {lead.progress}%
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
@@ -228,8 +282,14 @@ const LeadsTable = () => {
             </div>
 
             <div className="flex justify-between items-center text-sm">
-              <span className="text-gray-600">Assigned to: <span className="font-semibold">{lead.assigned}</span></span>
-              <Link to={`/crm/leads/${lead.id}`} className="text-indigo-600 hover:text-indigo-800 font-semibold">
+              <span className="text-gray-600">
+                Assigned to:{" "}
+                <span className="font-semibold">{lead.assigned}</span>
+              </span>
+              <Link
+                to={`/crm/leads/${lead.id}`}
+                className="text-indigo-600 hover:text-indigo-800 font-semibold"
+              >
                 View Details →
               </Link>
             </div>
@@ -243,39 +303,42 @@ const LeadsTable = () => {
 const StatsCards = () => {
   const stats = [
     {
-      name: 'Active Leads',
+      name: "Active Leads",
       value: 12,
       icon: UserPlusIcon,
-      color: 'from-blue-500 to-blue-600',
-      trend: '+3 this week',
+      color: "from-blue-500 to-blue-600",
+      trend: "+3 this week",
     },
     {
-      name: 'Pending Tasks',
+      name: "Pending Tasks",
       value: 8,
       icon: ListBulletIcon,
-      color: 'from-orange-500 to-orange-600',
-      trend: '-2 resolved',
+      color: "from-orange-500 to-orange-600",
+      trend: "-2 resolved",
     },
     {
-      name: 'Revenue This Month',
-      value: '₹2.45L',
+      name: "Revenue This Month",
+      value: "₹2.45L",
       icon: CurrencyRupeeIcon,
-      color: 'from-green-500 to-green-600',
-      trend: '+25% from last month',
+      color: "from-green-500 to-green-600",
+      trend: "+25% from last month",
     },
     {
-      name: 'Completion Rate',
-      value: '87%',
+      name: "Completion Rate",
+      value: "87%",
       icon: CheckCircleIcon,
-      color: 'from-purple-500 to-purple-600',
-      trend: '+5% from last month',
+      color: "from-purple-500 to-purple-600",
+      trend: "+5% from last month",
     },
   ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {stats.map((stat) => (
-        <div key={stat.name} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
+        <div
+          key={stat.name}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition"
+        >
           <div className={`bg-gradient-to-br ${stat.color} p-6 text-white`}>
             <div className="flex justify-between items-start mb-2">
               <stat.icon className="w-8 h-8 opacity-80" />
@@ -300,10 +363,12 @@ export default function CrmDashboard() {
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const response = await axios.get(`/api/workflow/orders/${orderId}/progress`);
+        const response = await axios.get(
+          `/api/workflow/orders/${orderId}/progress`,
+        );
         setProgress(response.data);
       } catch (error) {
-        console.error('Error fetching workflow progress:', error);
+        console.error("Error fetching workflow progress:", error);
       } finally {
         setLoading(false);
       }
@@ -317,7 +382,9 @@ export default function CrmDashboard() {
       {/* Header */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">CRM Dashboard</h1>
-        <p className="text-gray-600">Manage your entire sales and service delivery pipeline</p>
+        <p className="text-gray-600">
+          Manage your entire sales and service delivery pipeline
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -333,7 +400,9 @@ export default function CrmDashboard() {
             <div className="bg-white rounded-2xl shadow-lg p-8 mt-8 border-l-4 border-red-500">
               <div className="flex items-center mb-6">
                 <ExclamationTriangleIcon className="w-6 h-6 text-red-600 mr-3" />
-                <h2 className="text-2xl font-bold text-gray-900">Active Issues & Exceptions</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Active Issues & Exceptions
+                </h2>
               </div>
               <div>
                 {progress.exceptions.map((exc, idx) => (

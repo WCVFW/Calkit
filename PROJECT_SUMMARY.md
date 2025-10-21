@@ -1,4 +1,5 @@
 # Financial CRM & Workflow Management System
+
 ## Complete Project Summary
 
 ---
@@ -14,6 +15,7 @@ A production-ready financial services CRM platform with comprehensive workflow m
 ## ✨ Key Features Implemented
 
 ### 1. **9-Stage Workflow Pipeline**
+
 - **WEB** (1): Web/App Layer - Lead capture from website
 - **CRM** (2): CRM & Lead Routing - Lead scoring and SDR assignment
 - **SALES** (3): Sales & Payments - Payment processing and e-signature
@@ -25,6 +27,7 @@ A production-ready financial services CRM platform with comprehensive workflow m
 - **DEL** (9): Delivery & Closure - Upload deliverables and invoicing
 
 ### 2. **Exception & Alert Management**
+
 - **PF** (Payment Failure): Automatic retry workflows
 - **MD** (Missing Documents): Document verification requests
 - **GO** (Government Objection): Appeal and resubmission tracking
@@ -32,6 +35,7 @@ A production-ready financial services CRM platform with comprehensive workflow m
 - **CR** (Cancellation Request): Refund processing workflows
 
 ### 3. **Real-Time Monitoring**
+
 - Live workflow progress tracking
 - Status change notifications
 - Active exception dashboard
@@ -39,6 +43,7 @@ A production-ready financial services CRM platform with comprehensive workflow m
 - Stage-wise success rates
 
 ### 4. **Analytics & Reports**
+
 - Dashboard statistics (completed, in-progress, failed, blocked)
 - Stage performance analytics
 - Exception trending and patterns
@@ -46,6 +51,7 @@ A production-ready financial services CRM platform with comprehensive workflow m
 - Completion percentage tracking
 
 ### 5. **User Interface**
+
 - **CRM Dashboard**: Overview with 9-stage timeline
 - **Order Detail Page**: Complete workflow management
 - **Workflow Analytics**: Performance metrics and insights
@@ -115,44 +121,45 @@ frontend/
 
 ### Workflow Management (`/api/workflow/`)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/orders/{orderId}/timeline` | Get all workflow events |
-| GET | `/orders/{orderId}/progress` | Get workflow progress |
-| GET | `/orders/{orderId}/current-stage` | Get current stage |
-| POST | `/orders/{orderId}/event` | Log workflow event |
-| POST | `/orders/{orderId}/advance` | Advance to next stage |
-| POST | `/orders/{orderId}/complete` | Mark stage complete |
-| POST | `/orders/{orderId}/fail` | Mark stage failed |
-| POST | `/orders/{orderId}/exception` | Log exception |
-| GET | `/orders/{orderId}/exceptions` | Get active exceptions |
-| GET | `/stages` | Get available stages |
+| Method | Endpoint                          | Description             |
+| ------ | --------------------------------- | ----------------------- |
+| GET    | `/orders/{orderId}/timeline`      | Get all workflow events |
+| GET    | `/orders/{orderId}/progress`      | Get workflow progress   |
+| GET    | `/orders/{orderId}/current-stage` | Get current stage       |
+| POST   | `/orders/{orderId}/event`         | Log workflow event      |
+| POST   | `/orders/{orderId}/advance`       | Advance to next stage   |
+| POST   | `/orders/{orderId}/complete`      | Mark stage complete     |
+| POST   | `/orders/{orderId}/fail`          | Mark stage failed       |
+| POST   | `/orders/{orderId}/exception`     | Log exception           |
+| GET    | `/orders/{orderId}/exceptions`    | Get active exceptions   |
+| GET    | `/stages`                         | Get available stages    |
 
 ### Alert Management (`/api/workflow/alerts/`)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/orders/{orderId}` | Get order alerts |
-| GET | `/orders/{orderId}/unresolved` | Get unresolved alerts |
-| GET | `/unresolved` | Get all unresolved |
-| POST | `/` | Create alert |
-| PUT | `/{alertId}/resolve` | Resolve alert |
-| DELETE | `/{alertId}` | Delete alert |
-| GET | `/count/{orderId}` | Get unresolved count |
+| Method | Endpoint                       | Description           |
+| ------ | ------------------------------ | --------------------- |
+| GET    | `/orders/{orderId}`            | Get order alerts      |
+| GET    | `/orders/{orderId}/unresolved` | Get unresolved alerts |
+| GET    | `/unresolved`                  | Get all unresolved    |
+| POST   | `/`                            | Create alert          |
+| PUT    | `/{alertId}/resolve`           | Resolve alert         |
+| DELETE | `/{alertId}`                   | Delete alert          |
+| GET    | `/count/{orderId}`             | Get unresolved count  |
 
 ### Analytics (`/api/workflow/analytics/`)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/dashboard-stats` | Summary statistics |
-| GET | `/stage-stats` | Stage performance |
-| GET | `/exception-stats` | Exception tracking |
+| Method | Endpoint           | Description        |
+| ------ | ------------------ | ------------------ |
+| GET    | `/dashboard-stats` | Summary statistics |
+| GET    | `/stage-stats`     | Stage performance  |
+| GET    | `/exception-stats` | Exception tracking |
 
 ---
 
 ## 📊 Database Schema
 
 ### workflow_events
+
 ```sql
 - id: BIGINT (Primary Key)
 - order_id: BIGINT (Foreign Key)
@@ -165,6 +172,7 @@ frontend/
 ```
 
 ### workflow_alerts
+
 ```sql
 - id: BIGINT (Primary Key)
 - order_id: BIGINT (Foreign Key)
@@ -179,6 +187,7 @@ frontend/
 ```
 
 ### orders (Extended)
+
 ```sql
 - [existing columns...]
 - workflow_status: VARCHAR(50)
@@ -195,12 +204,14 @@ frontend/
 ## 🚀 Quick Start Guide
 
 ### Prerequisites
+
 - Java 17+
 - MySQL 8.0+
 - Node.js 16+
 - Maven 3.8+
 
 ### Backend Setup
+
 ```bash
 cd backend
 
@@ -217,6 +228,7 @@ mvn spring-boot:run
 ```
 
 ### Frontend Setup
+
 ```bash
 cd frontend
 
@@ -230,6 +242,7 @@ npm run dev
 ```
 
 ### Database Initialization
+
 ```bash
 mysql -u root -p
 > CREATE DATABASE user_db;
@@ -241,13 +254,13 @@ mysql -u root -p
 
 ## 📱 Available Pages
 
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/dashboard/crm-dashboard` | CrmDashboard | Main CRM overview |
-| `/dashboard/leads` | LeadManagementPage | Lead pipeline |
-| `/dashboard/orders/:orderId` | OrderDetailPage | Order management |
-| `/dashboard/workflow-analytics` | WorkflowAnalytics | Analytics dashboard |
-| `/dashboard/crm` | CrmPage | Legacy CRM (deprecated) |
+| Path                            | Component          | Description             |
+| ------------------------------- | ------------------ | ----------------------- |
+| `/dashboard/crm-dashboard`      | CrmDashboard       | Main CRM overview       |
+| `/dashboard/leads`              | LeadManagementPage | Lead pipeline           |
+| `/dashboard/orders/:orderId`    | OrderDetailPage    | Order management        |
+| `/dashboard/workflow-analytics` | WorkflowAnalytics  | Analytics dashboard     |
+| `/dashboard/crm`                | CrmPage            | Legacy CRM (deprecated) |
 
 ---
 
@@ -259,13 +272,14 @@ mysql -u root -p
 ✅ Encrypted sensitive data  
 ✅ Input validation  
 ✅ CORS protection  
-✅ Rate limiting ready  
+✅ Rate limiting ready
 
 ---
 
 ## 📈 Sample Workflows
 
 ### Happy Path: GST Registration
+
 ```
 1. WEB → Lead captured from website
 2. CRM → Lead routed to sales, score: 85/100
@@ -279,6 +293,7 @@ mysql -u root -p
 ```
 
 ### Exception: Payment Failure
+
 ```
 1. WEB → Lead captured
 2. CRM → Lead routed
@@ -292,6 +307,7 @@ mysql -u root -p
 ```
 
 ### Exception: Missing Documents
+
 ```
 1-4. [Proceed normally]
 5. CASE → Assigned to expert
@@ -309,6 +325,7 @@ mysql -u root -p
 ## 🛠️ Technology Stack
 
 ### Backend
+
 - **Framework**: Spring Boot 3.3.4
 - **Language**: Java 17
 - **Database**: MySQL 8.0
@@ -318,6 +335,7 @@ mysql -u root -p
 - **Build**: Maven
 
 ### Frontend
+
 - **Framework**: React 18
 - **Build Tool**: Vite 5
 - **Styling**: Tailwind CSS 3.4
@@ -327,6 +345,7 @@ mysql -u root -p
 - **State Management**: React Hooks
 
 ### Database
+
 - **DBMS**: MySQL 8.0
 - **Connection Pool**: HikariCP
 - **Migrations**: Schema.sql
@@ -415,16 +434,19 @@ curl -X POST http://localhost:8081/api/workflow/orders/1002/exception \
 ## 🧪 Testing
 
 ### Backend Testing
+
 ```bash
 mvn test
 ```
 
 ### Frontend Testing
+
 ```bash
 npm run test
 ```
 
 ### API Testing
+
 - **Tool**: Postman
 - **Collection**: Import endpoints from IMPLEMENTATION_GUIDE.md
 - **Auth**: JWT token in Authorization header
@@ -443,6 +465,7 @@ npm run test
 ## 🚢 Deployment
 
 ### Local Development
+
 ```bash
 # Terminal 1: Backend
 cd backend && mvn spring-boot:run
@@ -452,6 +475,7 @@ cd frontend && npm run dev
 ```
 
 ### Production Build
+
 ```bash
 # Backend
 mvn clean package -DskipTests
@@ -463,6 +487,7 @@ npm run preview
 ```
 
 ### Docker Deployment
+
 ```bash
 docker-compose up -d
 ```
@@ -472,6 +497,7 @@ docker-compose up -d
 ## 📈 Scalability & Future Enhancements
 
 ### Planned Features
+
 - ✅ WebSocket for real-time updates
 - ✅ Email/SMS notifications
 - ✅ Government portal APIs
@@ -484,6 +510,7 @@ docker-compose up -d
 - ✅ Multi-language support
 
 ### Architecture Improvements
+
 - Implement caching layer (Redis)
 - Add message queue (RabbitMQ/Kafka)
 - Database replication
@@ -502,12 +529,14 @@ Currently None. System is production-ready.
 ## 📞 Support & Maintenance
 
 ### Getting Help
+
 1. Check IMPLEMENTATION_GUIDE.md for detailed docs
 2. Review SETUP_INSTRUCTIONS.md for setup issues
 3. Check logs: `backend/logs/application.log`
 4. Verify all services are running
 
 ### Reporting Issues
+
 - Include error messages and logs
 - Provide steps to reproduce
 - Specify environment (OS, Java version, etc.)
@@ -527,6 +556,7 @@ Currently None. System is production-ready.
 ## 🎉 Summary
 
 This comprehensive financial CRM platform provides:
+
 - **Complete workflow automation** from lead to delivery
 - **Real-time tracking** with 9-stage pipeline
 - **Exception handling** for common issues
@@ -539,4 +569,3 @@ All components are fully implemented, tested, and ready for deployment.
 ---
 
 **Next Step**: Follow SETUP_INSTRUCTIONS.md to deploy the system.
-

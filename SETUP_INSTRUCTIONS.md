@@ -106,12 +106,14 @@ npm run preview
 ### Using cURL
 
 #### Get Workflow Timeline
+
 ```bash
 curl -X GET http://localhost:8081/api/workflow/orders/1002/timeline \
   -H "Content-Type: application/json"
 ```
 
 #### Create Workflow Event
+
 ```bash
 curl -X POST http://localhost:8081/api/workflow/orders/1002/event \
   -H "Content-Type: application/json" \
@@ -124,12 +126,14 @@ curl -X POST http://localhost:8081/api/workflow/orders/1002/event \
 ```
 
 #### Get Workflow Progress
+
 ```bash
 curl -X GET http://localhost:8081/api/workflow/orders/1002/progress \
   -H "Content-Type: application/json"
 ```
 
 #### Get Analytics
+
 ```bash
 curl -X GET http://localhost:8081/api/workflow/analytics/dashboard-stats \
   -H "Content-Type: application/json"
@@ -204,7 +208,8 @@ curl -X POST http://localhost:8081/api/orders \
 
 **Error**: `Access denied for user 'root'@'localhost'`
 
-**Solution**: 
+**Solution**:
+
 - Check MySQL is running: `mysql -u root -p`
 - Verify password in `application.properties`
 - Reset MySQL password if needed
@@ -214,6 +219,7 @@ curl -X POST http://localhost:8081/api/orders \
 **Error**: `Address already in use: 8081`
 
 **Solution**:
+
 - Change port in `application.properties`: `server.port=8082`
 - Or kill process: `lsof -i :8081` then `kill -9 <PID>`
 
@@ -222,6 +228,7 @@ curl -X POST http://localhost:8081/api/orders \
 **Error**: `Cannot find module`
 
 **Solution**:
+
 - Clear node_modules: `rm -rf node_modules`
 - Reinstall: `npm install`
 - Clear cache: `npm cache clean --force`
@@ -231,6 +238,7 @@ curl -X POST http://localhost:8081/api/orders \
 **Error**: `Access to XMLHttpRequest blocked by CORS`
 
 **Solution**:
+
 - Ensure backend has `@CrossOrigin(origins = "*")` on controllers
 - Check `VITE_API_URL` in frontend `.env` file
 - Verify backend is running on correct port
@@ -326,7 +334,7 @@ EXPOSE 80
 ### Docker Compose
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   mysql:
     image: mysql:8.0
@@ -365,6 +373,7 @@ curl http://localhost:8081/actuator/metrics
 ### Frontend Monitoring
 
 Use browser DevTools:
+
 - **Network**: Monitor API calls
 - **Console**: Check for errors
 - **Performance**: Track load times
@@ -374,6 +383,7 @@ Use browser DevTools:
 ## Support & Troubleshooting
 
 For issues:
+
 1. Check logs: `backend/logs/application.log`
 2. Verify all services are running
 3. Check database connectivity

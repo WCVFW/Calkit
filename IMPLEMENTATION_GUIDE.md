@@ -1,4 +1,5 @@
 # Complete Financial CRM & Workflow Management System
+
 ## Implementation Guide & Architecture
 
 ---
@@ -40,6 +41,7 @@ This is a production-ready financial services CRM with a comprehensive 9-stage w
 ### Tables Created
 
 #### 1. workflow_events
+
 Tracks all events and transitions in the workflow
 
 ```sql
@@ -53,6 +55,7 @@ Tracks all events and transitions in the workflow
 ```
 
 #### 2. workflow_alerts
+
 Tracks alerts and notifications
 
 ```sql
@@ -67,6 +70,7 @@ Tracks alerts and notifications
 ```
 
 #### 3. orders (Extended)
+
 Enhanced order table with workflow support
 
 ```sql
@@ -86,11 +90,13 @@ Enhanced order table with workflow support
 ### Entities
 
 **WorkflowStage (Enum)**
+
 - 9 Main stages: WEB → CRM → SALES → ONBD → CASE → EXEC → GOVT → QA → DEL
 - 5 Exception stages: PF, MD, GO, SLAB, CR
 - Each stage has sequence, label, and description
 
 **WorkflowStatus (Enum)**
+
 - PENDING: Not started
 - IN_PROGRESS: Currently being worked on
 - COMPLETED: Successfully finished
@@ -99,12 +105,14 @@ Enhanced order table with workflow support
 - ON_HOLD: Temporarily paused
 
 **WorkflowEvent**
+
 - Core entity tracking workflow transitions
 - Immutable audit trail
 - Supports exception tracking
 - Indexed for fast queries
 
 **WorkflowAlert**
+
 - Alert/notification entity
 - Tracks alert type and resolution
 - Supports escalation workflows
@@ -112,6 +120,7 @@ Enhanced order table with workflow support
 ### Services
 
 **WorkflowService**
+
 - `createEvent()`: Log workflow event
 - `getOrderTimeline()`: Get all events for an order
 - `getCurrentStage()`: Determine current stage
@@ -125,6 +134,7 @@ Enhanced order table with workflow support
 ### Controllers
 
 **WorkflowController** (`/api/workflow/`)
+
 ```
 GET    /orders/{orderId}/timeline        - Get workflow events
 GET    /orders/{orderId}/progress        - Get progress details
@@ -139,6 +149,7 @@ GET    /stages                           - Get available stages
 ```
 
 **WorkflowAlertController** (`/api/workflow/alerts/`)
+
 ```
 GET    /orders/{orderId}                 - Get order alerts
 GET    /orders/{orderId}/unresolved      - Get unresolved alerts
@@ -150,6 +161,7 @@ GET    /count/{orderId}                  - Get unresolved count
 ```
 
 **WorkflowStatisticsController** (`/api/workflow/analytics/`)
+
 ```
 GET    /dashboard-stats                  - Summary statistics
 GET    /stage-stats                      - Per-stage performance
@@ -163,18 +175,21 @@ GET    /exception-stats                  - Exception tracking
 ### Pages
 
 #### 1. CRM Dashboard (`/dashboard/crm-dashboard`)
+
 - Overview stats (Active Leads, Tasks, Revenue, Completion Rate)
 - 9-stage workflow timeline visualization
 - Active leads pipeline table
 - Exception alerts display
 
 **Key Features:**
+
 - Real-time progress tracking
 - Visual workflow pipeline
 - Color-coded status indicators
 - Interactive stage cards
 
 #### 2. Order Detail Page (`/dashboard/orders/:orderId`)
+
 - Complete order information
 - Full workflow timeline with events
 - Stage action buttons (Complete, Advance)
@@ -182,18 +197,21 @@ GET    /exception-stats                  - Exception tracking
 - Active exceptions display
 
 **Key Features:**
+
 - Comprehensive event history
 - Stage management controls
 - Progress visualization
 - Real-time status updates
 
 #### 3. Workflow Analytics (`/dashboard/workflow-analytics`)
+
 - Dashboard statistics summary
 - Stage performance charts
 - Exception tracking matrix
 - Quick insights and recommendations
 
 **Key Features:**
+
 - Performance metrics
 - Trend analysis
 - Success rate tracking
@@ -202,6 +220,7 @@ GET    /exception-stats                  - Exception tracking
 ### Components
 
 **WorkflowTimeline**
+
 - Horizontal x-axis visualization
 - 9 stage circles with status
 - Progress bar
@@ -209,18 +228,21 @@ GET    /exception-stats                  - Exception tracking
 - Interactive hover effects
 
 **ExceptionCard**
+
 - Exception type display
 - Description and details
 - Color-coded by exception type
 - Timestamp information
 
 **StageActionButtons**
+
 - Complete stage action
 - Advance to next stage
 - Loading states
 - Error handling
 
 **WorkflowEventTimeline**
+
 - Vertical event timeline
 - Event details display
 - Status indicators
@@ -229,6 +251,7 @@ GET    /exception-stats                  - Exception tracking
 ### Utilities
 
 **api.js**
+
 - Centralized API endpoints
 - Axios interceptors for auth
 - Organized API groups:
@@ -238,6 +261,7 @@ GET    /exception-stats                  - Exception tracking
   - caseAPI
 
 **NotificationCenter**
+
 - Toast notifications
 - Alert types (success, error, warning, info)
 - Auto-dismiss functionality
@@ -333,11 +357,13 @@ Response:
 ## Deployment Setup
 
 ### Database
+
 1. Create MySQL database: `user_db`
 2. Run `/backend/src/main/resources/schema.sql`
 3. Configure `/backend/src/main/resources/application.properties`
 
 ### Backend
+
 ```bash
 cd backend
 mvn clean install
@@ -347,6 +373,7 @@ mvn spring-boot:run
 Server runs on: `http://localhost:8081`
 
 ### Frontend
+
 ```bash
 cd frontend
 npm install
@@ -360,17 +387,20 @@ App runs on: `http://localhost:5173`
 ## Integration Points
 
 ### Real-time Updates (Future Enhancement)
+
 - WebSocket integration for live progress updates
 - Server-Sent Events (SSE) for notifications
 - Message queue (RabbitMQ/Kafka) for async events
 
 ### External Integrations
+
 - Email notifications for stage transitions
 - SMS alerts for critical exceptions
 - Government portal APIs for GOVT stage
 - Payment gateway webhooks for SALES stage
 
 ### Analytics
+
 - Dashboard metrics and KPIs
 - Stage success rate tracking
 - Exception pattern analysis
@@ -381,24 +411,28 @@ App runs on: `http://localhost:5173`
 ## Best Practices
 
 ### Error Handling
+
 - All exceptions logged in workflow_events
 - Alerts created for critical failures
 - Graceful degradation in UI
 - User-friendly error messages
 
 ### Performance
+
 - Indexed database queries
 - Pagination for large datasets
 - Caching for frequently accessed data
 - Async event processing
 
 ### Security
+
 - JWT authentication required
 - Order-level access control
 - Audit trail for all changes
 - Sensitive data encryption
 
 ### Monitoring
+
 - Central alert dashboard
 - Real-time metrics
 - Performance tracking
@@ -409,21 +443,25 @@ App runs on: `http://localhost:5173`
 ## Testing Scenarios
 
 ### Test Case 1: Happy Path
+
 ```
 WEB → CRM → SALES → ONBD → CASE → EXEC → GOVT → QA → DEL
 ```
 
 ### Test Case 2: Payment Failure Exception
+
 ```
 WEB → CRM → SALES (PF detected) → Retry → ONBD → ...
 ```
 
 ### Test Case 3: Missing Documents
+
 ```
 ... → ONBD (MD detected) → Document Upload → CASE → ...
 ```
 
 ### Test Case 4: Government Objection
+
 ```
 ... → GOVT (GO detected) → Appeal/Resubmit → GOVT → ...
 ```

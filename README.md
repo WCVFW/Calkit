@@ -36,6 +36,7 @@ A **complete financial CRM platform** managing customer orders through a 9-stage
 ## Tech Stack
 
 ### Backend
+
 - **Framework**: Spring Boot 3.3.4
 - **Language**: Java 17
 - **Database**: MySQL 8.0
@@ -43,6 +44,7 @@ A **complete financial CRM platform** managing customer orders through a 9-stage
 - **Build**: Maven
 
 ### Frontend
+
 - **Framework**: React 18
 - **Build Tool**: Vite 5
 - **Styling**: Tailwind CSS 3.4
@@ -51,6 +53,7 @@ A **complete financial CRM platform** managing customer orders through a 9-stage
 - **Routing**: React Router 6
 
 ### Database
+
 - **DBMS**: MySQL 8.0
 - **Connection Pool**: HikariCP
 - **Indexes**: 8 optimized indexes
@@ -185,19 +188,20 @@ project/
 
 ### Exception Types
 
-| Exception | Code | Trigger | Action |
-|-----------|------|---------|--------|
-| Payment Failure | PF | Payment declined/timeout | Retry with customer |
-| Missing Documents | MD | Incomplete submission | Document request |
-| Govt Objection | GO | Government rejection | Appeal/resubmit |
-| SLA Breach | SLAB | Deadline approaching | Escalate |
-| Cancellation | CR | Customer cancels | Process refund |
+| Exception         | Code | Trigger                  | Action              |
+| ----------------- | ---- | ------------------------ | ------------------- |
+| Payment Failure   | PF   | Payment declined/timeout | Retry with customer |
+| Missing Documents | MD   | Incomplete submission    | Document request    |
+| Govt Objection    | GO   | Government rejection     | Appeal/resubmit     |
+| SLA Breach        | SLAB | Deadline approaching     | Escalate            |
+| Cancellation      | CR   | Customer cancels         | Process refund      |
 
 ---
 
 ## Quick Start
 
 ### Prerequisites
+
 ```bash
 ✅ Java 17+
 ✅ MySQL 8.0+
@@ -206,6 +210,7 @@ project/
 ```
 
 ### Step 1: Setup Database
+
 ```bash
 mysql -u root -p
 CREATE DATABASE user_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -214,6 +219,7 @@ SOURCE backend/src/main/resources/schema.sql;
 ```
 
 ### Step 2: Start Backend
+
 ```bash
 cd backend
 # Update application.properties with your DB credentials
@@ -222,6 +228,7 @@ mvn spring-boot:run
 ```
 
 ### Step 3: Start Frontend
+
 ```bash
 cd frontend
 npm install
@@ -230,6 +237,7 @@ npm run dev
 ```
 
 ### Step 4: Access the System
+
 ```
 CRM Dashboard: http://localhost:5173/dashboard/crm-dashboard
 Order Details: http://localhost:5173/dashboard/orders/1002
@@ -243,38 +251,38 @@ Leads: http://localhost:5173/dashboard/leads
 
 ### Workflow Management (12 endpoints)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/workflow/orders/{orderId}/timeline` | Get all workflow events |
-| GET | `/api/workflow/orders/{orderId}/progress` | Get workflow progress |
-| GET | `/api/workflow/orders/{orderId}/current-stage` | Get current stage |
-| POST | `/api/workflow/orders/{orderId}/event` | Create workflow event |
-| POST | `/api/workflow/orders/{orderId}/advance` | Advance to next stage |
-| POST | `/api/workflow/orders/{orderId}/complete` | Mark stage complete |
-| POST | `/api/workflow/orders/{orderId}/fail` | Mark stage failed |
-| POST | `/api/workflow/orders/{orderId}/exception` | Log exception |
-| GET | `/api/workflow/orders/{orderId}/exceptions` | Get active exceptions |
-| GET | `/api/workflow/stages` | Get available stages |
+| Method | Endpoint                                       | Description             |
+| ------ | ---------------------------------------------- | ----------------------- |
+| GET    | `/api/workflow/orders/{orderId}/timeline`      | Get all workflow events |
+| GET    | `/api/workflow/orders/{orderId}/progress`      | Get workflow progress   |
+| GET    | `/api/workflow/orders/{orderId}/current-stage` | Get current stage       |
+| POST   | `/api/workflow/orders/{orderId}/event`         | Create workflow event   |
+| POST   | `/api/workflow/orders/{orderId}/advance`       | Advance to next stage   |
+| POST   | `/api/workflow/orders/{orderId}/complete`      | Mark stage complete     |
+| POST   | `/api/workflow/orders/{orderId}/fail`          | Mark stage failed       |
+| POST   | `/api/workflow/orders/{orderId}/exception`     | Log exception           |
+| GET    | `/api/workflow/orders/{orderId}/exceptions`    | Get active exceptions   |
+| GET    | `/api/workflow/stages`                         | Get available stages    |
 
 ### Alert Management (7 endpoints)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/workflow/alerts/orders/{orderId}` | Get order alerts |
-| GET | `/api/workflow/alerts/orders/{orderId}/unresolved` | Get unresolved alerts |
-| GET | `/api/workflow/alerts/unresolved` | Get all unresolved |
-| POST | `/api/workflow/alerts` | Create alert |
-| PUT | `/api/workflow/alerts/{alertId}/resolve` | Resolve alert |
-| DELETE | `/api/workflow/alerts/{alertId}` | Delete alert |
-| GET | `/api/workflow/alerts/count/{orderId}` | Get unresolved count |
+| Method | Endpoint                                           | Description           |
+| ------ | -------------------------------------------------- | --------------------- |
+| GET    | `/api/workflow/alerts/orders/{orderId}`            | Get order alerts      |
+| GET    | `/api/workflow/alerts/orders/{orderId}/unresolved` | Get unresolved alerts |
+| GET    | `/api/workflow/alerts/unresolved`                  | Get all unresolved    |
+| POST   | `/api/workflow/alerts`                             | Create alert          |
+| PUT    | `/api/workflow/alerts/{alertId}/resolve`           | Resolve alert         |
+| DELETE | `/api/workflow/alerts/{alertId}`                   | Delete alert          |
+| GET    | `/api/workflow/alerts/count/{orderId}`             | Get unresolved count  |
 
 ### Analytics (3 endpoints)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/workflow/analytics/dashboard-stats` | Dashboard statistics |
-| GET | `/api/workflow/analytics/stage-stats` | Stage performance |
-| GET | `/api/workflow/analytics/exception-stats` | Exception tracking |
+| Method | Endpoint                                  | Description          |
+| ------ | ----------------------------------------- | -------------------- |
+| GET    | `/api/workflow/analytics/dashboard-stats` | Dashboard statistics |
+| GET    | `/api/workflow/analytics/stage-stats`     | Stage performance    |
+| GET    | `/api/workflow/analytics/exception-stats` | Exception tracking   |
 
 **Total: 22 REST API Endpoints**
 
@@ -283,6 +291,7 @@ Leads: http://localhost:5173/dashboard/leads
 ## Database Schema
 
 ### workflow_events Table
+
 ```sql
 CREATE TABLE workflow_events (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -301,6 +310,7 @@ CREATE TABLE workflow_events (
 ```
 
 ### workflow_alerts Table
+
 ```sql
 CREATE TABLE workflow_alerts (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -320,6 +330,7 @@ CREATE TABLE workflow_alerts (
 ```
 
 ### orders Table (Extended)
+
 ```sql
 ALTER TABLE orders ADD COLUMN workflow_status VARCHAR(50) DEFAULT 'WEB';
 ALTER TABLE orders ADD COLUMN assigned_to BIGINT;
@@ -337,36 +348,42 @@ ALTER TABLE orders ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON 
 ### ✅ Implemented Features
 
 **Workflow System**
+
 - [x] 9-stage pipeline with automatic progression
 - [x] Real-time status tracking
 - [x] Event logging and audit trail
 - [x] Stage-wise status (PENDING, IN_PROGRESS, COMPLETED, FAILED, BLOCKED)
 
 **Exception Handling**
+
 - [x] 5 exception types with dedicated workflows
 - [x] Alert creation and notification
 - [x] Exception resolution tracking
 - [x] Escalation workflows
 
 **User Interfaces**
+
 - [x] CRM Dashboard (Overview with 9-stage timeline)
 - [x] Order Detail Page (Complete management)
 - [x] Workflow Analytics (Performance metrics)
 - [x] Lead Management (Sales pipeline)
 
 **API Layer**
+
 - [x] 22 REST endpoints
 - [x] Comprehensive error handling
 - [x] CORS and security enabled
 - [x] JWT authentication ready
 
 **Real-Time Features**
+
 - [x] Auto-polling updates (30-second intervals)
 - [x] Live progress tracking
 - [x] Exception alerts
 - [x] Toast notifications
 
 **Analytics**
+
 - [x] Dashboard statistics
 - [x] Stage performance metrics
 - [x] Exception trending
@@ -412,6 +429,7 @@ docker-compose up -d
 ### Environment Configuration
 
 **Backend** (`application.properties`):
+
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/user_db
 spring.datasource.username=root
@@ -422,6 +440,7 @@ security.jwt.secret=your_secret_key
 ```
 
 **Frontend** (`.env`):
+
 ```
 VITE_API_URL=http://localhost:8081
 ```
@@ -433,14 +452,16 @@ VITE_API_URL=http://localhost:8081
 **Poppins font is applied globally** via:
 
 1. **CSS Import** (`globals.css`):
+
    ```css
-   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
    ```
 
 2. **Universal Application**:
+
    ```css
    * {
-     font-family: 'Poppins', sans-serif !important;
+     font-family: "Poppins", sans-serif !important;
    }
    ```
 
@@ -460,6 +481,7 @@ VITE_API_URL=http://localhost:8081
 ### Backend Issues
 
 **Port Already in Use**
+
 ```bash
 lsof -i :8081
 kill -9 <PID>
@@ -467,6 +489,7 @@ kill -9 <PID>
 ```
 
 **Database Connection Error**
+
 ```bash
 # Verify MySQL is running
 mysql -u root -p -e "SELECT 1;"
@@ -476,6 +499,7 @@ mysql -u root -p -e "SELECT 1;"
 ```
 
 **Java Version Error**
+
 ```bash
 java -version  # Should be 17+
 # Install Java 17 if needed
@@ -484,6 +508,7 @@ java -version  # Should be 17+
 ### Frontend Issues
 
 **API Not Reachable**
+
 ```bash
 # Check backend is running
 curl http://localhost:8081/actuator/health
@@ -493,6 +518,7 @@ cat frontend/.env
 ```
 
 **Port 5173 Already in Use**
+
 ```bash
 lsof -i :5173
 kill -9 <PID>
@@ -500,6 +526,7 @@ kill -9 <PID>
 ```
 
 **Module Not Found**
+
 ```bash
 cd frontend
 rm -rf node_modules
@@ -512,11 +539,13 @@ npm run dev
 ## API Examples
 
 ### Get Workflow Progress
+
 ```bash
 curl http://localhost:8081/api/workflow/orders/1002/progress | jq .
 ```
 
 ### Create Workflow Event
+
 ```bash
 curl -X POST http://localhost:8081/api/workflow/orders/1002/event \
   -H "Content-Type: application/json" \
@@ -529,11 +558,13 @@ curl -X POST http://localhost:8081/api/workflow/orders/1002/event \
 ```
 
 ### Get Dashboard Statistics
+
 ```bash
 curl http://localhost:8081/api/workflow/analytics/dashboard-stats | jq .
 ```
 
 ### Create Alert
+
 ```bash
 curl -X POST http://localhost:8081/api/workflow/alerts \
   -H "Content-Type: application/json" \
@@ -551,16 +582,17 @@ curl -X POST http://localhost:8081/api/workflow/alerts \
 
 The system comes with **Order #1002** (GST Registration):
 
-| Property | Value |
-|----------|-------|
-| Order ID | 1002 |
-| Service | GST Registration |
-| Status | In Onboarding (45% complete) |
-| Value | ₹4,999 |
-| Current Stage | ONBD |
-| Assigned To | Employee A |
+| Property      | Value                        |
+| ------------- | ---------------------------- |
+| Order ID      | 1002                         |
+| Service       | GST Registration             |
+| Status        | In Onboarding (45% complete) |
+| Value         | ₹4,999                       |
+| Current Stage | ONBD                         |
+| Assigned To   | Employee A                   |
 
 ### Timeline
+
 1. ✅ WEB - Lead captured from website
 2. ✅ CRM - Lead scored and routed
 3. ✅ SALES - Payment received
@@ -572,6 +604,7 @@ The system comes with **Order #1002** (GST Registration):
 9. ⏳ DEL - Waiting
 
 ### Active Alert
+
 - **Type**: Missing Document
 - **Message**: Aadhar proof pending
 - **Status**: Blocked until received
@@ -580,13 +613,13 @@ The system comes with **Order #1002** (GST Registration):
 
 ## Performance Metrics
 
-| Metric | Value |
-|--------|-------|
-| API Response Time | < 200ms |
-| Page Load Time | < 2 seconds |
-| Database Queries | Indexed & optimized |
-| Concurrent Users | 1000+ supported |
-| Auto-Poll Interval | 30 seconds |
+| Metric             | Value               |
+| ------------------ | ------------------- |
+| API Response Time  | < 200ms             |
+| Page Load Time     | < 2 seconds         |
+| Database Queries   | Indexed & optimized |
+| Concurrent Users   | 1000+ supported     |
+| Auto-Poll Interval | 30 seconds          |
 
 ---
 
@@ -598,24 +631,27 @@ The system comes with **Order #1002** (GST Registration):
 ✅ Error handling  
 ✅ No hardcoded secrets  
 ✅ Database access control  
-✅ Audit trail ready  
+✅ Audit trail ready
 
 ---
 
 ## Support
 
 ### For Setup Issues
+
 1. Check database is created and accessible
 2. Verify Java version is 17+
 3. Ensure Node.js is installed
 4. Check ports 8081 and 5173 are available
 
 ### For API Issues
+
 1. Verify backend is running: `curl http://localhost:8081/actuator/health`
 2. Check frontend environment variable: `cat frontend/.env`
 3. Review browser DevTools Network tab for failed requests
 
 ### For Database Issues
+
 1. Verify MySQL is running: `mysql -u root -p`
 2. Check schema is imported: `mysql user_db -e "SHOW TABLES;"`
 3. Confirm credentials in application.properties
@@ -678,9 +714,9 @@ This project is provided as-is for your use and modification.
 
 ## Version History
 
-| Version | Date | Status |
-|---------|------|--------|
-| 1.0.0 | 2024 | ✅ Production Ready |
+| Version | Date | Status              |
+| ------- | ---- | ------------------- |
+| 1.0.0   | 2024 | ✅ Production Ready |
 
 ---
 
@@ -693,4 +729,3 @@ All components are fully implemented, tested, and ready for immediate deployment
 ---
 
 **For questions or issues, review the API documentation above or check the sample data in Order #1002.**
-

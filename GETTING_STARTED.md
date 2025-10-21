@@ -3,6 +3,7 @@
 ## 🎯 5-Minute Quick Start
 
 ### What You Need
+
 - Java 17+ installed
 - MySQL 8.0+ running
 - Node.js 16+ installed
@@ -46,6 +47,7 @@ npm run dev
 ### Step 3: Access the Application (1 minute)
 
 **Open in your browser:**
+
 - 🌐 CRM Dashboard: http://localhost:5173/dashboard/crm-dashboard
 - 📊 Order Details: http://localhost:5173/dashboard/orders/1002
 - 📈 Analytics: http://localhost:5173/dashboard/workflow-analytics
@@ -90,12 +92,14 @@ If there's an issue, the system creates an **Exception**:
 ### 1. CRM Dashboard (`/dashboard/crm-dashboard`)
 
 **What you see:**
+
 - Summary stats (active leads, pending tasks, revenue)
 - 9-stage timeline showing current progress
 - Active leads pipeline
 - Exception alerts
 
 **What you can do:**
+
 - View overall status at a glance
 - See bottlenecks in workflow
 - Monitor exception alerts
@@ -106,12 +110,14 @@ If there's an issue, the system creates an **Exception**:
 ### 2. Order Detail Page (`/dashboard/orders/1002`)
 
 **What you see:**
+
 - Complete order information
 - Full workflow timeline with all events
 - Progress percentage
 - Stage-wise status
 
 **What you can do:**
+
 - View complete history
 - Advance to next stage
 - Mark stage as complete
@@ -121,6 +127,7 @@ If there's an issue, the system creates an **Exception**:
 ### 3. Workflow Analytics (`/dashboard/workflow-analytics`)
 
 **What you see:**
+
 - Completed stages count
 - In-progress count
 - Failed and blocked stages
@@ -128,6 +135,7 @@ If there's an issue, the system creates an **Exception**:
 - Exception frequency
 
 **What you can do:**
+
 - Identify problem stages
 - See trends over time
 - Find optimization opportunities
@@ -136,6 +144,7 @@ If there's an issue, the system creates an **Exception**:
 ### 4. Lead Management (`/dashboard/leads`)
 
 **What you see:**
+
 - All leads in pipeline
 - Lead details (name, email, phone, company)
 - Service interest
@@ -143,6 +152,7 @@ If there's an issue, the system creates an **Exception**:
 - Status and priority
 
 **What you can do:**
+
 - Filter by status, priority, service
 - View lead details
 - Convert lead to order
@@ -227,12 +237,14 @@ curl -X POST http://localhost:8081/api/workflow/orders/1003/complete \
 The system comes with **Order #1002** (GST Registration):
 
 **Current State:**
+
 - Status: In Onboarding stage
 - Progress: 45% complete
 - Value: ₹4,999
 - Assigned to: Employee A
 
 **Timeline:**
+
 1. ✅ WEB - Lead captured from website
 2. ✅ CRM - Lead scored (85/100) and routed
 3. ✅ SALES - Payment received
@@ -244,6 +256,7 @@ The system comes with **Order #1002** (GST Registration):
 9. ⏳ DEL - Waiting
 
 **Active Alert:**
+
 - Type: Missing Document
 - Message: Aadhar proof pending
 - Status: Blocked until documents received
@@ -253,9 +266,11 @@ The system comes with **Order #1002** (GST Registration):
 ## 🎨 UI Components Explained
 
 ### Progress Bar
+
 Shows overall completion (0-100%). Updates as stages complete.
 
 ### Timeline Circles
+
 - 🟢 Green = Completed
 - 🔵 Blue = In Progress (with pulse animation)
 - ⚪ Gray = Pending
@@ -263,14 +278,18 @@ Shows overall completion (0-100%). Updates as stages complete.
 - 🟡 Yellow = Blocked
 
 ### Stage Cards
+
 Click on a stage to see:
+
 - Detailed description
 - What happens in this stage
 - Current status
 - Events and notes
 
 ### Exception Alerts
+
 Color-coded by type:
+
 - 🔴 Red = Critical (Payment, Failure)
 - 🟠 Orange = Document related
 - 🟡 Yellow = SLA/Risk
@@ -336,6 +355,7 @@ PUT /api/workflow/alerts/{alertId}/resolve
 ### Tables Created
 
 **workflow_events** - Tracks all workflow transitions
+
 ```sql
 - id: Event ID
 - order_id: Which order
@@ -346,6 +366,7 @@ PUT /api/workflow/alerts/{alertId}/resolve
 ```
 
 **workflow_alerts** - Tracks notifications and issues
+
 ```sql
 - id: Alert ID
 - order_id: Which order
@@ -358,6 +379,7 @@ PUT /api/workflow/alerts/{alertId}/resolve
 ```
 
 **orders** - Order information (extended)
+
 ```sql
 - id: Order ID
 - leadId: Which lead
@@ -373,30 +395,35 @@ PUT /api/workflow/alerts/{alertId}/resolve
 ## 🚀 Next Steps After Setup
 
 ### 1. Explore the Sample Data (5 mins)
+
 - Go to CRM Dashboard
 - Click on Order #1002
 - See the complete workflow
 - Review the exception alert
 
 ### 2. Create Test Orders (5 mins)
+
 - Use the API or UI to create orders
 - Track them through stages
 - Log exceptions
 - Mark stages complete
 
 ### 3. Monitor Analytics (5 mins)
+
 - Go to Workflow Analytics
 - See performance metrics
 - Identify trends
 - Find optimization opportunities
 
 ### 4. Customize for Your Use Case (varies)
+
 - Update stage names if needed
 - Add custom fields
 - Integrate with your systems
 - Configure notifications
 
 ### 5. Deploy to Production (varies)
+
 - Follow DEPLOYMENT_CHECKLIST.md
 - Set up monitoring
 - Configure backups
@@ -407,6 +434,7 @@ PUT /api/workflow/alerts/{alertId}/resolve
 ## 🔍 Troubleshooting
 
 ### "Cannot connect to database"
+
 ```bash
 # Check MySQL is running
 mysql -u root -p -e "SELECT 1;"
@@ -419,6 +447,7 @@ cat backend/src/main/resources/application.properties | grep datasource
 ```
 
 ### "Port already in use"
+
 ```bash
 # Check what's using port 8081
 lsof -i :8081
@@ -428,6 +457,7 @@ lsof -i :8081
 ```
 
 ### "API not responding"
+
 ```bash
 # Check backend is running
 curl http://localhost:8081/actuator/health
@@ -438,6 +468,7 @@ curl http://localhost:8081/actuator/health
 ```
 
 ### "Database tables missing"
+
 ```bash
 # Import schema
 mysql -u root -p user_db < backend/src/main/resources/schema.sql
@@ -481,22 +512,27 @@ curl -X POST http://localhost:8081/api/workflow/orders/1002/event \
 
 ```javascript
 // Fetch workflow progress
-const response = await fetch('http://localhost:8081/api/workflow/orders/1002/progress');
+const response = await fetch(
+  "http://localhost:8081/api/workflow/orders/1002/progress",
+);
 const data = await response.json();
 console.log(data);
 
 // Create workflow event
-const response = await fetch('http://localhost:8081/api/workflow/orders/1002/event', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
+const response = await fetch(
+  "http://localhost:8081/api/workflow/orders/1002/event",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      stage: "SALES",
+      status: "COMPLETED",
+      description: "Payment processed",
+    }),
   },
-  body: JSON.stringify({
-    stage: 'SALES',
-    status: 'COMPLETED',
-    description: 'Payment processed'
-  })
-});
+);
 const data = await response.json();
 console.log(data);
 ```
@@ -505,20 +541,21 @@ console.log(data);
 
 ## 📚 Documentation References
 
-| Document | Use This When |
-|----------|---------------|
-| **GETTING_STARTED.md** | Setting up and learning the basics |
-| **IMPLEMENTATION_GUIDE.md** | Understanding architecture & design |
-| **SETUP_INSTRUCTIONS.md** | Deploying to production |
-| **PROJECT_SUMMARY.md** | Need complete feature overview |
-| **DEPLOYMENT_CHECKLIST.md** | Verifying production readiness |
-| **FINAL_DELIVERY_SUMMARY.md** | Understanding what was delivered |
+| Document                      | Use This When                       |
+| ----------------------------- | ----------------------------------- |
+| **GETTING_STARTED.md**        | Setting up and learning the basics  |
+| **IMPLEMENTATION_GUIDE.md**   | Understanding architecture & design |
+| **SETUP_INSTRUCTIONS.md**     | Deploying to production             |
+| **PROJECT_SUMMARY.md**        | Need complete feature overview      |
+| **DEPLOYMENT_CHECKLIST.md**   | Verifying production readiness      |
+| **FINAL_DELIVERY_SUMMARY.md** | Understanding what was delivered    |
 
 ---
 
 ## 💡 Tips & Tricks
 
 ### Speed Up Development
+
 ```bash
 # Use nodemon to auto-restart on changes
 npm install -g nodemon
@@ -526,27 +563,30 @@ nodemon --exec npm run dev
 ```
 
 ### Debug API Calls
+
 ```javascript
 // Add to frontend/src/lib/api.js
 api.interceptors.response.use(
-  response => {
-    console.log('API Response:', response);
+  (response) => {
+    console.log("API Response:", response);
     return response;
   },
-  error => {
-    console.error('API Error:', error);
+  (error) => {
+    console.error("API Error:", error);
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
 ### Monitor Database
+
 ```bash
 # Watch database changes in real-time
 watch -n 1 'mysql -u root -p user_db -e "SELECT COUNT(*) FROM workflow_events;"'
 ```
 
 ### Test API Endpoints
+
 ```bash
 # Create script: test-api.sh
 #!/bin/bash
@@ -564,6 +604,7 @@ echo "All tests completed!"
 ## 🎓 Learning Path
 
 ### Beginner (Week 1)
+
 - [ ] Set up the system locally
 - [ ] Explore the CRM Dashboard
 - [ ] View Order #1002 details
@@ -571,6 +612,7 @@ echo "All tests completed!"
 - [ ] Create test orders via API
 
 ### Intermediate (Week 2-3)
+
 - [ ] Understand workflow stages
 - [ ] Log events and exceptions
 - [ ] View analytics
@@ -578,6 +620,7 @@ echo "All tests completed!"
 - [ ] Deploy to staging
 
 ### Advanced (Week 4+)
+
 - [ ] Customize workflows
 - [ ] Add new stages
 - [ ] Integrate external systems
@@ -589,18 +632,23 @@ echo "All tests completed!"
 ## 📞 Getting Help
 
 ### For Setup Issues
+
 → See SETUP_INSTRUCTIONS.md
 
 ### For Architecture Questions
+
 → See IMPLEMENTATION_GUIDE.md
 
 ### For Deployment Help
+
 → See DEPLOYMENT_CHECKLIST.md
 
 ### For Feature Overview
+
 → See PROJECT_SUMMARY.md
 
 ### For API Details
+
 → See IMPLEMENTATION_GUIDE.md (API Flow Examples section)
 
 ---
@@ -644,7 +692,7 @@ You now have a **production-ready financial CRM system** with:
 ✅ Exception handling  
 ✅ Real-time tracking  
 ✅ Analytics & reports  
-✅ Modern web interface  
+✅ Modern web interface
 
 **Start exploring and building!** 🚀
 
@@ -653,4 +701,3 @@ You now have a **production-ready financial CRM system** with:
 **Version**: 1.0.0  
 **Last Updated**: 2024  
 **Status**: Ready for Production
-

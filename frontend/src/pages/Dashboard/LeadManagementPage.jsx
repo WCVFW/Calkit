@@ -1,37 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import {
   UserPlusIcon,
   ArrowPathIcon,
   EnvelopeIcon,
   PhoneIcon,
   MapPinIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 
 const LeadCard = ({ lead }) => {
   const statusColors = {
-    New: 'bg-blue-100 text-blue-800',
-    'In Progress': 'bg-yellow-100 text-yellow-800',
-    Qualified: 'bg-green-100 text-green-800',
-    Lost: 'bg-red-100 text-red-800',
-    Won: 'bg-emerald-100 text-emerald-800',
+    New: "bg-blue-100 text-blue-800",
+    "In Progress": "bg-yellow-100 text-yellow-800",
+    Qualified: "bg-green-100 text-green-800",
+    Lost: "bg-red-100 text-red-800",
+    Won: "bg-emerald-100 text-emerald-800",
   };
 
   const priorityColors = {
-    High: 'border-red-500',
-    Medium: 'border-yellow-500',
-    Low: 'border-blue-500',
+    High: "border-red-500",
+    Medium: "border-yellow-500",
+    Low: "border-blue-500",
   };
 
   return (
-    <div className={`bg-white rounded-lg border-l-4 ${priorityColors[lead.priority] || 'border-gray-300'} shadow-md hover:shadow-lg transition p-6`}>
+    <div
+      className={`bg-white rounded-lg border-l-4 ${priorityColors[lead.priority] || "border-gray-300"} shadow-md hover:shadow-lg transition p-6`}
+    >
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">{lead.name}</h3>
           <p className="text-sm text-gray-600">{lead.company}</p>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[lead.status] || 'bg-gray-100'}`}>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[lead.status] || "bg-gray-100"}`}
+        >
           {lead.status}
         </span>
       </div>
@@ -59,12 +63,16 @@ const LeadCard = ({ lead }) => {
 
       <div className="mb-4">
         <p className="text-xs font-semibold text-gray-600 mb-2">Interest</p>
-        <p className="text-sm text-gray-700 font-medium">{lead.serviceInterest}</p>
+        <p className="text-sm text-gray-700 font-medium">
+          {lead.serviceInterest}
+        </p>
       </div>
 
       <div className="mb-4">
         <p className="text-xs font-semibold text-gray-600 mb-2">Est. Value</p>
-        <p className="text-lg font-bold text-green-600">₹{lead.estimatedValue.toLocaleString('en-IN')}</p>
+        <p className="text-lg font-bold text-green-600">
+          ₹{lead.estimatedValue.toLocaleString("en-IN")}
+        </p>
       </div>
 
       <div className="flex gap-2">
@@ -84,9 +92,9 @@ const LeadCard = ({ lead }) => {
 
 const LeadFilters = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
-    status: 'all',
-    priority: 'all',
-    service: 'all',
+    status: "all",
+    priority: "all",
+    service: "all",
   });
 
   const handleChange = (key, value) => {
@@ -99,10 +107,12 @@ const LeadFilters = ({ onFilterChange }) => {
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Status
+          </label>
           <select
             value={filters.status}
-            onChange={(e) => handleChange('status', e.target.value)}
+            onChange={(e) => handleChange("status", e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
             <option value="all">All Status</option>
@@ -115,10 +125,12 @@ const LeadFilters = ({ onFilterChange }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Priority</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Priority
+          </label>
           <select
             value={filters.priority}
-            onChange={(e) => handleChange('priority', e.target.value)}
+            onChange={(e) => handleChange("priority", e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
             <option value="all">All Priorities</option>
@@ -129,10 +141,12 @@ const LeadFilters = ({ onFilterChange }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Service</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Service
+          </label>
           <select
             value={filters.service}
-            onChange={(e) => handleChange('service', e.target.value)}
+            onChange={(e) => handleChange("service", e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
             <option value="all">All Services</option>
@@ -156,50 +170,50 @@ export default function LeadManagementPage() {
     const mockLeads = [
       {
         id: 1,
-        name: 'Rajesh Kumar',
-        company: 'Tech Startups Inc',
-        email: 'rajesh@techstartups.com',
-        phone: '+91-9876543210',
-        location: 'Bangalore',
-        status: 'Qualified',
-        priority: 'High',
-        serviceInterest: 'GST Registration',
+        name: "Rajesh Kumar",
+        company: "Tech Startups Inc",
+        email: "rajesh@techstartups.com",
+        phone: "+91-9876543210",
+        location: "Bangalore",
+        status: "Qualified",
+        priority: "High",
+        serviceInterest: "GST Registration",
         estimatedValue: 4999,
       },
       {
         id: 2,
-        name: 'Priya Sharma',
-        company: 'Fashion Retail Ltd',
-        email: 'priya@fashionretail.com',
-        phone: '+91-8765432109',
-        location: 'Mumbai',
-        status: 'In Progress',
-        priority: 'High',
-        serviceInterest: 'Trademark Filing',
+        name: "Priya Sharma",
+        company: "Fashion Retail Ltd",
+        email: "priya@fashionretail.com",
+        phone: "+91-8765432109",
+        location: "Mumbai",
+        status: "In Progress",
+        priority: "High",
+        serviceInterest: "Trademark Filing",
         estimatedValue: 5999,
       },
       {
         id: 3,
-        name: 'Amit Patel',
-        company: 'Manufacturing Corp',
-        email: 'amit@manufacturing.com',
-        phone: '+91-7654321098',
-        location: 'Ahmedabad',
-        status: 'New',
-        priority: 'Medium',
-        serviceInterest: 'Company Registration',
+        name: "Amit Patel",
+        company: "Manufacturing Corp",
+        email: "amit@manufacturing.com",
+        phone: "+91-7654321098",
+        location: "Ahmedabad",
+        status: "New",
+        priority: "Medium",
+        serviceInterest: "Company Registration",
         estimatedValue: 9999,
       },
       {
         id: 4,
-        name: 'Neha Singh',
-        company: 'Consulting Services',
-        email: 'neha@consulting.com',
-        phone: '+91-6543210987',
-        location: 'Delhi',
-        status: 'Won',
-        priority: 'Low',
-        serviceInterest: 'Annual Compliance',
+        name: "Neha Singh",
+        company: "Consulting Services",
+        email: "neha@consulting.com",
+        phone: "+91-6543210987",
+        location: "Delhi",
+        status: "Won",
+        priority: "Low",
+        serviceInterest: "Annual Compliance",
         estimatedValue: 14999,
       },
     ];
@@ -212,16 +226,18 @@ export default function LeadManagementPage() {
   const handleFilterChange = (filters) => {
     let filtered = leads;
 
-    if (filters.status !== 'all') {
+    if (filters.status !== "all") {
       filtered = filtered.filter((lead) => lead.status === filters.status);
     }
 
-    if (filters.priority !== 'all') {
+    if (filters.priority !== "all") {
       filtered = filtered.filter((lead) => lead.priority === filters.priority);
     }
 
-    if (filters.service !== 'all') {
-      filtered = filtered.filter((lead) => lead.serviceInterest.includes(filters.service));
+    if (filters.service !== "all") {
+      filtered = filtered.filter((lead) =>
+        lead.serviceInterest.includes(filters.service),
+      );
     }
 
     setFilteredLeads(filtered);
@@ -233,8 +249,12 @@ export default function LeadManagementPage() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Lead Management</h1>
-            <p className="text-gray-600 mt-2">Track and manage your sales pipeline</p>
+            <h1 className="text-4xl font-bold text-gray-900">
+              Lead Management
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Track and manage your sales pipeline
+            </p>
           </div>
           <Link
             to="/dashboard/crm/leads/new"
@@ -249,13 +269,30 @@ export default function LeadManagementPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         {[
-          { label: 'Total Leads', value: leads.length, color: 'from-blue-500' },
-          { label: 'Qualified', value: leads.filter((l) => l.status === 'Qualified').length, color: 'from-green-500' },
-          { label: 'In Progress', value: leads.filter((l) => l.status === 'In Progress').length, color: 'from-yellow-500' },
-          { label: 'Won This Month', value: leads.filter((l) => l.status === 'Won').length, color: 'from-emerald-500' },
+          { label: "Total Leads", value: leads.length, color: "from-blue-500" },
+          {
+            label: "Qualified",
+            value: leads.filter((l) => l.status === "Qualified").length,
+            color: "from-green-500",
+          },
+          {
+            label: "In Progress",
+            value: leads.filter((l) => l.status === "In Progress").length,
+            color: "from-yellow-500",
+          },
+          {
+            label: "Won This Month",
+            value: leads.filter((l) => l.status === "Won").length,
+            color: "from-emerald-500",
+          },
         ].map((stat) => (
-          <div key={stat.label} className={`bg-gradient-to-br ${stat.color} to-purple-600 rounded-lg shadow-lg p-6 text-white`}>
-            <p className="text-sm font-semibold opacity-90 mb-1">{stat.label}</p>
+          <div
+            key={stat.label}
+            className={`bg-gradient-to-br ${stat.color} to-purple-600 rounded-lg shadow-lg p-6 text-white`}
+          >
+            <p className="text-sm font-semibold opacity-90 mb-1">
+              {stat.label}
+            </p>
             <p className="text-4xl font-bold">{stat.value}</p>
           </div>
         ))}

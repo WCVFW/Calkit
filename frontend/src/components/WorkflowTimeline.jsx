@@ -1,44 +1,102 @@
-import React from 'react';
-import { CheckCircleIcon, ExclamationCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
+import React from "react";
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
 
 const STAGES = [
-  { key: 'WEB', label: 'Web/App', sequence: 1, color: 'from-blue-500', lightColor: 'bg-blue-100' },
-  { key: 'CRM', label: 'CRM Routing', sequence: 2, color: 'from-purple-500', lightColor: 'bg-purple-100' },
-  { key: 'SALES', label: 'Sales & Payment', sequence: 3, color: 'from-pink-500', lightColor: 'bg-pink-100' },
-  { key: 'ONBD', label: 'Onboarding', sequence: 4, color: 'from-orange-500', lightColor: 'bg-orange-100' },
-  { key: 'CASE', label: 'Case Mgmt', sequence: 5, color: 'from-yellow-500', lightColor: 'bg-yellow-100' },
-  { key: 'EXEC', label: 'Execution', sequence: 6, color: 'from-green-500', lightColor: 'bg-green-100' },
-  { key: 'GOVT', label: 'Gov\'t Portal', sequence: 7, color: 'from-teal-500', lightColor: 'bg-teal-100' },
-  { key: 'QA', label: 'QA & Compliance', sequence: 8, color: 'from-indigo-500', lightColor: 'bg-indigo-100' },
-  { key: 'DEL', label: 'Delivery', sequence: 9, color: 'from-emerald-500', lightColor: 'bg-emerald-100' },
+  {
+    key: "WEB",
+    label: "Web/App",
+    sequence: 1,
+    color: "from-blue-500",
+    lightColor: "bg-blue-100",
+  },
+  {
+    key: "CRM",
+    label: "CRM Routing",
+    sequence: 2,
+    color: "from-purple-500",
+    lightColor: "bg-purple-100",
+  },
+  {
+    key: "SALES",
+    label: "Sales & Payment",
+    sequence: 3,
+    color: "from-pink-500",
+    lightColor: "bg-pink-100",
+  },
+  {
+    key: "ONBD",
+    label: "Onboarding",
+    sequence: 4,
+    color: "from-orange-500",
+    lightColor: "bg-orange-100",
+  },
+  {
+    key: "CASE",
+    label: "Case Mgmt",
+    sequence: 5,
+    color: "from-yellow-500",
+    lightColor: "bg-yellow-100",
+  },
+  {
+    key: "EXEC",
+    label: "Execution",
+    sequence: 6,
+    color: "from-green-500",
+    lightColor: "bg-green-100",
+  },
+  {
+    key: "GOVT",
+    label: "Gov't Portal",
+    sequence: 7,
+    color: "from-teal-500",
+    lightColor: "bg-teal-100",
+  },
+  {
+    key: "QA",
+    label: "QA & Compliance",
+    sequence: 8,
+    color: "from-indigo-500",
+    lightColor: "bg-indigo-100",
+  },
+  {
+    key: "DEL",
+    label: "Delivery",
+    sequence: 9,
+    color: "from-emerald-500",
+    lightColor: "bg-emerald-100",
+  },
 ];
 
 const getStatusColor = (status) => {
   const colors = {
     COMPLETED: {
-      circle: 'bg-green-500 ring-green-300',
-      text: 'text-green-700',
-      bg: 'bg-green-50',
+      circle: "bg-green-500 ring-green-300",
+      text: "text-green-700",
+      bg: "bg-green-50",
     },
     IN_PROGRESS: {
-      circle: 'bg-blue-500 ring-blue-300',
-      text: 'text-blue-700',
-      bg: 'bg-blue-50',
+      circle: "bg-blue-500 ring-blue-300",
+      text: "text-blue-700",
+      bg: "bg-blue-50",
     },
     PENDING: {
-      circle: 'bg-gray-300 ring-gray-200',
-      text: 'text-gray-600',
-      bg: 'bg-gray-50',
+      circle: "bg-gray-300 ring-gray-200",
+      text: "text-gray-600",
+      bg: "bg-gray-50",
     },
     FAILED: {
-      circle: 'bg-red-500 ring-red-300',
-      text: 'text-red-700',
-      bg: 'bg-red-50',
+      circle: "bg-red-500 ring-red-300",
+      text: "text-red-700",
+      bg: "bg-red-50",
     },
     BLOCKED: {
-      circle: 'bg-yellow-500 ring-yellow-300',
-      text: 'text-yellow-700',
-      bg: 'bg-yellow-50',
+      circle: "bg-yellow-500 ring-yellow-300",
+      text: "text-yellow-700",
+      bg: "bg-yellow-50",
     },
   };
   return colors[status] || colors.PENDING;
@@ -46,8 +104,8 @@ const getStatusColor = (status) => {
 
 const StageCircle = ({ stage, status, isActive, onClick, onHover }) => {
   const colors = getStatusColor(status);
-  const isCompleted = status === 'COMPLETED';
-  const isFailed = status === 'FAILED';
+  const isCompleted = status === "COMPLETED";
+  const isFailed = status === "FAILED";
 
   return (
     <div className="relative">
@@ -57,7 +115,7 @@ const StageCircle = ({ stage, status, isActive, onClick, onHover }) => {
         onMouseLeave={() => onHover?.(stage, false)}
         className={`
           relative flex flex-col items-center cursor-pointer transition-all duration-200
-          ${isActive ? 'scale-110' : 'hover:scale-105'}
+          ${isActive ? "scale-110" : "hover:scale-105"}
         `}
       >
         {/* Circle */}
@@ -79,7 +137,7 @@ const StageCircle = ({ stage, status, isActive, onClick, onHover }) => {
           </div>
 
           {/* Pulse animation for in-progress */}
-          {status === 'IN_PROGRESS' && (
+          {status === "IN_PROGRESS" && (
             <div className="absolute inset-0 rounded-full border-2 border-blue-400 animate-pulse"></div>
           )}
         </div>
@@ -96,7 +154,7 @@ const StageCircle = ({ stage, status, isActive, onClick, onHover }) => {
             ${colors.text} ${colors.bg}
           `}
         >
-          {status.replace(/_/g, ' ')}
+          {status.replace(/_/g, " ")}
         </div>
       </button>
     </div>
@@ -108,7 +166,7 @@ const WorkflowTimeline = ({
   onStageClick,
   showLabels = true,
   compact = false,
-  height = 'h-auto',
+  height = "h-auto",
 }) => {
   const [hoveredStage, setHoveredStage] = React.useState(null);
 
@@ -124,7 +182,9 @@ const WorkflowTimeline = ({
       {/* Progress Bar */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-sm font-semibold text-gray-700">Overall Progress</h3>
+          <h3 className="text-sm font-semibold text-gray-700">
+            Overall Progress
+          </h3>
           <span className="text-sm font-bold text-indigo-600">
             {progress?.completionPercentage || 0}%
           </span>
@@ -138,14 +198,14 @@ const WorkflowTimeline = ({
       </div>
 
       {/* Timeline Container */}
-      <div className={`relative ${!compact && 'py-8'}`}>
+      <div className={`relative ${!compact && "py-8"}`}>
         {/* Connecting Line */}
         <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-300 via-purple-300 to-emerald-300 transform -translate-y-1/2" />
 
         {/* Stages Grid */}
         <div className="grid grid-cols-9 gap-1 relative z-10">
           {STAGES.map((stage) => {
-            const stageStatus = stageStatusMap[stage.key] || 'PENDING';
+            const stageStatus = stageStatusMap[stage.key] || "PENDING";
             const isHovered = hoveredStage === stage.key;
 
             return (
@@ -175,11 +235,19 @@ const WorkflowTimeline = ({
         <div className="mt-8 pt-6 border-t border-gray-200">
           <div className="grid grid-cols-5 gap-4 text-xs">
             {[
-              { status: 'COMPLETED', color: 'bg-green-500', label: 'Completed' },
-              { status: 'IN_PROGRESS', color: 'bg-blue-500', label: 'In Progress' },
-              { status: 'PENDING', color: 'bg-gray-300', label: 'Pending' },
-              { status: 'FAILED', color: 'bg-red-500', label: 'Failed' },
-              { status: 'BLOCKED', color: 'bg-yellow-500', label: 'Blocked' },
+              {
+                status: "COMPLETED",
+                color: "bg-green-500",
+                label: "Completed",
+              },
+              {
+                status: "IN_PROGRESS",
+                color: "bg-blue-500",
+                label: "In Progress",
+              },
+              { status: "PENDING", color: "bg-gray-300", label: "Pending" },
+              { status: "FAILED", color: "bg-red-500", label: "Failed" },
+              { status: "BLOCKED", color: "bg-yellow-500", label: "Blocked" },
             ].map((item) => (
               <div key={item.status} className="flex items-center gap-2">
                 <div className={`w-3 h-3 rounded-full ${item.color}`}></div>

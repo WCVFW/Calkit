@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ExclamationTriangleIcon, CheckCircleIcon, XMarkIcon, BellIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
+  XMarkIcon,
+  BellIcon,
+} from "@heroicons/react/24/outline";
 
 export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
   const [alerts, setAlerts] = useState([]);
@@ -10,11 +15,13 @@ export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await axios.get(`/api/workflow/alerts/orders/${orderId}/unresolved`);
+        const response = await axios.get(
+          `/api/workflow/alerts/orders/${orderId}/unresolved`,
+        );
         setAlerts(response.data);
         onAlertUpdate?.(response.data.length);
       } catch (error) {
-        console.error('Error fetching alerts:', error);
+        console.error("Error fetching alerts:", error);
       } finally {
         setLoading(false);
       }
@@ -28,12 +35,12 @@ export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
   const handleResolveAlert = async (alertId) => {
     try {
       await axios.put(`/api/workflow/alerts/${alertId}/resolve`, {
-        resolvedBy: 'system',
+        resolvedBy: "system",
       });
-      setAlerts(alerts.filter(a => a.id !== alertId));
+      setAlerts(alerts.filter((a) => a.id !== alertId));
       onAlertUpdate?.(alerts.length - 1);
     } catch (error) {
-      console.error('Error resolving alert:', error);
+      console.error("Error resolving alert:", error);
     }
   };
 
@@ -49,13 +56,13 @@ export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
 
   const getAlertIcon = (alertType) => {
     switch (alertType) {
-      case 'EXCEPTION':
-      case 'FAILURE':
-      case 'SLA_BREACH':
-      case 'PAYMENT_FAILED':
-      case 'DOCUMENT_MISSING':
+      case "EXCEPTION":
+      case "FAILURE":
+      case "SLA_BREACH":
+      case "PAYMENT_FAILED":
+      case "DOCUMENT_MISSING":
         return <ExclamationTriangleIcon className="w-5 h-5" />;
-      case 'INFO':
+      case "INFO":
         return <BellIcon className="w-5 h-5" />;
       default:
         return <BellIcon className="w-5 h-5" />;
@@ -64,33 +71,31 @@ export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
 
   const getAlertColor = (alertType) => {
     const colors = {
-      EXCEPTION: 'border-red-300 bg-red-50',
-      FAILURE: 'border-red-300 bg-red-50',
-      SLA_BREACH: 'border-orange-300 bg-orange-50',
-      PAYMENT_FAILED: 'border-red-300 bg-red-50',
-      DOCUMENT_MISSING: 'border-yellow-300 bg-yellow-50',
-      INFO: 'border-blue-300 bg-blue-50',
+      EXCEPTION: "border-red-300 bg-red-50",
+      FAILURE: "border-red-300 bg-red-50",
+      SLA_BREACH: "border-orange-300 bg-orange-50",
+      PAYMENT_FAILED: "border-red-300 bg-red-50",
+      DOCUMENT_MISSING: "border-yellow-300 bg-yellow-50",
+      INFO: "border-blue-300 bg-blue-50",
     };
     return colors[alertType] || colors.INFO;
   };
 
   const getTextColor = (alertType) => {
     const colors = {
-      EXCEPTION: 'text-red-800',
-      FAILURE: 'text-red-800',
-      SLA_BREACH: 'text-orange-800',
-      PAYMENT_FAILED: 'text-red-800',
-      DOCUMENT_MISSING: 'text-yellow-800',
-      INFO: 'text-blue-800',
+      EXCEPTION: "text-red-800",
+      FAILURE: "text-red-800",
+      SLA_BREACH: "text-orange-800",
+      PAYMENT_FAILED: "text-red-800",
+      DOCUMENT_MISSING: "text-yellow-800",
+      INFO: "text-blue-800",
     };
     return colors[alertType] || colors.INFO;
   };
 
   if (loading) {
     return (
-      <div className="text-center py-4 text-gray-500">
-        Loading alerts...
-      </div>
+      <div className="text-center py-4 text-gray-500">Loading alerts...</div>
     );
   }
 
@@ -112,11 +117,15 @@ export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
         >
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3 flex-1">
-              <div className={`${getTextColor(alert.alertType)} flex-shrink-0 mt-0.5`}>
+              <div
+                className={`${getTextColor(alert.alertType)} flex-shrink-0 mt-0.5`}
+              >
                 {getAlertIcon(alert.alertType)}
               </div>
               <div className="flex-1">
-                <h3 className={`font-semibold ${getTextColor(alert.alertType)}`}>
+                <h3
+                  className={`font-semibold ${getTextColor(alert.alertType)}`}
+                >
                   {alert.title}
                 </h3>
                 <p className={`text-sm mt-1 ${getTextColor(alert.alertType)}`}>
@@ -144,7 +153,7 @@ export const AlertNotifications = ({ orderId, onAlertUpdate }) => {
             onClick={() => toggleExpanded(alert.id)}
             className={`text-xs mt-2 font-medium ${getTextColor(alert.alertType)} hover:opacity-70`}
           >
-            {expandedAlerts.has(alert.id) ? 'Show less' : 'Show more'}
+            {expandedAlerts.has(alert.id) ? "Show less" : "Show more"}
           </button>
         </div>
       ))}
