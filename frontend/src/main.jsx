@@ -4,8 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./styles/globals.css";
 
-// Enable mocked API endpoints in development (OTP, auth, etc.)
-if (import.meta.env.DEV) {
+// Enable mocked API only when explicitly toggled
+if (import.meta.env.VITE_USE_MOCK === "true") {
   import("./lib/mock-api");
 }
 
