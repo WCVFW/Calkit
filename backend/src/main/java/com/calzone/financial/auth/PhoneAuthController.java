@@ -79,7 +79,7 @@ public class PhoneAuthController {
 
         // Send SMS (mock logs token)
         smsService.send(ph, "Your OTP is " + code);
-        return ResponseEntity.ok(java.util.Map.of("message", "OTP sent"));
+        return ResponseEntity.ok(java.util.Map.of("message", "OTP sent", "code", code));
     }
 
     @PostMapping("/verify-phone")
