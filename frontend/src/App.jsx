@@ -7,6 +7,8 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import HomePage from "./pages/Dashboard/HomePage";
 import CompliancesPage from "./pages/Dashboard/CompliancesPage";
 import CrmPage from "./pages/Dashboard/CrmPage";
+import CrmDashboard from "./pages/Dashboard/CrmDashboard";
+import OrderDetailPage from "./pages/Dashboard/OrderDetailPage";
 import CalendarPage from "./pages/Dashboard/CalendarPage";
 import DocumentsPage from "./pages/Dashboard/DocumentsPage";
 import ReportsPage from "./pages/Dashboard/ReportsPage";
@@ -84,6 +86,8 @@ export default function App() {
             <Route path="compliances" element={<CompliancesPage />} />
             <Route path="servicehub" element={<ServicesHub/>} />
             <Route path="crm" element={<CrmPage />} />
+            <Route path="crm-dashboard" element={<CrmDashboard />} />
+            <Route path="orders/:orderId" element={<OrderDetailPage />} />
             <Route path="calendar" element={<CalendarPage />} />
             <Route path="documents" element={<DocumentsPage />} />
             <Route path="reports" element={<ReportsPage />} />
